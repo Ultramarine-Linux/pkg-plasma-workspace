@@ -1,18 +1,23 @@
 Name:           plasma-workspace
-Version:        5.1.2
-Release:        3%{?dist}
-Summary:        Plasma workspace applications and applets
+Version:        5.1.95
+Release:        3.beta%{?dist}
+Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
 
-Source0:        http://download.kde.org/stable/plasma/%{version}/%{name}-%{version}.tar.xz
+%global revision %(echo %{version} | cut -d. -f3)
+%if %{revision} >= 50
+%global stable unstable
+%else
+%global stable stable
+%endif
+Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
 
 # This goes to PAM
 Source10:       kde
 
 # Patches
-Patch0:         plasma-workspace-kscreen-new-api-port.patch
-Patch1:         plasma-workspace-fix-black-screen-on-start.patch
+Patch0:         plasma-workspace-startkde-use-qdbus-qt5.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -81,14 +86,18 @@ BuildRequires:  kf5-ksysguard-devel
 BuildRequires:  kf5-kscreen-devel
 BuildRequires:  kf5-baloo-devel
 
+BuildRequires:  kf5-kwayland-devel
+BuildRequires:  libwayland-client-devel >= 1.3.0
+BuildRequires:  libwayland-server-devel >= 1.3.0
+
 BuildRequires:  kwin-devel
 
-# FIXME: Missing kf5-kdepimlibs-umbrella
-
 BuildRequires:  chrpath
+BuildRequires:  desktop-file-utils
 
 # Optional
 BuildRequires:  kf5-kactivities-devel
+
 
 # HACK: Should be kf5-kactivities-runtime, but that conflicts with kactivities,
 # so we requre KDE4 KActivities (it's dbus runtime dep, so no problem)
@@ -102,11 +111,15 @@ Requires:       qt5-qtgraphicaleffects
 Requires:       kf5-filesystem
 Requires:       kf5-baloo
 
+# Without the platformtheme plugins we get broken fonts
+Requires:	kf5-frameworkintegration
+
 # startkde
 Requires:       coreutils
 Requires:       dbus-x11
 Requires:       socat
 Requires:       xmessage
+Requires:       qt5-qttools
 
 Requires:       xorg-x11-utils
 Requires:       xorg-x11-server-utils
@@ -129,10 +142,6 @@ Obsoletes:      kde-workspace < 5.0.0-1
 # There was circular dependency between kde-workspace and -libs, so remove explictly
 # both. This is fixed in latest kde-workspace
 Obsoletes:      kde-workspace-libs < 5.0.0-1
-Obsoletes:      kdeplasma-addons < 5.0.0-1
-# Hmm, really? This is needed for smooth upgrade, but something else should do this,
-# maybe plasma-dsektop?
-Obsoletes:      plasma-scriptengine-python < 5.0.0-1
 
 %description
 Plasma 5 libraries and runtime components
@@ -156,16 +165,13 @@ Documentation and user manuals for %{name}.
 %prep
 %setup -q -n %{name}-%{version}
 
-%patch0 -p1 -b .kscreen
-%patch1 -p1 -b .blackscreen
+%patch0 -p1 -b .startkde
 
 %build
 
 mkdir -p %{_target_platform}
 pushd %{_target_platform}
-%{cmake_kf5} .. \
-	-DCMAKE_INSTALL_FULL_LIBEXECDIR=${_libexecdir} \
-	-DCMAKE_INSTALL_FULL_LIBEXECDIR_KF=${_kf5_libexecdir}
+%{cmake_kf5} ..
 popd
 
 make %{?_smp_mflags} -C %{_target_platform}
@@ -175,15 +181,15 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 chrpath --delete %{buildroot}/%{_kf5_qtplugindir}/phonon_platform/kde.so
 
-# Makes kcheckpass work
+# Make kcheckpass work
 install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 %find_lang plasmaworkspace5 --with-qt --with-kde --all-name
 
 %check
-desktop-file-validate %{_datadir}/applications/{plasma-windowed,org.kde.klipper}.desktop
+desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org.kde.klipper}.desktop
+
 
 %post -p /sbin/ldconfig
-
 %postun -p /sbin/ldconfig
 
 %files -f plasmaworkspace5.lang
@@ -211,6 +217,7 @@ desktop-file-validate %{_datadir}/applications/{plasma-windowed,org.kde.klipper}
 %{_datadir}/drkonqi/mappings
 %{_datadir}/drkonqi/pics/*.png
 %{_sysconfdir}/xdg/*.knsrc
+%{_sysconfdir}/xdg/taskmanagerrulesrc
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/desktop-directories/*.directory
 %{_datadir}/dbus-1/services/*.service
@@ -229,7 +236,6 @@ desktop-file-validate %{_datadir}/applications/{plasma-windowed,org.kde.klipper}
 %config %{_sysconfdir}/pam.d/kde
 
 %files doc
-# %doc COPYING COPYING.DOC COPYING.LIB README README.pam
 %{_datadir}/doc/HTML/en/*
 
 %files devel
@@ -252,11 +258,27 @@ desktop-file-validate %{_datadir}/applications/{plasma-windowed,org.kde.klipper}
 
 
 %changelog
+* Wed Jan 14 2015 Daniel Vrátil <dvratil@redhat.com> - 5.1.95-3.beta
+- Requires: kf5-frameworkintegration (provides platformtheme plugin)
+
+* Wed Jan 14 2015 Daniel Vrátil <dvratil@redhat.com> - 5.1.95-2.beta
+- BR: kf5-kscreen-devel (renamed)
+
+* Tue Jan 13 2015 Daniel Vrátil <dvratil@redhat.com> - 5.1.95-1.beta
+- Plasma 5.1.95 Beta
+
+* Mon Jan 12 2015 Daniel Vrátil <dvratil@redhat.com> - 5.1.2-5
+- Add upstream patch to make ksyncdbusenv work with dbus-1.8.14
+
+* Fri Jan 09 2015 Daniel Vrátil <dvratil@redhat.com> - 5.1.2-4
+- Requires: qt5-qttools (for dbus-qt5)
+
 * Wed Jan 07 2015 Jan Grulich <jgrulich@redhat.com> - 5.1.2-3
 - Omit "5" from pkg summary
   Drop config macro for files installed to /etc/xdg
   Move /usr/share/dbus-1/interfaces/*.xml stuff to main package
   Validate .desktop files
+  look for qdbus-qt5 in startkde instead of qdbus
 
 * Mon Jan 05 2015 Daniel Vrátil <dvratil@redhat.com> - 5.1.2-2
 - add upstream patch to fix black screen on start
@@ -307,7 +329,7 @@ desktop-file-validate %{_datadir}/applications/{plasma-windowed,org.kde.klipper}
 
 * Tue May 20 2014 Daniel Vrátil <dvratil@redhat.com> - 4.96.0-6.20140519gita85f5bc
 - Add LIBEXEC_PATH to kde5 profile to fix drkonqi lookup
-- Fix install
+- Fix install 
 
 * Mon May 19 2014 Daniel Vrátil <dvratil@redhat.com> - 4.96.0-3.20140519gita85f5bc
 - Update to latest git snapshot
