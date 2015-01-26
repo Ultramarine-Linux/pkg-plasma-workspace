@@ -1,6 +1,6 @@
 Name:           plasma-workspace
-Version:        5.1.95
-Release:        3.beta%{?dist}
+Version:        5.2.0
+Release:        1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -258,6 +258,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Mon Jan 26 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.0-1
+- Plasma 5.2.0
+
 * Wed Jan 14 2015 Daniel Vrátil <dvratil@redhat.com> - 5.1.95-3.beta
 - Requires: kf5-frameworkintegration (provides platformtheme plugin)
 
