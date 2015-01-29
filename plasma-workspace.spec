@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -53,7 +53,9 @@ BuildRequires:  libbsd-devel
 BuildRequires:  pam-devel
 BuildRequires:  lm_sensors-devel
 BuildRequires:  pciutils-devel
+%ifnarch s390 s390x
 BuildRequires:  libraw1394-devel
+%endif
 BuildRequires:  gpsd-devel
 
 BuildRequires:  qt5-qtbase-devel
@@ -258,6 +260,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Thu Jan 29 2015 Dan Horák <dan[at]danny.cz> - 5.2.0-2
+- no FireWire on s390(x)
+
 * Mon Jan 26 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.0-1
 - Plasma 5.2.0
 
