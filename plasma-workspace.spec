@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -119,6 +119,9 @@ Requires:	    kf5-frameworkintegration
 # For krunner
 Requires:       plasma-milou
 
+# Power management
+Requires:       powerdevil
+
 # startkde
 Requires:       coreutils
 Requires:       dbus-x11
@@ -141,6 +144,7 @@ Requires:       sni-qt
 
 # Oxygen
 Requires:       oxygen-icon-theme
+Requires:       oxygen-sound-theme
 Requires:       oxygen-fonts
 
 Obsoletes:      kde-workspace < 5.0.0-1
@@ -263,6 +267,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Sun Feb 08 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.0-4
+- Requires: powerdevil, oxygen-sound-theme
+
 * Thu Jan 29 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.0-3
 - Requires: plasma-milou (for krunner)
 
