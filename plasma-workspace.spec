@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -152,9 +152,6 @@ Obsoletes:      kde-workspace < 5.0.0-1
 # both. This is fixed in latest kde-workspace
 Obsoletes:      kde-workspace-libs < 5.0.0-1
 
-Obsoletes:      kdeclassic-cursor-theme < 5
-Provides:       kdeclassic-cursor-theme = %{version-release}
-
 %description
 Plasma 5 libraries and runtime components
 
@@ -270,6 +267,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Mon Feb 09 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.0-6
+- Revert the previous change
+
 * Mon Feb 09 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.0-5
 - Provides/Obsoletes: kdeclassic-cursor-theme
 
