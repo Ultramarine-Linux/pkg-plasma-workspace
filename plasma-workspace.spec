@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -16,8 +16,13 @@ Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{ve
 # This goes to PAM
 Source10:       kde
 
-# Patches
+## downstream Patches
 Patch0:         plasma-workspace-startkde-use-qdbus-qt5.patch
+
+## upstreamable Patches
+# "Could not sync environment to dbus." (startkde)
+# http://bugzilla.redhat.com/1191171
+Patch100:       plasma-workspace-ksyncdbusenv.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -175,6 +180,7 @@ Documentation and user manuals for %{name}.
 %setup -q -n %{name}-%{version}
 
 %patch0 -p1 -b .startkde
+%patch100 -p1 -b .ksycndbusenv
 
 %build
 
@@ -267,6 +273,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed Feb 11 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-7
+- "Could not sync environment to dbus." (startkde) (#1191171)
+
 * Mon Feb 09 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.0-6
 - Revert the previous change
 
