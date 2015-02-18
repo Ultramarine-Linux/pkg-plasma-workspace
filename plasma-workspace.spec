@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -20,9 +20,6 @@ Source10:       kde
 Patch0:         plasma-workspace-startkde-use-qdbus-qt5.patch
 
 ## upstreamable Patches
-# "Could not sync environment to dbus." (startkde)
-# http://bugzilla.redhat.com/1191171
-Patch100:       plasma-workspace-ksyncdbusenv.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -88,6 +85,7 @@ BuildRequires:  kf5-kdeclarative-devel
 BuildRequires:  kf5-plasma-devel
 BuildRequires:  kf5-kdewebkit-devel
 BuildRequires:  kf5-kdelibs4support-devel
+BuildRequires:  kf5-kglobalaccel-devel >= 5.7
 
 BuildRequires:  kf5-ksysguard-devel
 BuildRequires:  kf5-kscreen-devel
@@ -117,6 +115,7 @@ Requires:       qt5-qtquickcontrols
 Requires:       qt5-qtgraphicaleffects
 Requires:       kf5-filesystem
 Requires:       kf5-baloo
+Requires:       kf5-kglobalaccel >= 5.7
 
 # Without the platformtheme plugins we get broken fonts
 Requires:	    kf5-frameworkintegration
@@ -180,16 +179,16 @@ Documentation and user manuals for %{name}.
 %setup -q -n %{name}-%{version}
 
 %patch0 -p1 -b .startkde
-%patch100 -p1 -b .ksycndbusenv
+
 
 %build
-
-mkdir -p %{_target_platform}
+mkdir %{_target_platform}
 pushd %{_target_platform}
 %{cmake_kf5} ..
 popd
 
 make %{?_smp_mflags} -C %{_target_platform}
+
 
 %install
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
@@ -199,6 +198,7 @@ chrpath --delete %{buildroot}/%{_kf5_qtplugindir}/phonon_platform/kde.so
 # Make kcheckpass work
 install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 %find_lang plasmaworkspace5 --with-qt --with-kde --all-name
+
 
 %check
 desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org.kde.klipper}.desktop
@@ -273,6 +273,11 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed Feb 18 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.2.0-8
+- (Build)Requires: kf5-kglobalaccel(-devel) >= 5.7
+- drop ksyncdbusenv.patch workaround
+- .spec cosmetics
+
 * Wed Feb 11 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-7
 - "Could not sync environment to dbus." (startkde) (#1191171)
 
