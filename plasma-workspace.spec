@@ -1,6 +1,6 @@
 Name:           plasma-workspace
-Version:        5.2.0
-Release:        8%{?dist}
+Version:        5.2.1
+Release:        1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -273,6 +273,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Tue Feb 24 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.1-1
+- Plasma 5.2.1
+
 * Wed Feb 18 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.2.0-8
 - (Build)Requires: kf5-kglobalaccel(-devel) >= 5.7
 - drop ksyncdbusenv.patch workaround
