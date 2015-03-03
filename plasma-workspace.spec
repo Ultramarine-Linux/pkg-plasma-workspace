@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -15,9 +15,10 @@ Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{ve
 
 # This goes to PAM
 Source10:       kde
+# upstream startkde.kde, minus stuff we don't want or need, plus a minor bit of customization --rex
+Source11:       startkde.cmake
 
 ## downstream Patches
-Patch0:         plasma-workspace-startkde-use-qdbus-qt5.patch
 
 ## upstreamable Patches
 
@@ -178,7 +179,8 @@ Documentation and user manuals for %{name}.
 %prep
 %setup -q -n %{name}-%{version}
 
-%patch0 -p1 -b .startkde
+mv startkde/startkde.cmake startkde/startkde.cmake.orig
+install -m644 -p %{SOURCE11} startkde/startkde.cmake
 
 
 %build
@@ -273,6 +275,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Tue Mar 03 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.1-3
+- use our own startkde.cmake
+
 * Fri Feb 27 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.1-2
 - Rebuild (GCC 5)
 
