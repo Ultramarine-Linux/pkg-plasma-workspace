@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -275,6 +275,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Fri Mar 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.1-4
+- rebuild (gpsd)
+
 * Tue Mar 03 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.1-3
 - use our own startkde.cmake
 
