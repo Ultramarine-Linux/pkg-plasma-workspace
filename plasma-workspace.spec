@@ -121,9 +121,6 @@ Requires:       kf5-kglobalaccel >= 5.7
 # Without the platformtheme plugins we get broken fonts
 Requires:	    kf5-frameworkintegration
 
-# upgrade path, not very useful without it -- rex
-Requires:       plasma-desktop
-
 # For krunner
 Requires:       plasma-milou
 
@@ -152,10 +149,8 @@ Requires:       oxygen-icon-theme
 Requires:       oxygen-sound-theme
 Requires:       oxygen-fonts
 
-Obsoletes:      kde-workspace < 5.0.0-1
-# There was circular dependency between kde-workspace and -libs, so remove explictly
-# both. This is fixed in latest kde-workspace
-Obsoletes:      kde-workspace-libs < 5.0.0-1
+# PolicyKit authentication agent
+Requires: polkit-kde
 
 %description
 Plasma 5 libraries and runtime components
@@ -275,6 +270,11 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Mon Mar 16 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.2.1-6
+- revert Requires: plasma-desktop (dep should be the other way around)
+- drop Obsoletes: kde-workspace (leave for plasma-desktop)
+- Requires: polkit-kde
+
 * Sun Mar 15 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.1-5
 - Requires: -sddm (#1201034), +plasma-desktop
 
