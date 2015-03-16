@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -121,6 +121,9 @@ Requires:       kf5-kglobalaccel >= 5.7
 # Without the platformtheme plugins we get broken fonts
 Requires:	    kf5-frameworkintegration
 
+# upgrade path, not very useful without it -- rex
+Requires:       plasma-desktop
+
 # For krunner
 Requires:       plasma-milou
 
@@ -136,9 +139,6 @@ Requires:       qt5-qttools
 
 Requires:       xorg-x11-utils
 Requires:       xorg-x11-server-utils
-
-# KDM is dead in Plasma 5, so let's use SDDM.
-Requires:       sddm
 
 Requires:       kde-settings
 
@@ -275,6 +275,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Sun Mar 15 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.1-5
+- Requires: -sddm (#1201034), +plasma-desktop
+
 * Fri Mar 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.1-4
 - rebuild (gpsd)
 
