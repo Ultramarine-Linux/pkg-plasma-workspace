@@ -119,7 +119,7 @@ Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
 
 # Without the platformtheme plugins we get broken fonts
-Requires:	    kf5-frameworkintegration
+Requires:       kf5-frameworkintegration
 
 # For krunner
 Requires:       plasma-milou
