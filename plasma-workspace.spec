@@ -1,6 +1,6 @@
 Name:           plasma-workspace
-Version:        5.2.1
-Release:        6%{?dist}
+Version:        5.2.2
+Release:        1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -270,6 +270,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Fri Mar 20 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.2-1
+- Plasma 5.2.2
+
 * Mon Mar 16 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.2.1-6
 - revert Requires: plasma-desktop (dep should be the other way around)
 - drop Obsoletes: kde-workspace (leave for plasma-desktop)
