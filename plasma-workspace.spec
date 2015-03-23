@@ -248,7 +248,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 %config %{_sysconfdir}/pam.d/kde
 
 %files doc
-%{_datadir}/doc/HTML/en/*
+%{_datadir}/doc/HTML/*/*
 
 %files devel
 %{_libdir}/libweather_ion.so
