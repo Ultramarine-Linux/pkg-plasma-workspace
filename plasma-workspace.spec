@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -21,6 +21,10 @@ Source11:       startkde.cmake
 ## downstream Patches
 
 ## upstreamable Patches
+
+## upstream Patches
+# http://commits.kde.org/plasma-workspace/24f24e03793c8214a5d1f3414a5aeb48eccef4f4
+Patch4: 0004-Workaround-the-lockscreen-password-field-focus-issue.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -172,7 +176,7 @@ Documentation and user manuals for %{name}.
 
 
 %prep
-%setup -q -n %{name}-%{version}
+%autosetup -p1
 
 mv startkde/startkde.cmake startkde/startkde.cmake.orig
 install -m644 -p %{SOURCE11} startkde/startkde.cmake
@@ -270,6 +274,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed Mar 25 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-2
+- Lockscreen: Password field does not have focus (kde#344823)
+
 * Fri Mar 20 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.2-1
 - Plasma 5.2.2
 
