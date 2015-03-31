@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -124,6 +124,7 @@ Requires:       qt5-qtgraphicaleffects
 Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
+Requires:       khotkeys
 
 # Without the platformtheme plugins we get broken fonts
 Requires:       kf5-frameworkintegration
@@ -277,6 +278,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Tue Mar 31 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-4
+- Requires: khotkeys (#1207079)
+
 * Mon Mar 30 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-3
 - backport fix for update scripts
 
