@@ -284,7 +284,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 %changelog
 * Wed Apr 15 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-6
-- Requires: kde-settings-plasma
+- Requires: kde-settings-plasma (#1197709)
 
 * Sat Apr 04 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-5
 - conflicts with kf5-kxmlrpcclient (#1208947)
