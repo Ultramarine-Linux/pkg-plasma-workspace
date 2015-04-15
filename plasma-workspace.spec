@@ -1,6 +1,6 @@
 Name:           plasma-workspace
 Version:        5.2.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -147,7 +147,7 @@ Requires:       qt5-qttools
 Requires:       xorg-x11-utils
 Requires:       xorg-x11-server-utils
 
-Requires:       kde-settings
+Requires:       kde-settings-plasma
 
 Requires:       systemd
 
@@ -283,6 +283,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed Apr 15 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-6
+- Requires: kde-settings-plasma
+
 * Sat Apr 04 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-5
 - conflicts with kf5-kxmlrpcclient (#1208947)
 
