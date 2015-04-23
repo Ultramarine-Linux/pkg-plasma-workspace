@@ -1,6 +1,6 @@
 Name:           plasma-workspace
-Version:        5.2.2
-Release:        6%{?dist}
+Version:        5.2.95
+Release:        1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -23,11 +23,8 @@ Source11:       startkde.cmake
 ## upstreamable Patches
 
 ## upstream Patches
-# http://commits.kde.org/plasma-workspace/24f24e03793c8214a5d1f3414a5aeb48eccef4f4
-Patch4: 0004-Workaround-the-lockscreen-password-field-focus-issue.patch
 
 ## master branch Patches
-Patch5: fix-update-scripts.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -91,9 +88,13 @@ BuildRequires:  kf5-threadweaver-devel
 BuildRequires:  kf5-ktexteditor-devel
 BuildRequires:  kf5-kdeclarative-devel
 BuildRequires:  kf5-plasma-devel
+BuildRequires:  kf5-ktextwidgets-devel
 BuildRequires:  kf5-kdewebkit-devel
 BuildRequires:  kf5-kdelibs4support-devel
+BuildRequires:  kf5-kcrash-devel
 BuildRequires:  kf5-kglobalaccel-devel >= 5.7
+BuildRequires:  kf5-networkmanager-qt-devel
+BuildRequires:  kf5-kxmlrpcclient-devel
 
 BuildRequires:  kf5-ksysguard-devel
 BuildRequires:  kf5-kscreen-devel
@@ -218,29 +219,31 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 %postun -p /sbin/ldconfig
 
 %files -f plasmaworkspace5.lang
-%{_bindir}/*
-%{_libdir}/*.so.*
+%{_kf5_bindir}/*
+%{_kf5_libdir}/*.so.*
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qtplugindir}/plasma/dataengine/*.so
 %{_kf5_qtplugindir}/plasma/packagestructure/*.so
 %{_kf5_qtplugindir}/*.so
 %{_kf5_qtplugindir}/phonon_platform/kde.so
-%{_qt5_prefix}/qml/org/kde/*
+%{_kf5_qtplugindir}/kpackage/packagestructure/*.so
+%{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/*
-%{_datadir}/ksmserver
-%{_datadir}/ksplash
-%{_datadir}/plasma/plasmoids
-%{_datadir}/plasma/services
-%{_datadir}/plasma/shareprovider
-%{_datadir}/plasma/wallpapers
-%{_datadir}/plasma/look-and-feel
-%{_datadir}/plasma/kcms
-%{_datadir}/solid
-%{_datadir}/kstyle
-%{_datadir}/drkonqi/debuggers/external/*
-%{_datadir}/drkonqi/debuggers/internal/*
-%{_datadir}/drkonqi/mappings
-%{_datadir}/drkonqi/pics/*.png
+%{_kf5_datadir}/ksmserver
+%{_kf5_datadir}/ksplash
+%{_kf5_datadir}/plasma/plasmoids
+%{_kf5_datadir}/plasma/services
+%{_kf5_datadir}/plasma/shareprovider
+%{_kf5_datadir}/plasma/wallpapers
+%{_kf5_datadir}/plasma/look-and-feel
+%{_kf5_datadir}/plasma/kcms
+%{_kf5_datadir}/solid
+%{_kf5_datadir}/kstyle
+%{_kf5_datadir}/drkonqi/debuggers/external/*
+%{_kf5_datadir}/drkonqi/debuggers/internal/*
+%{_kf5_datadir}/drkonqi/mappings
+%{_kf5_datadir}/drkonqi/pics/*.png
+%{_kf5_datadir}/kconf_update/*
 %{_sysconfdir}/xdg/*.knsrc
 %{_sysconfdir}/xdg/taskmanagerrulesrc
 %{_sysconfdir}/xdg/autostart/*.desktop
@@ -252,8 +255,8 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 %{_kf5_datadir}/kservices5/kded/*.desktop
 %{_kf5_datadir}/kservicetypes5/*.desktop
 %{_kf5_datadir}/knotifications5/*.notifyrc
+%{_kf5_datadir}/config.kcfg/*
 %{_datadir}/applications/*.desktop
-%{_datadir}/config.kcfg
 %{_datadir}/sddm/themes/breeze
 %{_datadir}/xsessions/plasma.desktop
 
@@ -283,6 +286,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed Apr 22 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.95-1
+- Plasma 5.2.95
+
 * Wed Apr 15 2015 Rex Dieter <rdieter@fedoraproject.org> 5.2.2-6
 - Requires: kde-settings-plasma (#1197709)
 
