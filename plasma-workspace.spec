@@ -1,5 +1,5 @@
 Name:           plasma-workspace
-Version:        5.2.95
+Version:        5.3.0
 Release:        1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
@@ -286,6 +286,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Mon Apr 27 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-1
+- Plasma 5.3.0
+
 * Wed Apr 22 2015 Daniel Vrátil <dvratil@redhat.com> - 5.2.95-1
 - Plasma 5.2.95
 
