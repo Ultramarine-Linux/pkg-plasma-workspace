@@ -1,10 +1,10 @@
 # Enable bootstrap when building plasma-workspace on a new repo
 # or arch where there's no package that would provide plasmashell
-%define bootstrap 1
+#%define bootstrap 1
 
 Name:           plasma-workspace
 Version:        5.3.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -297,6 +297,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed Apr 29 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-3
+- Disable bootstrap
+
 * Wed Apr 29 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-2
 - Requires plasmashell (virtual provides for packages that provide Plasma shells, like plasma-desktop)
 
