@@ -1,3 +1,7 @@
+# Enable bootstrap when building plasma-workspace on a new repo
+# or arch where there's no package that would provide plasmashell
+%define bootstrap 1
+
 Name:           plasma-workspace
 Version:        5.3.0
 Release:        1%{?dist}
@@ -161,7 +165,14 @@ Requires:       oxygen-sound-theme
 Requires:       oxygen-fonts
 
 # PolicyKit authentication agent
-Requires: polkit-kde
+Requires:        polkit-kde
+
+# Require any plasmashell (plasma-desktop provides plasmashell(desktop))
+%if 0%{?bootstrap}
+Provides:       plasmashell = %{version}
+%else
+Requires:       plasmashell >= %{version}
+%endif
 
 %description
 Plasma 5 libraries and runtime components
@@ -286,6 +297,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed Apr 29 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-2
+- Requires plasmashell (virtual provides for packages that provide Plasma shells, like plasma-desktop)
+
 * Mon Apr 27 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-1
 - Plasma 5.3.0
 
