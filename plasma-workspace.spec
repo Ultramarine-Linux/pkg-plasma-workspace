@@ -23,6 +23,7 @@ Source10:       kde
 Source11:       startkde.cmake
 
 ## downstream Patches
+Patch10:        fix-update-scripts.patch
 
 ## upstreamable Patches
 
