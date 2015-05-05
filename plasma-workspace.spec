@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -24,6 +24,7 @@ Source11:       startkde.cmake
 
 ## downstream Patches
 Patch10:        fix-update-scripts.patch
+Patch11:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 
 ## upstreamable Patches
 
@@ -298,6 +299,10 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Tue May 05 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-4
+- backport patch form kde-workspace to add Konsole into shell context menu
+- re-enable fix-update-scripts.patch
+
 * Wed Apr 29 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-3
 - Disable bootstrap
 
