@@ -23,8 +23,7 @@ Source10:       kde
 Source11:       startkde.cmake
 
 ## downstream Patches
-Patch10:        fix-update-scripts.patch
-Patch11:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
+Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 
 ## upstreamable Patches
 
