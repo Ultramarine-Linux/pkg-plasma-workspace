@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -24,6 +24,7 @@ Source11:       startkde.cmake
 
 ## downstream Patches
 Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
+Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 
 ## upstreamable Patches
 
@@ -298,6 +299,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Mon May 18 2015 Jan Grulich <jgrulich@redhat.com> - 5.3.0-5
+- set default look and feel theme to Fedora Twenty Two
+
 * Tue May 05 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.0-4
 - backport patch form kde-workspace to add Konsole into shell context menu
 - re-enable fix-update-scripts.patch
