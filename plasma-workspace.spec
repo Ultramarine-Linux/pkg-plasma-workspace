@@ -228,6 +228,7 @@ install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fed
 install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/kservices5/plasma-lookandfeel-org.fedoraproject.fedora.twenty.two.desktop
 ## We need to remove original background which will be replaced by Fedora one from f22-kde-theme
 rm -f %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/components/artwork/background.png
+rm -f %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/previews/{lockscreen.png,preview.png,splash.png}
 
 # Make kcheckpass work
 install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
