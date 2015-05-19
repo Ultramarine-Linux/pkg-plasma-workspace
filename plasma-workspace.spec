@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -21,6 +21,8 @@ Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{ve
 Source10:       kde
 # upstream startkde.kde, minus stuff we don't want or need, plus a minor bit of customization --rex
 Source11:       startkde.cmake
+# Desktop file for Fedora Twenty Two look-and-feel package
+Source12:       metadata.desktop
 
 ## downstream Patches
 Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
@@ -155,6 +157,7 @@ Requires:       xorg-x11-utils
 Requires:       xorg-x11-server-utils
 
 Requires:       kde-settings-plasma
+Requires:       f22-kde-theme >= 22.2
 
 Requires:       systemd
 
@@ -218,6 +221,13 @@ make %{?_smp_mflags} -C %{_target_platform}
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 chrpath --delete %{buildroot}/%{_kf5_qtplugindir}/phonon_platform/kde.so
+
+# Create Fedora Twenty Two look and feel package from the Breeze one
+cp -r %{buildroot}/%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.two}
+install -m 0622 %{SOURCE12} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/metadata.desktop
+install -m 0622 %{SOURCE12} %{buildroot}%{_datadir}/kservices5/plasma-lookandfeel-org.fedoraproject.fedora.twenty.two.desktop
+## We need to remove original background which will be replaced by Fedora one from f22-kde-theme
+rm -f %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/components/artwork/background.png
 
 # Make kcheckpass work
 install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -299,6 +309,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Tue May 19 2015 Jan Grulich <jgrulich@redhat.com> - 5.3.0-6
+- copy Breeze look-and-feel package also as Fedora Twenty Two look-and-feel package
+
 * Mon May 18 2015 Jan Grulich <jgrulich@redhat.com> - 5.3.0-5
 - set default look and feel theme to Fedora Twenty Two
 
