@@ -206,6 +206,7 @@ Documentation and user manuals for %{name}.
 %if 0%{?fedora} > 21
 %patch11 -p1 -b .set-fedora-default-look-and-feel
 %endif
+%patch12 -p1 -b .process-update-scripts-after-first-initialization
 
 mv startkde/startkde.cmake startkde/startkde.cmake.orig
 install -m644 -p %{SOURCE11} startkde/startkde.cmake
@@ -318,6 +319,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed May 20 2015 Jan Grulich <jgrulich@redhat.com> - 5.3.0-8
+- apply the new patch for update scripts execution
+
 * Wed May 20 2015 Jan Grulich <jgrulich@redhat.com> - 5.3.0-7
 - process update scripts after first initialization
 
