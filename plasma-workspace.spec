@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -27,6 +27,7 @@ Source12:       metadata.desktop
 ## downstream Patches
 Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
+Patch12:        plasma-workspace-5.3.0-process-update-scripts-after-first-initialization.patch
 
 ## upstreamable Patches
 
@@ -317,6 +318,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Wed May 20 2015 Jan Grulich <jgrulich@redhat.com> - 5.3.0-7
+- process update scripts after first initialization
+
 * Tue May 19 2015 Jan Grulich <jgrulich@redhat.com> - 5.3.0-6
 - copy Breeze look-and-feel package also as Fedora Twenty Two look-and-feel package
 
