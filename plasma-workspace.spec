@@ -158,7 +158,9 @@ Requires:       xorg-x11-utils
 Requires:       xorg-x11-server-utils
 
 Requires:       kde-settings-plasma
+%if 0%{?fedora} >= 22
 Requires:       f22-kde-theme >= 22.2
+%endif
 
 Requires:       systemd
 
