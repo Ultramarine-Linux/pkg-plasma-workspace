@@ -1,10 +1,10 @@
 # Enable bootstrap when building plasma-workspace on a new repo
 # or arch where there's no package that would provide plasmashell
-#%define bootstrap 1
+#define bootstrap 1
 
 Name:           plasma-workspace
 Version:        5.3.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -104,6 +104,7 @@ BuildRequires:  kf5-kcrash-devel
 BuildRequires:  kf5-kglobalaccel-devel >= 5.7
 BuildRequires:  kf5-networkmanager-qt-devel
 BuildRequires:  kf5-kxmlrpcclient-devel
+BuildRequires:  kf5-kinit-devel >= 5.10.0-3
 
 BuildRequires:  kf5-ksysguard-devel
 BuildRequires:  kf5-kscreen-devel
@@ -121,14 +122,11 @@ BuildRequires:  desktop-file-utils
 # Optional
 BuildRequires:  kf5-kactivities-devel
 
-
-# HACK: Should be kf5-kactivities-runtime, but that conflicts with kactivities,
-# so we requre KDE4 KActivities (it's dbus runtime dep, so no problem)
-Requires:       kactivities
-Requires:       kf5-kinit
+# for libkdeinit5_*
+%{?kf5_kinit_requires}
+Requires:       kf5-kactivities
 Requires:       kf5-kded
 Requires:       kf5-kdoctools
-#Requires:       kde5-runtime
 Requires:       qt5-qtquickcontrols
 Requires:       qt5-qtgraphicaleffects
 Requires:       kf5-filesystem
@@ -196,7 +194,9 @@ developing applications that use %{name}.
 
 %package        doc
 Summary:        Documentation and user manuals for %{name}
-
+# switch to noarch
+Obsoletes: plasma-workspace-doc < 5.3.1-2
+BuildArch: noarch
 %description    doc
 Documentation and user manuals for %{name}.
 
@@ -320,6 +320,11 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Tue Jun 02 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.3.1-2
+- use %%{?kf5_kinit_requires}
+- Requires: kf5-kactivities
+- doc: make noarch
+
 * Tue May 26 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.1-1
 - Plasma 5.3.1
 
