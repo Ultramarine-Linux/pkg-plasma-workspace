@@ -298,7 +298,8 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 %config %{_sysconfdir}/pam.d/kde
 
 %files doc
-%{_datadir}/doc/HTML/*/*
+%lang(en) %{_docdir}/HTML/en/klipper/
+%lang(ca) %{_docdir}/HTML/ca/klipper/
 
 %files devel
 %{_libdir}/libweather_ion.so
@@ -323,7 +324,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 * Tue Jun 02 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.3.1-2
 - use %%{?kf5_kinit_requires}
 - Requires: kf5-kactivities
-- doc: make noarch
+- doc: make noarch, %%lang'ify
 
 * Tue May 26 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.1-1
 - Plasma 5.3.1
