@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -321,6 +321,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.3.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Tue Jun 02 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.3.1-2
 - use %%{?kf5_kinit_requires}
 - Requires: kf5-kactivities
