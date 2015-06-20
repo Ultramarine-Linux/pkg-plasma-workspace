@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -321,6 +321,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Sat Jun 20 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.1-5
+- shutdown scripts are not executed (#1234059)
+
 * Thu Jun 18 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.1-4
 - startkde.cmake: sync ScaleFactor changes, drop QT_PLUGIN_PATH munging (#1233298)
 
