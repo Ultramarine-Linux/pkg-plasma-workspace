@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -177,7 +177,10 @@ Requires:        polkit-kde
 %if 0%{?bootstrap}
 Provides:       plasmashell = %{version}
 %else
-Requires:       plasmashell >= %{version}
+# Note: We should require >= %{version}, but that creates a circular dependency
+# at build time of plasma-desktop, because it provides the needed dependency, but
+# also needs plasma-workspace to build. So for now the dependency is unversioned.
+Requires:       plasmashell
 %endif
 
 %description
@@ -321,6 +324,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Fri Jun 26 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.2-2
+- Make the Requires: plasmashell unversioned to break circular dependency during update
+
 * Thu Jun 25 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.2-1
 - Plasma 5.3.2
 
