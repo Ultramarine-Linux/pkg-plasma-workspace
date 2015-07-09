@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -183,6 +183,9 @@ Provides:       plasmashell = %{version}
 Requires:       plasmashell
 %endif
 
+# owner of setsebool
+Requires(post): policycoreutils
+
 %description
 Plasma 5 libraries and runtime components
 
@@ -249,10 +252,21 @@ install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
 
 %check
-desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org.kde.klipper}.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.kde.klipper}.desktop
 
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
+# make DrKonqi work by default by taming SELinux enough (suggested by dwalsh)
+# if KDE_DEBUG is set, DrKonqi is disabled, so do nothing
+# if it is unset (or empty), check if deny_ptrace is already disabled
+# if not, disable it
+if [ -z "$KDE_DEBUG" ] ; then
+  if [ "`getsebool deny_ptrace 2>/dev/null`" == 'deny_ptrace --> on' ] ; then
+    setsebool -P deny_ptrace off &> /dev/null || :
+  fi
+fi
+
 %postun -p /sbin/ldconfig
 
 %files -f plasmaworkspace5.lang
@@ -265,27 +279,28 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 %{_kf5_qtplugindir}/phonon_platform/kde.so
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
 %{_kf5_qmldir}/org/kde/*
-%{_libexecdir}/*
-%{_kf5_datadir}/ksmserver
-%{_kf5_datadir}/ksplash
-%{_kf5_datadir}/plasma/plasmoids
-%{_kf5_datadir}/plasma/services
-%{_kf5_datadir}/plasma/shareprovider
-%{_kf5_datadir}/plasma/wallpapers
-%{_kf5_datadir}/plasma/look-and-feel
-%{_kf5_datadir}/plasma/kcms
-%{_kf5_datadir}/solid
-%{_kf5_datadir}/kstyle
-%{_kf5_datadir}/drkonqi/debuggers/external/*
-%{_kf5_datadir}/drkonqi/debuggers/internal/*
-%{_kf5_datadir}/drkonqi/mappings
-%{_kf5_datadir}/drkonqi/pics/*.png
+%{_libexecdir}/drkonqi
+%{_libexecdir}/kcheckpass
+%{_libexecdir}/kscreenlocker_greet
+%{_libexecdir}/ksyncdbusenv
+%{_kf5_datadir}/ksmserver/
+%{_kf5_datadir}/ksplash/
+%{_kf5_datadir}/plasma/plasmoids/
+%{_kf5_datadir}/plasma/services/
+%{_kf5_datadir}/plasma/shareprovider/
+%{_kf5_datadir}/plasma/wallpapers/
+%{_kf5_datadir}/plasma/look-and-feel/
+%{_kf5_datadir}/plasma/kcms/
+%{_kf5_datadir}/solid/
+%{_kf5_datadir}/kstyle/
+%{_kf5_datadir}/drkonqi/
 %{_kf5_datadir}/kconf_update/*
 %{_sysconfdir}/xdg/*.knsrc
 %{_sysconfdir}/xdg/taskmanagerrulesrc
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/desktop-directories/*.directory
 %{_datadir}/dbus-1/services/*.service
+# move to -devel? -- rex
 %{_datadir}/dbus-1/interfaces/*.xml
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservices5/*.protocol
@@ -293,12 +308,12 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 %{_kf5_datadir}/kservicetypes5/*.desktop
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
-%{_datadir}/applications/*.desktop
-%{_datadir}/sddm/themes/breeze
+%{_datadir}/applications/org.kde.klipper.desktop
+%{_datadir}/applications/plasma-windowed.desktop
+%{_datadir}/sddm/themes/breeze/
 %{_datadir}/xsessions/plasma.desktop
-
 # PAM
-%config %{_sysconfdir}/pam.d/kde
+%config(noreplace) %{_sysconfdir}/pam.d/kde
 
 %files doc
 %lang(en) %{_docdir}/HTML/en/klipper/
@@ -310,11 +325,11 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 %{_libdir}/libplasma-geolocation-interface.so
 %{_libdir}/libkworkspace5.so
 %{_includedir}/*
-%{_libdir}/cmake/KRunnerAppDBusInterface
-%{_libdir}/cmake/KSMServerDBusInterface
-%{_libdir}/cmake/LibKWorkspace
-%{_libdir}/cmake/LibTaskManager
-%{_libdir}/cmake/ScreenSaverDBusInterface
+%{_libdir}/cmake/KRunnerAppDBusInterface/
+%{_libdir}/cmake/KSMServerDBusInterface/
+%{_libdir}/cmake/LibKWorkspace/
+%{_libdir}/cmake/LibTaskManager/
+%{_libdir}/cmake/ScreenSaverDBusInterface/
 
 # TODO split to subpackages
 # - KCM (?)
@@ -324,6 +339,12 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/{plasma-windowed,org
 
 
 %changelog
+* Thu Jul 09 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.3.2-3
+- .spec cosmetics
+- port selinux/drkonqi scriptlet (from kde-runtime)
+- own /usr/share/drkonqi/
+- %%config(noreplace) pam
+
 * Fri Jun 26 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.2-2
 - Make the Requires: plasmashell unversioned to break circular dependency during update
 
