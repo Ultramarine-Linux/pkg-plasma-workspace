@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -339,6 +339,9 @@ fi
 
 
 %changelog
+* Wed Jul 29 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.3.2-5
+- Rebuilt for https://fedoraproject.org/wiki/Changes/F23Boost159
+
 * Wed Jul 22 2015 David Tardon <dtardon@redhat.com> - 5.3.2-4
 - rebuild for Boost 1.58
 
