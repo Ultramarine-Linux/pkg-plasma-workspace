@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -164,6 +164,9 @@ Requires:       systemd
 
 # SysTray support for Qt 4 apps
 Requires:       sni-qt
+
+# kde(4) platform plugin
+Requires:       kde-platform-plugin
 
 # Oxygen
 Requires:       oxygen-icon-theme
@@ -339,6 +342,9 @@ fi
 
 
 %changelog
+* Fri Jul 31 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-6
+- Requires: kde-platform-plugin
+
 * Wed Jul 29 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.3.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Changes/F23Boost159
 
