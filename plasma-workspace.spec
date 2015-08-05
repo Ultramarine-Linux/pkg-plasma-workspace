@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -342,6 +342,9 @@ fi
 
 
 %changelog
+* Wed Aug 05 2015 Jonathan Wakely <jwakely@redhat.com> 5.3.2-7
+- Rebuilt for Boost 1.58
+
 * Fri Jul 31 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-6
 - Requires: kde-platform-plugin
 
