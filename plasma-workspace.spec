@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -209,6 +209,20 @@ BuildArch: noarch
 %description    doc
 Documentation and user manuals for %{name}.
 
+%package -n sddm-breeze
+Summary:        SDDM breeze theme
+# upgrade path, when sddm-breeze was split out
+Obsoletes: plasma-workspace < 5.3.2-8
+Requires:       kf5-plasma
+# QML imports:
+# org.kde.plasma.workspace.components
+# org.kde.plasma.workspace.keyboardlayout
+Requires:       %{name} = %{version}-%{release}
+# /usr/share/backgrounds/default.png
+Requires:       desktop-backgrounds-compat
+%description -n sddm-breeze
+%{summary}.
+
 
 %prep
 %setup -q
@@ -248,6 +262,12 @@ install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/kservices5/plasma-lookandfee
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/components/artwork/background.png
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/previews/{lockscreen.png,preview.png,splash.png}
 %endif
+
+# make fedora-breeze sddm theme variant.  FIXME/TODO: corrected preview screenshot
+cp -alf %{buildroot}%{_datadir}/sddm/themes/breeze/ \
+        %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora
+ln -sf  %{_datadir}/backgrounds/default.png \
+        %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
 
 # Make kcheckpass work
 install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -313,7 +333,6 @@ fi
 %{_kf5_datadir}/config.kcfg/*
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
-%{_datadir}/sddm/themes/breeze/
 %{_datadir}/xsessions/plasma.desktop
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
@@ -334,6 +353,10 @@ fi
 %{_libdir}/cmake/LibTaskManager/
 %{_libdir}/cmake/ScreenSaverDBusInterface/
 
+%files -n sddm-breeze
+%{_datadir}/sddm/themes/breeze/
+%{_datadir}/sddm/themes/01-breeze-fedora/
+
 # TODO split to subpackages
 # - KCM (?)
 # - plasmoids
@@ -342,6 +365,9 @@ fi
 
 
 %changelog
+* Thu Aug 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-8
+- sddm-breeze subpkg, userlist variant for bz #1250204
+
 * Wed Aug 05 2015 Jonathan Wakely <jwakely@redhat.com> 5.3.2-7
 - Rebuilt for Boost 1.58
 
