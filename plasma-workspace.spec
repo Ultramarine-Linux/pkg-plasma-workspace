@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -220,6 +220,7 @@ Requires:       kf5-plasma
 Requires:       %{name} = %{version}-%{release}
 # /usr/share/backgrounds/default.png
 Requires:       desktop-backgrounds-compat
+BuildArch: noarch
 %description -n sddm-breeze
 %{summary}.
 
@@ -365,6 +366,9 @@ fi
 
 
 %changelog
+* Thu Aug 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-9
+- make sddm-breeze noarch (#1250204)
+
 * Thu Aug 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-8
 - sddm-breeze subpkg, userlist variant for bz #1250204
 
