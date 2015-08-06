@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -21,13 +21,13 @@ Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{ve
 Source10:       kde
 # upstream startkde.kde, minus stuff we don't want or need, plus a minor bit of customization --rex
 Source11:       startkde.cmake
-# Desktop file for Fedora Twenty Two look-and-feel package
-Source12:       metadata.desktop
+# Desktop file for Fedora Twenty Two/Three look-and-feel package
+Source12:       twenty.two.desktop
+Source13:       twenty.three.desktop
 
 ## downstream Patches
 Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
-
 
 ## upstreamable Patches
 
@@ -256,12 +256,22 @@ chrpath --delete %{buildroot}/%{_kf5_qtplugindir}/phonon_platform/kde.so
 
 %if 0%{?fedora} > 21
 # Create Fedora Twenty Two look and feel package from the Breeze one
-cp -r %{buildroot}/%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.two}
+cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.two}
 install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/metadata.desktop
 install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/kservices5/plasma-lookandfeel-org.fedoraproject.fedora.twenty.two.desktop
 ## We need to remove original background which will be replaced by Fedora one from f22-kde-theme
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/components/artwork/background.png
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/previews/{lockscreen.png,preview.png,splash.png}
+%endif
+
+%if 0%{?fedora} > 22
+# Create Fedora Twenty Three look and feel package from the Breeze one
+cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.three}
+install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/metadata.desktop
+install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/kservices5/plasma-lookandfeel-org.fedoraproject.fedora.twenty.three.desktop
+## We need to remove original background which will be replaced by Fedora one from f22-kde-theme
+rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/components/artwork/background.png
+rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/previews/{lockscreen.png,preview.png,splash.png}
 %endif
 
 # make fedora-breeze sddm theme variant.  FIXME/TODO: corrected preview screenshot
@@ -366,6 +376,9 @@ fi
 
 
 %changelog
+* Thu Aug 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-10
+- prep fedora.twenty.three plasma theme
+
 * Thu Aug 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-9
 - make sddm-breeze noarch (#1250204)
 
