@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -156,8 +156,19 @@ Requires:       xorg-x11-utils
 Requires:       xorg-x11-server-utils
 
 Requires:       kde-settings-plasma
-%if 0%{?fedora} >= 22
+
+# Default look-and-feel theme
+%if 0%{?fedora} > 21
+Provides:       f22-kde-theme-core = %{versino}-%{release}
+%endif
+%if 0%{?fedora} == 22
 Requires:       f22-kde-theme >= 22.2
+%global default_lookandfeel org.fedoraproject.fedora.twenty.two
+%endif
+%if 0%{?fedora} > 22
+Provides:       f23-kde-theme-core = %{versino}-%{release}
+Requires:       f23-kde-theme
+%global default_lookandfeel org.fedoraproject.fedora.twenty.three
 %endif
 
 Requires:       systemd
@@ -231,6 +242,8 @@ BuildArch: noarch
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?fedora} > 21
 %patch11 -p1 -b .set-fedora-default-look-and-feel
+sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
+  shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 
 mv startkde/startkde.cmake startkde/startkde.cmake.orig
@@ -323,7 +336,14 @@ fi
 %{_kf5_datadir}/plasma/services/
 %{_kf5_datadir}/plasma/shareprovider/
 %{_kf5_datadir}/plasma/wallpapers/
-%{_kf5_datadir}/plasma/look-and-feel/
+%dir %{_kf5_datadir}/plasma/look-and-feel/
+%{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
+%if 0%{?fedora} > 21
+%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/
+%endif
+%if 0%{?fedora} > 22
+%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/
+%endif
 %{_kf5_datadir}/plasma/kcms/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
@@ -376,6 +396,10 @@ fi
 
 
 %changelog
+* Tue Aug 11 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.3.2-11
+- Provides: f23-kde-theme-core (and f22-kde-theme-core)
+- default_lookandfeel org.fedoraproject.fedora.twenty.three (f23+)
+
 * Thu Aug 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-10
 - prep fedora.twenty.three plasma theme
 
