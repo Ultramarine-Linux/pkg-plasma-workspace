@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -61,7 +61,6 @@ BuildRequires:  xcb-util-devel
 BuildRequires:  glib2-devel
 BuildRequires:  fontconfig-devel
 BuildRequires:  python-devel
-BuildRequires:  boost-devel
 #BuildRequires:  akonadi-qt5-devel
 #BuildRequires:  kdepimlibs-devel
 BuildRequires:  libusb-devel
@@ -396,6 +395,9 @@ fi
 
 
 %changelog
+* Thu Aug 13 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-12
+- drop BR: boost-devel (not used afaict)
+
 * Tue Aug 11 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.3.2-11
 - Provides: f23-kde-theme-core (and f22-kde-theme-core)
 - default_lookandfeel org.fedoraproject.fedora.twenty.three (f23+)
