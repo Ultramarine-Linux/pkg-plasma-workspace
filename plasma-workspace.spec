@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.3.2
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -158,14 +158,14 @@ Requires:       kde-settings-plasma
 
 # Default look-and-feel theme
 %if 0%{?fedora} > 21
-Provides:       f22-kde-theme-core = %{versino}-%{release}
+Provides:       f22-kde-theme-core = %{version}-%{release}
 %endif
 %if 0%{?fedora} == 22
 Requires:       f22-kde-theme >= 22.2
 %global default_lookandfeel org.fedoraproject.fedora.twenty.two
 %endif
 %if 0%{?fedora} > 22
-Provides:       f23-kde-theme-core = %{versino}-%{release}
+Provides:       f23-kde-theme-core = %{version}-%{release}
 Requires:       f23-kde-theme
 %global default_lookandfeel org.fedoraproject.fedora.twenty.three
 %endif
@@ -279,9 +279,9 @@ rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twe
 %if 0%{?fedora} > 22
 # Create Fedora Twenty Three look and feel package from the Breeze one
 cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.three}
-install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/metadata.desktop
-install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/kservices5/plasma-lookandfeel-org.fedoraproject.fedora.twenty.three.desktop
-## We need to remove original background which will be replaced by Fedora one from f22-kde-theme
+install -m 0644 %{SOURCE13} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/metadata.desktop
+install -m 0644 %{SOURCE13} %{buildroot}%{_datadir}/kservices5/plasma-lookandfeel-org.fedoraproject.fedora.twenty.three.desktop
+## We need to remove original background which will be replaced by Fedora one from f23-kde-theme
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/components/artwork/background.png
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/previews/{lockscreen.png,preview.png,splash.png}
 %endif
@@ -395,6 +395,9 @@ fi
 
 
 %changelog
+* Mon Aug 17 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.2-13
+- Fix broken F23 look'n'feel package
+
 * Thu Aug 13 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-12
 - drop BR: boost-devel (not used afaict)
 
