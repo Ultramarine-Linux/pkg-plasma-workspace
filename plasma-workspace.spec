@@ -381,6 +381,7 @@ fi
 %lang(en) %{_docdir}/HTML/en/klipper/
 %lang(ca) %{_docdir}/HTML/ca/klipper/
 %lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker
+%lang(ca) %{_docdir}/HTML/ca/kcontrol/screenlocker
 
 %files devel
 %{_libdir}/libweather_ion.so
