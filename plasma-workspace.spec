@@ -1,10 +1,10 @@
 # Enable bootstrap when building plasma-workspace on a new repo
 # or arch where there's no package that would provide plasmashell
-#define bootstrap 1
+%define bootstrap 1
 
 Name:           plasma-workspace
-Version:        5.3.2
-Release:        13%{?dist}
+Version:        5.4.0
+Release:        1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -19,8 +19,6 @@ Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{ve
 
 # This goes to PAM
 Source10:       kde
-# upstream startkde.kde, minus stuff we don't want or need, plus a minor bit of customization --rex
-Source11:       startkde.cmake
 # Desktop file for Fedora Twenty Two/Three look-and-feel package
 Source12:       twenty.two.desktop
 Source13:       twenty.three.desktop
@@ -28,6 +26,9 @@ Source13:       twenty.three.desktop
 ## downstream Patches
 Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
+# remove stuff we don't want or need, plus a minor bit of customization --rex
+Patch12:        startkde.patch
+
 
 ## upstreamable Patches
 
@@ -61,6 +62,7 @@ BuildRequires:  xcb-util-devel
 BuildRequires:  glib2-devel
 BuildRequires:  fontconfig-devel
 BuildRequires:  python-devel
+BuildRequires:  boost-devel
 #BuildRequires:  akonadi-qt5-devel
 #BuildRequires:  kdepimlibs-devel
 BuildRequires:  libusb-devel
@@ -72,6 +74,7 @@ BuildRequires:  pciutils-devel
 BuildRequires:  libraw1394-devel
 %endif
 BuildRequires:  gpsd-devel
+BuildRequires:  libqalculate-devel
 
 BuildRequires:  qt5-qtbase-devel
 BuildRequires:  qt5-qtx11extras-devel
@@ -135,6 +138,13 @@ Requires:       kf5-kglobalaccel >= 5.7
 Requires:       kf5-kxmlrpcclient >= 5.8
 Requires:       khotkeys
 
+# The new volume control for PulseAudio
+Requires:       plasma-pa
+
+# TODO: This should go into -wayland subpackage alongside with other
+# wayland integration stuff --dvratil
+Requires:       kwayland-integration
+
 # Without the platformtheme plugins we get broken fonts
 Requires:       kf5-frameworkintegration
 
@@ -190,7 +200,7 @@ Requires:        polkit-kde
 %if 0%{?bootstrap}
 Provides:       plasmashell = %{version}
 %else
-# Note: We should require >= %{version}, but that creates a circular dependency
+# Note: We should require >= %%{version}, but that creates a circular dependency
 # at build time of plasma-desktop, because it provides the needed dependency, but
 # also needs plasma-workspace to build. So for now the dependency is unversioned.
 Requires:       plasmashell
@@ -244,13 +254,10 @@ BuildArch: noarch
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
-
-mv startkde/startkde.cmake startkde/startkde.cmake.orig
-install -m644 -p %{SOURCE11} startkde/startkde.cmake
+%patch12 -p1 -b .startkde
 
 # omit conflicts with kf5-kxmlrpcclient-5.8
 rm -fv po/*/libkxmlrpcclient5.po
-
 
 %build
 mkdir %{_target_platform}
@@ -324,11 +331,13 @@ fi
 %{_kf5_qtplugindir}/*.so
 %{_kf5_qtplugindir}/phonon_platform/kde.so
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
+%{_kf5_plugindir}/kio/desktop.so
 %{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/drkonqi
 %{_libexecdir}/kcheckpass
 %{_libexecdir}/kscreenlocker_greet
 %{_libexecdir}/ksyncdbusenv
+%{_libexecdir}/startplasma
 %{_kf5_datadir}/ksmserver/
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
@@ -361,6 +370,7 @@ fi
 %{_kf5_datadir}/kservicetypes5/*.desktop
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
+%{_kf5_datadir}/kio_desktop/
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
@@ -370,6 +380,7 @@ fi
 %files doc
 %lang(en) %{_docdir}/HTML/en/klipper/
 %lang(ca) %{_docdir}/HTML/ca/klipper/
+%lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker
 
 %files devel
 %{_libdir}/libweather_ion.so
@@ -395,11 +406,14 @@ fi
 
 
 %changelog
-* Mon Aug 17 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.2-13
-- Fix broken F23 look'n'feel package
+* Fri Aug 21 2015 Daniel Vrátil <dvratil@redhat.com> - 5.4.0-1
+- Plasma 5.4.0
 
-* Thu Aug 13 2015 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-12
-- drop BR: boost-devel (not used afaict)
+* Thu Aug 20 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.95-4
+- use patch for startkde.cmake, remove redundant prison dependency
+
+* Thu Aug 13 2015 Daniel Vrátil <dvratil@redhat.com> - 5.3.95-1
+- Plasma 5.3.95
 
 * Tue Aug 11 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.3.2-11
 - Provides: f23-kde-theme-core (and f22-kde-theme-core)
@@ -618,7 +632,7 @@ fi
 
 * Tue May 20 2014 Daniel Vrátil <dvratil@redhat.com> - 4.96.0-6.20140519gita85f5bc
 - Add LIBEXEC_PATH to kde5 profile to fix drkonqi lookup
-- Fix install 
+- Fix install
 
 * Mon May 19 2014 Daniel Vrátil <dvratil@redhat.com> - 4.96.0-3.20140519gita85f5bc
 - Update to latest git snapshot
