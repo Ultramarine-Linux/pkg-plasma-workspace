@@ -4,7 +4,7 @@
 
 Name:           plasma-workspace
 Version:        5.4.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -139,13 +139,11 @@ Requires:       kf5-kxmlrpcclient >= 5.8
 Requires:       khotkeys
 
 # The new volume control for PulseAudio
-# FIXME: Re-enable when package is reviewed
-#Requires:       plasma-pa
+Requires:       plasma-pa
 
 # TODO: This should go into -wayland subpackage alongside with other
 # wayland integration stuff --dvratil
-# FIXME: Re-enable when package is reviewed
-#Requires:       kwayland-integration
+Requires:       kwayland-integration
 
 # Without the platformtheme plugins we get broken fonts
 Requires:       kf5-frameworkintegration
@@ -409,6 +407,9 @@ fi
 
 
 %changelog
+* Tue Aug 25 2015 Daniel Vrátil <dvratil@redhat.com> - 5.4.0-3
+- Re-enable plasma-pa and kwayland-integration dependencies
+
 * Sat Aug 22 2015 Daniel Vrátil <dvratil@redhat.com> - 5.4.0-2
 - Temporarily disable plasma-pa and kwayland-integration until the packages are reviewed
 
