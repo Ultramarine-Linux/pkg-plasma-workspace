@@ -1,10 +1,10 @@
 # Enable bootstrap when building plasma-workspace on a new repo
 # or arch where there's no package that would provide plasmashell
-%define bootstrap 1
+%define bootstrap 0
 
 Name:           plasma-workspace
 Version:        5.4.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -407,6 +407,9 @@ fi
 
 
 %changelog
+* Tue Aug 25 2015 Daniel Vrátil <dvratil@redhat.com> - 5.4.0-4
+- Disable bootstrap
+
 * Tue Aug 25 2015 Daniel Vrátil <dvratil@redhat.com> - 5.4.0-3
 - Re-enable plasma-pa and kwayland-integration dependencies
 
