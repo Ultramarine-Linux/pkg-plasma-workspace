@@ -1,10 +1,12 @@
-# Enable bootstrap when building plasma-workspace on a new repo
-# or arch where there's no package that would provide plasmashell
-%define bootstrap 0
+# Define (as 1) to enable bootstrap when building plasma-workspace on a new
+# repo or arch where there's no package that would provide plasmashell
+#define bootstrap 1
+
+%global kf5_version 5.13.0
 
 Name:           plasma-workspace
 Version:        5.4.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -28,7 +30,6 @@ Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
-
 
 ## upstreamable Patches
 
@@ -85,28 +86,28 @@ BuildRequires:  phonon-qt5-devel
 
 BuildRequires:  kf5-rpm-macros
 BuildRequires:  extra-cmake-modules
-BuildRequires:  kf5-plasma-devel
-BuildRequires:  kf5-kdoctools-devel
-BuildRequires:  kf5-krunner-devel
-BuildRequires:  kf5-kjsembed-devel
-BuildRequires:  kf5-knotifyconfig-devel
-BuildRequires:  kf5-kdesu-devel
-BuildRequires:  kf5-knewstuff-devel
-BuildRequires:  kf5-kwallet-devel
-BuildRequires:  kf5-kcmutils-devel
-BuildRequires:  kf5-kidletime-devel
-BuildRequires:  kf5-threadweaver-devel
-BuildRequires:  kf5-ktexteditor-devel
-BuildRequires:  kf5-kdeclarative-devel
-BuildRequires:  kf5-plasma-devel
-BuildRequires:  kf5-ktextwidgets-devel
-BuildRequires:  kf5-kdewebkit-devel
-BuildRequires:  kf5-kdelibs4support-devel
-BuildRequires:  kf5-kcrash-devel
-BuildRequires:  kf5-kglobalaccel-devel >= 5.7
-BuildRequires:  kf5-networkmanager-qt-devel
-BuildRequires:  kf5-kxmlrpcclient-devel
-BuildRequires:  kf5-kinit-devel >= 5.10.0-3
+BuildRequires:  kf5-kcmutils-devel >= %{kf5_version}
+BuildRequires:  kf5-kcrash-devel >= %{kf5_version}
+BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version}
+BuildRequires:  kf5-kdelibs4support-devel >= %{kf5_version}
+BuildRequires:  kf5-kdesu-devel >= %{kf5_version}
+BuildRequires:  kf5-kdewebkit-devel >= %{kf5_version}
+BuildRequires:  kf5-kdoctools-devel >= %{kf5_version}
+BuildRequires:  kf5-kglobalaccel-devel >= %{kf5_version}
+BuildRequires:  kf5-kidletime-devel >= %{kf5_version}
+BuildRequires:  kf5-kinit-devel >= %{kf5_version}
+BuildRequires:  kf5-kjsembed-devel >= %{kf5_version}
+BuildRequires:  kf5-knewstuff-devel >= %{kf5_version}
+BuildRequires:  kf5-knotifyconfig-devel >= %{kf5_version}
+BuildRequires:  kf5-krunner-devel >= %{kf5_version}
+BuildRequires:  kf5-ktexteditor-devel >= %{kf5_version}
+BuildRequires:  kf5-ktextwidgets-devel >= %{kf5_version}
+BuildRequires:  kf5-kwallet-devel >= %{kf5_version}
+BuildRequires:  kf5-kxmlrpcclient-devel >= %{kf5_version}
+BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version}
+BuildRequires:  kf5-plasma-devel >= %{kf5_version}
+BuildRequires:  kf5-plasma-devel >= %{kf5_version}
+BuildRequires:  kf5-threadweaver-devel >= %{kf5_version}
 
 BuildRequires:  kf5-ksysguard-devel
 BuildRequires:  kf5-kscreen-devel
@@ -407,6 +408,9 @@ fi
 
 
 %changelog
+* Wed Aug 26 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-5
+- versioned kf5-related build deps
+
 * Tue Aug 25 2015 Daniel Vrátil <dvratil@redhat.com> - 5.4.0-4
 - Disable bootstrap
 
