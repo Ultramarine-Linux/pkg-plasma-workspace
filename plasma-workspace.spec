@@ -6,7 +6,7 @@
 
 Name:           plasma-workspace
 Version:        5.4.0
-Release:        6%{?dist}
+Release:        6%{?dist}.1
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -140,7 +140,9 @@ Requires:       kf5-kxmlrpcclient >= 5.8
 Requires:       khotkeys
 
 # The new volume control for PulseAudio
+%if 0%{?fedora} > 22
 Requires:       plasma-pa
+%endif
 
 # TODO: This should go into -wayland subpackage alongside with other
 # wayland integration stuff --dvratil
@@ -408,6 +410,9 @@ fi
 
 
 %changelog
+* Wed Sep 02 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-6.1
+- make plasma-pa f23+ only
+
 * Tue Sep 01 2015 Daniel Vrátil <dvratil@redhat.com> - 5.4.0-6
 - Try rebuilding against new baloo
 
