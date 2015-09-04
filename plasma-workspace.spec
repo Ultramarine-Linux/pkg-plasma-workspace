@@ -6,7 +6,7 @@
 
 Name:           plasma-workspace
 Version:        5.4.0
-Release:        6%{?dist}.1
+Release:        7%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -124,6 +124,9 @@ BuildRequires:  desktop-file-utils
 
 # Optional
 BuildRequires:  kf5-kactivities-devel
+
+# when kded_desktopnotifier.so moved here
+Conflicts:      kio-extras < 5.4.0
 
 # for libkdeinit5_*
 %{?kf5_kinit_requires}
@@ -410,6 +413,9 @@ fi
 
 
 %changelog
+* Fri Sep 04 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-7
+- Conflicts: kio-extras < 5.4.0
+
 * Wed Sep 02 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-6.1
 - make plasma-pa f23+ only
 
