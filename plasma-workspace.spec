@@ -420,7 +420,7 @@ fi
 
 %changelog
 * Sat Sep 12 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-2
-- Requires: sddm-breeze, (hopefully) temporary workaround for dnf Obsoletes bug (#1260394)
+- Requires: sddm-breeze, (hopefully) temporary workaround for dnf Obsoletes bug (#1260394, f22)
 
 * Fri Sep 11 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-1
 - de-bootstrap
