@@ -6,7 +6,7 @@
 
 Name:           plasma-workspace
 Version:        5.4.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -215,6 +215,10 @@ Requires:       plasmashell
 # owner of setsebool
 Requires(post): policycoreutils
 
+# (hopefully temporary) workaround for dnf Obsoletes bug
+# https://bugzilla.redhat.com/show_bug.cgi?id=1260394
+Requires: sddm-breeze = %{version}-%{release}
+
 %description
 Plasma 5 libraries and runtime components
 
@@ -413,6 +417,9 @@ fi
 
 
 %changelog
+* Sat Sep 12 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-2
+- Requires: sddm-breeze, (hopefully) temporary workaround for dnf Obsoletes bug (#1260394)
+
 * Fri Sep 11 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-1
 - de-bootstrap
 
