@@ -6,7 +6,7 @@
 
 Name:           plasma-workspace
 Version:        5.4.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -86,6 +86,7 @@ BuildRequires:  phonon-qt5-devel
 
 BuildRequires:  kf5-rpm-macros
 BuildRequires:  extra-cmake-modules
+BuildRequires:  kf5-baloo-devel >= %{kf5_version}
 BuildRequires:  kf5-kcmutils-devel >= %{kf5_version}
 BuildRequires:  kf5-kcrash-devel >= %{kf5_version}
 BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version}
@@ -109,11 +110,9 @@ BuildRequires:  kf5-plasma-devel >= %{kf5_version}
 BuildRequires:  kf5-plasma-devel >= %{kf5_version}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version}
 
-BuildRequires:  kf5-ksysguard-devel
-BuildRequires:  kf5-kscreen-devel
-BuildRequires:  kf5-baloo-devel
-
-BuildRequires:  kf5-kwayland-devel
+BuildRequires:  kf5-ksysguard-devel >= %{version}
+BuildRequires:  kf5-kscreen-devel >= %{version}
+BuildRequires:  kf5-kwayland-devel >= %{version}
 BuildRequires:  libwayland-client-devel >= 1.3.0
 BuildRequires:  libwayland-server-devel >= 1.3.0
 
@@ -419,6 +418,9 @@ fi
 
 
 %changelog
+* Sat Sep 12 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-3
+- tighten build deps
+
 * Sat Sep 12 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-2
 - Requires: sddm-breeze, (hopefully) temporary workaround for dnf Obsoletes bug (#1260394, f22)
 
