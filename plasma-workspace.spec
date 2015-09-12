@@ -215,9 +215,11 @@ Requires:       plasmashell
 # owner of setsebool
 Requires(post): policycoreutils
 
+%if 0%{?fedora} < 23
 # (hopefully temporary) workaround for dnf Obsoletes bug
 # https://bugzilla.redhat.com/show_bug.cgi?id=1260394
 Requires: sddm-breeze = %{version}-%{release}
+%endif
 
 %description
 Plasma 5 libraries and runtime components
