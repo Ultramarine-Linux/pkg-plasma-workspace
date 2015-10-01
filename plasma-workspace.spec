@@ -1,12 +1,12 @@
 # Define (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
-%define bootstrap 1
+#define bootstrap 1
 
 %global kf5_version 5.13.0
 
 Name:           plasma-workspace
 Version:        5.4.1
-Release:        3%{?dist}.1
+Release:        3%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
