@@ -5,8 +5,8 @@
 %global kf5_version 5.13.0
 
 Name:           plasma-workspace
-Version:        5.4.1
-Release:        3%{?dist}
+Version: 5.4.2
+Release: 1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -18,6 +18,8 @@ URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
 %global stable stable
 %endif
 Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
+
+%global majmin_ver %(echo %{version} | cut -d. -f1,2)
 
 # This goes to PAM
 Source10:       kde
@@ -137,9 +139,8 @@ Requires:       qt5-qtgraphicaleffects
 Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
-# for translations mostly, can drop for plasma-5.3 (#1208947) -- rex
-Requires:       kf5-kxmlrpcclient >= 5.8
-Requires:       khotkeys
+Requires:       kf5-kxmlrpcclient
+Requires:       khotkeys >= %{version}
 
 # The new volume control for PulseAudio
 %if 0%{?fedora} > 22
@@ -208,17 +209,15 @@ Provides:       plasmashell = %{version}
 # Note: We should require >= %%{version}, but that creates a circular dependency
 # at build time of plasma-desktop, because it provides the needed dependency, but
 # also needs plasma-workspace to build. So for now the dependency is unversioned.
-Requires:       plasmashell
+Requires:       plasmashell >= %{majmin_ver}
 %endif
 
 # owner of setsebool
 Requires(post): policycoreutils
 
-%if 0%{?fedora} < 23
 # (hopefully temporary) workaround for dnf Obsoletes bug
 # https://bugzilla.redhat.com/show_bug.cgi?id=1260394
 Requires: sddm-breeze = %{version}-%{release}
-%endif
 
 %description
 Plasma 5 libraries and runtime components
@@ -267,8 +266,6 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 %patch12 -p1 -b .startkde
 
-# omit conflicts with kf5-kxmlrpcclient-5.8
-rm -fv po/*/libkxmlrpcclient5.po
 
 %build
 mkdir %{_target_platform}
@@ -418,6 +415,18 @@ fi
 
 
 %changelog
+* Thu Oct 01 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-1
+- 5.4.2
+
+* Thu Oct 01 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-6
+- try tightened plasmashell dep (loosened in plasma-desktop)
+
+* Fri Sep 25 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-5
+- relax kf5-kxmlrpcclient dep (and drop related hacks), tighten khotkeys
+
+* Tue Sep 15 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-4
+- Requires: sddm-breeze unconditionally (#1260394)
+
 * Sat Sep 12 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-3
 - tighten build deps
 
