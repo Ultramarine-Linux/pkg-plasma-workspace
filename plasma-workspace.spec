@@ -6,7 +6,7 @@
 
 Name:           plasma-workspace
 Version:        5.4.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -18,6 +18,8 @@ URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
 %global stable stable
 %endif
 Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
+
+%global majmin_ver %(echo %{version} | cut -d. -f1,2)
 
 # This goes to PAM
 Source10:       kde
@@ -207,7 +209,7 @@ Provides:       plasmashell = %{version}
 # Note: We should require >= %%{version}, but that creates a circular dependency
 # at build time of plasma-desktop, because it provides the needed dependency, but
 # also needs plasma-workspace to build. So for now the dependency is unversioned.
-Requires:       plasmashell
+Requires:       plasmashell >= %{majmin_ver}
 %endif
 
 # owner of setsebool
@@ -413,6 +415,9 @@ fi
 
 
 %changelog
+* Thu Oct 01 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-6
+- try tightened plasmashell dep (loosened in plasma-desktop)
+
 * Fri Sep 25 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-5
 - relax kf5-kxmlrpcclient dep (and drop related hacks), tighten khotkeys
 
