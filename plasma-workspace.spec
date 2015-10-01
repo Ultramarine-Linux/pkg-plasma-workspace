@@ -5,8 +5,8 @@
 %global kf5_version 5.13.0
 
 Name:           plasma-workspace
-Version:        5.4.1
-Release:        6%{?dist}
+Version: 5.4.2
+Release: 1%{?dist}
 Summary:        Plasma workspace, applications and applets
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -415,6 +415,9 @@ fi
 
 
 %changelog
+* Thu Oct 01 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-1
+- 5.4.2
+
 * Thu Oct 01 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.1-6
 - try tightened plasmashell dep (loosened in plasma-desktop)
 
