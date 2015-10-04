@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -154,7 +154,7 @@ Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
 Requires:       kf5-kxmlrpcclient
-Requires:       khotkeys >= %{version}
+Requires:       khotkeys >= %{majmin_ver}
 
 # The new volume control for PulseAudio
 %if 0%{?fedora} > 22
@@ -163,7 +163,7 @@ Requires:       plasma-pa
 
 # TODO: This should go into -wayland subpackage alongside with other
 # wayland integration stuff --dvratil
-Requires:       kwayland-integration
+Requires:       kwayland-integration >= %{majmin_ver}
 
 # Without the platformtheme plugins we get broken fonts
 Requires:       kf5-frameworkintegration
@@ -210,8 +210,8 @@ Requires:       kde-platform-plugin
 
 # Oxygen
 Requires:       oxygen-icon-theme
-Requires:       oxygen-sound-theme
-Requires:       oxygen-fonts
+Requires:       oxygen-sound-theme >= %{majmin_ver}
+Requires:       oxygen-fonts >= %{majmin_ver}
 
 # PolicyKit authentication agent
 Requires:        polkit-kde
@@ -531,6 +531,9 @@ fi
 
 
 %changelog
+* Sun Oct 04 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-3
+- consistently use %%{majmin_ver} macro for other plasma5-related deps
+
 * Sat Oct 03 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-2
 - .spec cosmetics, use %%license
 - -common, -drkonqi, -libs, libkworkspace5 subpkgs
