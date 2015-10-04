@@ -131,11 +131,10 @@ BuildRequires:  kf5-kactivities-devel
 # when kded_desktopnotifier.so moved here
 Conflicts:      kio-extras < 5.4.0
 
-%if 0%{?fedora} > 22
+%if 0%{?fedora} > 21
 Recommends:     %{name}-drkonqi = %{version}-%{release}
 Recommends:     %{name}-geolocation = %{version}-%{release}
 %else
-# consider dropping hard dep at some point? -- rex
 Requires:       %{name}-drkonqi = %{version}-%{release}
 Requires:       %{name}-geolocation = %{version}-%{release}
 %endif
