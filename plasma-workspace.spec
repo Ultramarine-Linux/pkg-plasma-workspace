@@ -4,12 +4,13 @@
 
 %global kf5_version 5.13.0
 
-Name:           plasma-workspace
+Name:    plasma-workspace
+Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 1%{?dist}
-Summary:        Plasma workspace, applications and applets
-License:        GPLv2+
-URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
+Release: 2%{?dist}
+
+License: GPLv2+
+URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
 
 %global revision %(echo %{version} | cut -d. -f3)
 %if %{revision} >= 50
@@ -17,7 +18,7 @@ URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
 %else
 %global stable stable
 %endif
-Source0:        http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
+Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
 
 %global majmin_ver %(echo %{version} | cut -d. -f1,2)
 
@@ -34,6 +35,7 @@ Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 Patch12:        startkde.patch
 
 ## upstreamable Patches
+Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
 
@@ -129,6 +131,19 @@ BuildRequires:  kf5-kactivities-devel
 # when kded_desktopnotifier.so moved here
 Conflicts:      kio-extras < 5.4.0
 
+%if 0%{?fedora} > 22
+Recommends:     %{name}-drkonqi = %{version}-%{release}
+Recommends:     %{name}-geolocation = %{version}-%{release}
+%else
+# consider dropping hard dep at some point? -- rex
+Requires:       %{name}-drkonqi = %{version}-%{release}
+Requires:       %{name}-geolocation = %{version}-%{release}
+%endif
+
+Requires:       %{name}-common = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
+
 # for libkdeinit5_*
 %{?kf5_kinit_requires}
 Requires:       kf5-kactivities
@@ -212,8 +227,8 @@ Provides:       plasmashell = %{version}
 Requires:       plasmashell >= %{majmin_ver}
 %endif
 
-# owner of setsebool
-Requires(post): policycoreutils
+# when -common, libkworkspace5 was split out
+Obsoletes:      plasma-workspace < 5.4.2-2
 
 # (hopefully temporary) workaround for dnf Obsoletes bug
 # https://bugzilla.redhat.com/show_bug.cgi?id=1260394
@@ -222,22 +237,74 @@ Requires: sddm-breeze = %{version}-%{release}
 %description
 Plasma 5 libraries and runtime components
 
+%package common
+Summary: Common files for %{name}
+%description common
+%{name}.
+
+%package -n libkworkspace5
+Summary: Runtime libkworkspace5 library
+# when spilt occurred
+Obsoletes: plasma-workspace < 5.4.2-2
+Requires:  %{name}-common = %{version}-%{release}
+%description -n libkworkspace5
+%{summary}.
+
+%package libs
+Summary: Runtime libraries for %{name}
+# when split out
+Obsoletes: plasma-workspace < 5.4.2-2
+## omit dep on main pkg for now, means we can avoid pulling in a
+## huge amount of deps (including kde4) into buildroot -- rex
+#Requires:  %{name}%{?_isa} = %{version}-%{release}
+Requires:  %{name}-common = %{version}-%{release}
+%description libs
+%{summary}.
 
 %package        devel
 Summary:        Development files for %{name}
-Requires:       %{name}%{?_isa} = %{version}-%{release}
-
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
 %description    devel
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %package        doc
 Summary:        Documentation and user manuals for %{name}
+License:        GFDL
 # switch to noarch
-Obsoletes: plasma-workspace-doc < 5.3.1-2
+Obsoletes:      plasma-workspace-doc < 5.3.1-2
+Requires:       %{name}-common = %{version}-%{release}
 BuildArch: noarch
 %description    doc
 Documentation and user manuals for %{name}.
+
+%package drkonqi
+Summary: DrKonqi KDE crash handler
+# when split out
+Obsoletes: plasma-workspace < 5.4.2-2
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-common = %{version}-%{release}
+Requires: polkit
+# owner of setsebool
+Requires(post): policycoreutils
+%description drkonqi
+%{summary}.
+
+%package geolocation
+Summary: Plasma5 geolocation components
+# when split out
+Obsoletes: plasma-workspace < 5.4.2-2
+Requires: %{name}-geolocation-libs%{?_isa} = %{version}-%{release}
+%description geolocation
+%{summary}.
+
+%package geolocation-libs
+Summary: Plasma5 geolocation runtime libraries
+Requires: %{name}-common = %{version}-%{release}
+Requires: %{name}-geolocation = %{version}-%{release}
+%description geolocation-libs
+%{summary}.
 
 %package -n sddm-breeze
 Summary:        SDDM breeze theme
@@ -258,6 +325,7 @@ BuildArch: noarch
 %prep
 %setup -q
 
+%patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?fedora} > 21
 %patch11 -p1 -b .set-fedora-default-look-and-feel
@@ -279,7 +347,7 @@ make %{?_smp_mflags} -C %{_target_platform}
 %install
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
-chrpath --delete %{buildroot}/%{_kf5_qtplugindir}/phonon_platform/kde.so
+chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 
 %if 0%{?fedora} > 21
 # Create Fedora Twenty Two look and feel package from the Breeze one
@@ -309,30 +377,29 @@ ln -sf  %{_datadir}/backgrounds/default.png \
 
 # Make kcheckpass work
 install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
-%find_lang plasmaworkspace5 --with-qt --with-kde --all-name
+
+# installdbgsymbols script
+install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
+  %{buildroot}%{_libexecdir}/installdbgsymbols.sh
+
+%find_lang all --with-qt --all-name
+grep drkonqi.mo all.lang > drkonqi.lang
+grep libkworkspace.mo all.lang > libkworkspace5.lang
+grep libtaskmanager.mo all.lang > libs.lang
+# any translations not used elsewhere, include in main pkg
+cat *.lang | uniq -u > %{name}.lang
 
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.kde.klipper}.desktop
 
 
-%post
-/sbin/ldconfig
-# make DrKonqi work by default by taming SELinux enough (suggested by dwalsh)
-# if KDE_DEBUG is set, DrKonqi is disabled, so do nothing
-# if it is unset (or empty), check if deny_ptrace is already disabled
-# if not, disable it
-if [ -z "$KDE_DEBUG" ] ; then
-  if [ "`getsebool deny_ptrace 2>/dev/null`" == 'deny_ptrace --> on' ] ; then
-    setsebool -P deny_ptrace off &> /dev/null || :
-  fi
-fi
+%files common
+%license COPYING
+%license COPYING.LIB
 
-%postun -p /sbin/ldconfig
-
-%files -f plasmaworkspace5.lang
+%files -f %{name}.lang
 %{_kf5_bindir}/*
-%{_kf5_libdir}/*.so.*
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qtplugindir}/plasma/dataengine/*.so
 %{_kf5_qtplugindir}/plasma/packagestructure/*.so
@@ -341,7 +408,6 @@ fi
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
 %{_kf5_plugindir}/kio/desktop.so
 %{_kf5_qmldir}/org/kde/*
-%{_libexecdir}/drkonqi
 %{_libexecdir}/kcheckpass
 %{_libexecdir}/kscreenlocker_greet
 %{_libexecdir}/ksyncdbusenv
@@ -363,15 +429,11 @@ fi
 %{_kf5_datadir}/plasma/kcms/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
-%{_kf5_datadir}/drkonqi/
 %{_kf5_datadir}/kconf_update/*
 %{_sysconfdir}/xdg/*.knsrc
-%{_sysconfdir}/xdg/taskmanagerrulesrc
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/desktop-directories/*.directory
 %{_datadir}/dbus-1/services/*.service
-# move to -devel? -- rex
-%{_datadir}/dbus-1/interfaces/*.xml
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservices5/*.protocol
 %{_kf5_datadir}/kservices5/kded/*.desktop
@@ -384,37 +446,98 @@ fi
 %{_datadir}/xsessions/plasma.desktop
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
+%exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
+%exclude %{_kf5_qtplugindir}/plasma-geolocation-ip.so
+%exclude %{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
+%exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
+%exclude %{_kf5_datadir}/kservices5/plasma-geolocation-gps.desktop
+%exclude %{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
+%exclude %{_kf5_datadir}/kservicetypes5/plasma-geolocationprovider.desktop
 
 %files doc
+%license COPYING.DOC
 %lang(en) %{_docdir}/HTML/en/klipper/
 %lang(ca) %{_docdir}/HTML/ca/klipper/
 %lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker
 %lang(ca) %{_docdir}/HTML/ca/kcontrol/screenlocker
+
+%post -n libkworkspace5 -p /sbin/ldconfig
+%postun -n libkworkspace5 -p /sbin/ldconfig
+
+%files -n libkworkspace5 -f libkworkspace5.lang
+%{_libdir}/libkworkspace5.so.5*
+
+%post libs -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
+
+%files libs -f libs.lang
+%{_sysconfdir}/xdg/taskmanagerrulesrc
+%{_libdir}/libtaskmanager.so.5*
+%{_libdir}/libweather_ion.so.7*
+
+%files geolocation
+%{_kf5_qtplugindir}/plasma-geolocation-gps.so
+%{_kf5_qtplugindir}/plasma-geolocation-ip.so
+%{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
+%{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
+%{_kf5_datadir}/kservices5/plasma-geolocation-gps.desktop
+%{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
+%{_kf5_datadir}/kservicetypes5/plasma-geolocationprovider.desktop
+
+%post geolocation-libs -p /sbin/ldconfig
+%postun geolocation-libs -p /sbin/ldconfig
+
+%files geolocation-libs
+%{_libdir}/libplasma-geolocation-interface.so.5*
 
 %files devel
 %{_libdir}/libweather_ion.so
 %{_libdir}/libtaskmanager.so
 %{_libdir}/libplasma-geolocation-interface.so
 %{_libdir}/libkworkspace5.so
-%{_includedir}/*
+%dir %{_includedir}/KDE
+%dir %{_includedir}/KDE/Plasma/
+%{_includedir}/KDE/Plasma/Weather/
+%dir %{_includedir}/plasma/
+%{_includedir}/plasma/weather/
+%{_includedir}/kworkspace5/
+%{_includedir}/plasma/geolocation/
+%{_includedir}/taskmanager/
 %{_libdir}/cmake/KRunnerAppDBusInterface/
 %{_libdir}/cmake/KSMServerDBusInterface/
 %{_libdir}/cmake/LibKWorkspace/
 %{_libdir}/cmake/LibTaskManager/
 %{_libdir}/cmake/ScreenSaverDBusInterface/
+%{_datadir}/dbus-1/interfaces/*.xml
+
+%post drkonqi
+# make DrKonqi work by default by taming SELinux enough (suggested by dwalsh)
+# if KDE_DEBUG is set, DrKonqi is disabled, so do nothing
+# if it is unset (or empty), check if deny_ptrace is already disabled
+# if not, disable it
+if [ -z "$KDE_DEBUG" ] ; then
+  if [ "`getsebool deny_ptrace 2>/dev/null`" == 'deny_ptrace --> on' ] ; then
+    setsebool -P deny_ptrace off &> /dev/null || :
+  fi
+fi
+
+%files drkonqi -f drkonqi.lang
+%{_libexecdir}/drkonqi
+%{_kf5_datadir}/drkonqi/
+%{_libexecdir}/installdbgsymbols.sh
 
 %files -n sddm-breeze
 %{_datadir}/sddm/themes/breeze/
 %{_datadir}/sddm/themes/01-breeze-fedora/
 
-# TODO split to subpackages
-# - KCM (?)
-# - plasmoids
-# - icons
-# - individual tools
-
 
 %changelog
+* Sat Oct 03 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-2
+- .spec cosmetics, use %%license
+- -common, -drkonqi, -libs, libkworkspace5 subpkgs
+- -geolocation subpkg (#1222097)
+- -drkonqi: include installdbgsymbols.sh
+
 * Thu Oct 01 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-1
 - 5.4.2
 
