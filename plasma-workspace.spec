@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -531,6 +531,9 @@ fi
 
 
 %changelog
+* Mon Oct 05 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-4
+- startkde: don't try to source things in a subshell, don't munge XDG_DATA_DIRS needlessly
+
 * Sun Oct 04 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-3
 - consistently use %%{majmin_ver} macro for other plasma5-related deps
 
