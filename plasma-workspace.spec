@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -535,6 +535,9 @@ fi
 
 
 %changelog
+* Wed Oct 14 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-6
+- rev startkde.patch drop dbus launch (kde#352251)
+
 * Mon Oct 12 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-5
 - Obsoletes: kde-runtime-kuiserver (#1249157), Provides: kuiserver
 
