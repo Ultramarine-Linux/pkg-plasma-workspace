@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 4%{?dist}
+Release: 6%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -228,6 +228,10 @@ Requires:       plasmashell >= %{majmin_ver}
 
 # when -common, libkworkspace5 was split out
 Obsoletes:      plasma-workspace < 5.4.2-2
+
+# deprecate/replace kde-runtime-kuiserver, http://bugzilla.redhat.com/1249157
+Obsoletes:      kde-runtime-kuiserver < 1:15.08.2
+Provides:       kuiserver = %{version}-%{release}
 
 # (hopefully temporary) workaround for dnf Obsoletes bug
 # https://bugzilla.redhat.com/show_bug.cgi?id=1260394
@@ -531,6 +535,12 @@ fi
 
 
 %changelog
+* Wed Oct 14 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-6
+- rev startkde.patch drop dbus launch (kde#352251)
+
+* Mon Oct 12 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-5
+- Obsoletes: kde-runtime-kuiserver (#1249157), Provides: kuiserver
+
 * Mon Oct 05 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-4
 - startkde: don't try to source things in a subshell, don't munge XDG_DATA_DIRS needlessly
 

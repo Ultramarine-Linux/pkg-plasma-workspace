@@ -1,6 +1,6 @@
 diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspace-5.4.2/startkde/startkde.cmake
 --- plasma-workspace-5.4.2/startkde/startkde.cmake.startkde	2015-10-01 04:56:51.000000000 -0500
-+++ plasma-workspace-5.4.2/startkde/startkde.cmake	2015-10-05 14:34:56.350411466 -0500
++++ plasma-workspace-5.4.2/startkde/startkde.cmake	2015-10-14 11:31:39.255088978 -0500
 @@ -16,25 +16,22 @@ trap 'echo GOT SIGHUP' HUP
  # we have to unset this for Darwin since it will screw up KDE's dynamic-loading
  unset DYLD_FORCE_FLAT_NAMESPACE
@@ -146,7 +146,7 @@ diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspac
  # Set a left cursor instead of the standard X11 "X" cursor, since I've heard
  # from some users that they're confused and don't know what to do. This is
  # especially necessary on slow machines, where starting KDE takes one or two
-@@ -262,26 +174,8 @@ xset fp rehash
+@@ -262,37 +174,15 @@ xset fp rehash
  #
  xsetroot -cursor_name left_ptr
  
@@ -171,9 +171,12 @@ diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspac
 -export XDG_DATA_DIRS
 -
  # Make sure that D-Bus is running
- # D-Bus autolaunch is broken
- if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
-@@ -292,7 +186,7 @@ if $qdbus >/dev/null 2>/dev/null; then
+-# D-Bus autolaunch is broken
+-if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
+-    eval `dbus-launch --sh-syntax --exit-with-session`
+-fi
+ if $qdbus >/dev/null 2>/dev/null; then
+     : # ok
  else
      echo 'startkde: Could not start D-Bus. Can you call qdbus?'  1>&2
      test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
@@ -182,7 +185,7 @@ diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspac
      exit 1
  fi
  
-@@ -348,18 +242,16 @@ if test $? -ne 0; then
+@@ -348,18 +238,16 @@ if test $? -ne 0; then
    # Startup error
    echo 'startkde: Could not sync environment to dbus.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
@@ -204,7 +207,7 @@ diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspac
    exit 1
  fi
  
-@@ -383,7 +275,7 @@ if test $? -eq 255; then
+@@ -383,7 +271,7 @@ if test $? -eq 255; then
    # Startup error
    echo 'startkde: Could not start ksmserver. Check your installation.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
