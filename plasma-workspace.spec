@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -33,6 +33,7 @@ Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
+Patch13:        plasma-workspace-5.4.2-prison-qt5.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
@@ -80,6 +81,7 @@ BuildRequires:  libraw1394-devel
 %endif
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
+BuildRequires:  prison-qt5-devel
 
 BuildRequires:  qt5-qtbase-devel
 BuildRequires:  qt5-qtx11extras-devel
@@ -336,6 +338,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch12 -p1 -b .startkde
+%patch13 -p1 -b .prison-qt5
 
 
 %build
@@ -535,6 +538,9 @@ fi
 
 
 %changelog
+* Tue Oct 20 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-7
+- klipper: prison (qrcode) support
+
 * Wed Oct 14 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-6
 - rev startkde.patch drop dbus launch (kde#352251)
 
