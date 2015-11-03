@@ -4,10 +4,14 @@
 
 %global kf5_version 5.13.0
 
+%if 0%{?fedora} > 23
+%global prison 1
+%endif
+
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 6%{?dist}
+Release: 8%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -33,6 +37,7 @@ Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
+Patch13:        plasma-workspace-5.4.2-prison-qt5.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
@@ -40,6 +45,7 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 ## upstream Patches
 
 ## master branch Patches
+Patch100: 0001-Proxy-Xembed-icons-to-SNI.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -80,6 +86,9 @@ BuildRequires:  libraw1394-devel
 %endif
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
+%if 0%{?prison}
+BuildRequires:  prison-qt5-devel
+%endif
 
 BuildRequires:  qt5-qtbase-devel
 BuildRequires:  qt5-qtx11extras-devel
@@ -336,6 +345,11 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch12 -p1 -b .startkde
+%if 0%{?prison}
+%patch13 -p1 -b .prison-qt5
+%endif
+
+%patch100 -p1 -b .sni_proxy
 
 
 %build
@@ -402,7 +416,22 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %license COPYING.LIB
 
 %files -f %{name}.lang
-%{_kf5_bindir}/*
+%{_kf5_bindir}/kcheckrunning
+%{_kf5_bindir}/kcminit
+%{_kf5_bindir}/kcminit_startup
+%{_kf5_bindir}/kdostartupconfig5
+%{_kf5_bindir}/klipper
+%{_kf5_bindir}/krunner
+%{_kf5_bindir}/ksmserver
+%{_kf5_bindir}/ksplashqml
+%{_kf5_bindir}/kstartupconfig5
+%{_kf5_bindir}/kuiserver5
+%{_kf5_bindir}/plasmashell
+%{_kf5_bindir}/plasmawindowed
+%{_kf5_bindir}/startkde
+%{_kf5_bindir}/startplasmacompositor
+%{_kf5_bindir}/systemmonitor
+%{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qtplugindir}/plasma/dataengine/*.so
 %{_kf5_qtplugindir}/plasma/packagestructure/*.so
@@ -535,6 +564,13 @@ fi
 
 
 %changelog
+* Tue Nov 03 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-8
+- make klipper/prison support f24+ only (for now)
+- backport xembed-sni-proxy
+
+* Tue Oct 20 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-7
+- klipper: prison (qrcode) support
+
 * Wed Oct 14 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-6
 - rev startkde.patch drop dbus launch (kde#352251)
 
