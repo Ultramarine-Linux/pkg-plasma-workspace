@@ -416,22 +416,22 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %license COPYING.LIB
 
 %files -f %{name}.lang
-%{kf5_bindir}/kcheckrunning
-%{kf5_bindir}/kcminit
-%{kf5_bindir}/kcminit_startup
-%{kf5_bindir}/kdostartupconfig5
-%{kf5_bindir}/klipper
-%{kf5_bindir}/krunner
-%{kf5_bindir}/ksmserver
-%{kf5_bindir}/ksplashqml
-%{kf5_bindir}/kstartupconfig5
-%{kf5_bindir}/kuiserver5
-%{kf5_bindir}/plasmashell
-%{kf5_bindir}/plasmawindowed
-%{kf5_bindir}/startkde
-%{kf5_bindir}/startplasmacompositor
-%{kf5_bindir}/systemmonitor
-%{kf5_bindir}/xembedsniproxy
+%{_kf5_bindir}/kcheckrunning
+%{_kf5_bindir}/kcminit
+%{_kf5_bindir}/kcminit_startup
+%{_kf5_bindir}/kdostartupconfig5
+%{_kf5_bindir}/klipper
+%{_kf5_bindir}/krunner
+%{_kf5_bindir}/ksmserver
+%{_kf5_bindir}/ksplashqml
+%{_kf5_bindir}/kstartupconfig5
+%{_kf5_bindir}/kuiserver5
+%{_kf5_bindir}/plasmashell
+%{_kf5_bindir}/plasmawindowed
+%{_kf5_bindir}/startkde
+%{_kf5_bindir}/startplasmacompositor
+%{_kf5_bindir}/systemmonitor
+%{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qtplugindir}/plasma/dataengine/*.so
 %{_kf5_qtplugindir}/plasma/packagestructure/*.so
