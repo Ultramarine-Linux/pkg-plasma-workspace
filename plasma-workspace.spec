@@ -4,10 +4,14 @@
 
 %global kf5_version 5.13.0
 
+%if 0%{?fedora} > 23
+%global prison 1
+%endif
+
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.2
-Release: 7%{?dist}
+Release: 8%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -41,6 +45,7 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 ## upstream Patches
 
 ## master branch Patches
+Patch100: 0001-Proxy-Xembed-icons-to-SNI.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -81,7 +86,9 @@ BuildRequires:  libraw1394-devel
 %endif
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
+%if 0%{?prison}
 BuildRequires:  prison-qt5-devel
+%endif
 
 BuildRequires:  qt5-qtbase-devel
 BuildRequires:  qt5-qtx11extras-devel
@@ -338,7 +345,11 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch12 -p1 -b .startkde
+%if 0%{?prison}
 %patch13 -p1 -b .prison-qt5
+%endif
+
+%patch100 -p1 -b .sni_proxy
 
 
 %build
@@ -405,7 +416,22 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %license COPYING.LIB
 
 %files -f %{name}.lang
-%{_kf5_bindir}/*
+%{kf5_bindir}/kcheckrunning
+%{kf5_bindir}/kcminit
+%{kf5_bindir}/kcminit_startup
+%{kf5_bindir}/kdostartupconfig5
+%{kf5_bindir}/klipper
+%{kf5_bindir}/krunner
+%{kf5_bindir}/ksmserver
+%{kf5_bindir}/ksplashqml
+%{kf5_bindir}/kstartupconfig5
+%{kf5_bindir}/kuiserver5
+%{kf5_bindir}/plasmashell
+%{kf5_bindir}/plasmawindowed
+%{kf5_bindir}/startkde
+%{kf5_bindir}/startplasmacompositor
+%{kf5_bindir}/systemmonitor
+%{kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qtplugindir}/plasma/dataengine/*.so
 %{_kf5_qtplugindir}/plasma/packagestructure/*.so
@@ -538,6 +564,10 @@ fi
 
 
 %changelog
+* Tue Nov 03 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-8
+- make klipper/prison support f24+ only (for now)
+- backport xembed-sni-proxy
+
 * Tue Oct 20 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-7
 - klipper: prison (qrcode) support
 
