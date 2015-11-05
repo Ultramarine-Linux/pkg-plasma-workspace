@@ -10,8 +10,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.4.2
-Release: 8%{?dist}
+Version: 5.4.3
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -564,6 +564,9 @@ fi
 
 
 %changelog
+* Thu Nov 05 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.4.3-1
+- Plasma 5.4.3
+
 * Tue Nov 03 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-8
 - make klipper/prison support f24+ only (for now)
 - backport xembed-sni-proxy
