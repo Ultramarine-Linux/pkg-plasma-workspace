@@ -1,6 +1,7 @@
-diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspace-5.4.2/startkde/startkde.cmake
---- plasma-workspace-5.4.2/startkde/startkde.cmake.startkde	2015-10-01 04:56:51.000000000 -0500
-+++ plasma-workspace-5.4.2/startkde/startkde.cmake	2015-10-14 11:31:39.255088978 -0500
+diff --git a/startkde/startkde.cmake b/startkde/startkde.cmake
+index cd1c40e..e62adfc 100644
+--- a/startkde/startkde.cmake
++++ b/startkde/startkde.cmake
 @@ -16,25 +16,22 @@ trap 'echo GOT SIGHUP' HUP
  # we have to unset this for Darwin since it will screw up KDE's dynamic-loading
  unset DYLD_FORCE_FLAT_NAMESPACE
@@ -92,12 +93,7 @@ diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspac
      exit 1
  fi
  [ -r $configDir/startupconfig ] && . $configDir/startupconfig
-@@ -206,52 +160,10 @@ scriptpath=`qtpaths --paths ConfigLocati
- # Add /env/ to the directory to locate the scripts to be sourced
- for prefix in `echo $scriptpath`; do
-   for file in "$prefix"/env/*.sh; do
--    (test -r "$file" && . "$file") || :
-+    test -r "$file" && . "$file" || :
+@@ -210,48 +164,6 @@ for prefix in `echo $scriptpath`; do
    done
  done
  
@@ -185,7 +181,7 @@ diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspac
      exit 1
  fi
  
-@@ -348,18 +238,16 @@ if test $? -ne 0; then
+@@ -352,18 +242,16 @@ if test $? -ne 0; then
    # Startup error
    echo 'startkde: Could not sync environment to dbus.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
@@ -207,7 +203,7 @@ diff -up plasma-workspace-5.4.2/startkde/startkde.cmake.startkde plasma-workspac
    exit 1
  fi
  
-@@ -383,7 +271,7 @@ if test $? -eq 255; then
+@@ -387,7 +275,7 @@ if test $? -eq 255; then
    # Startup error
    echo 'startkde: Could not start ksmserver. Check your installation.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
