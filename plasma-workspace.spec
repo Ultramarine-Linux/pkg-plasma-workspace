@@ -11,7 +11,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -46,6 +46,7 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## master branch Patches
 Patch100: 0001-Proxy-Xembed-icons-to-SNI.patch
+Patch105: 0005-Merge-xembed-SNI-proxy-updates.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -349,7 +350,8 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch13 -p1 -b .prison-qt5
 %endif
 
-%patch100 -p1 -b .sni_proxy
+%patch100 -p1 -b .0001
+%patch105 -p1 -b .0005
 
 
 %build
@@ -564,6 +566,9 @@ fi
 
 
 %changelog
+* Wed Nov 11 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.3-2
+- refresh xembedsniproxy support (#1280457)
+
 * Thu Nov 05 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.4.3-1
 - Plasma 5.4.3
 
