@@ -11,7 +11,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.3
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -38,6 +38,10 @@ Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
 Patch13:        plasma-workspace-5.4.2-prison-qt5.patch
+
+# reverted fix which should not have gone to 5.4 branch
+# kdebz#355404
+Patch14:        fix-changing-visibility-systemtray-entries.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
@@ -349,6 +353,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %if 0%{?prison}
 %patch13 -p1 -b .prison-qt5
 %endif
+%patch14 -p1 -b .fix-changing-visibility-systemtray-entries
 
 %patch100 -p1 -b .0001
 %patch105 -p1 -b .0005
@@ -566,6 +571,10 @@ fi
 
 
 %changelog
+* Mon Nov 16 2015 Jan Grulich <jgrulich@redhat.com> - 5.4.3-3
+- Fix changing of visibility for system tray entries
+  Resolves: kdebz#355404
+
 * Wed Nov 11 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.3-2
 - refresh xembedsniproxy support (#1280457)
 
