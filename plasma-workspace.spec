@@ -11,7 +11,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.4.3
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -297,7 +297,7 @@ BuildArch: noarch
 Documentation and user manuals for %{name}.
 
 %package drkonqi
-Summary: DrKonqi KDE crash handler
+Summary: DrKonqi crash handler for KF5/Plasma5
 # when split out
 Obsoletes: plasma-workspace < 5.4.2-2
 Requires: %{name} = %{version}-%{release}
@@ -571,6 +571,9 @@ fi
 
 
 %changelog
+* Tue Nov 17 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.3-4
+- Unhelpful summary/description for drkonqi packages (#1282810)
+
 * Mon Nov 16 2015 Jan Grulich <jgrulich@redhat.com> - 5.4.3-3
 - Fix changing of visibility for system tray entries
   Resolves: kdebz#355404
