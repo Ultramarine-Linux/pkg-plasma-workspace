@@ -469,6 +469,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
+%{_datadir}/wayland-sessions/plasmawayland.desktop
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
@@ -483,6 +484,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %license COPYING.DOC
 %lang(en) %{_docdir}/HTML/en/klipper/
 %lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker
+%lang(de) %{_docdir}/HTML/de/klipper/
 
 %post -n libkworkspace5 -p /sbin/ldconfig
 %postun -n libkworkspace5 -p /sbin/ldconfig
