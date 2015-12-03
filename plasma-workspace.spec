@@ -10,7 +10,7 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.4.95
+Version:        5.5.0
 Release:        1%{?dist}
 
 License:        GPLv2+
@@ -38,6 +38,7 @@ Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
 Patch13:        plasma-workspace-5.4.2-prison-qt5.patch
+Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
@@ -333,6 +334,15 @@ BuildArch: noarch
 %description -n sddm-breeze
 %{summary}.
 
+%package wayland
+Summary:        Wayland support for Plasma
+Requires:       kwin-wayland >= %{version}
+Requires:       plasma-workspace = %{version}-%{release}
+Requires:       kwayland-integration >= %{version}
+Requires:       qt5-qtwayland%{?_isa}
+BuildArch:      noarch
+%description wayland
+%{summary}.
 
 %prep
 %setup -q
@@ -348,6 +358,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %if 0%{?prison}
 %patch13 -p1 -b .prison-qt5
 %endif
+%patch14 -p1 -b .plasmawayland
 
 %build
 mkdir %{_target_platform}
@@ -426,7 +437,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
 %{_kf5_bindir}/startkde
-%{_kf5_bindir}/startplasmacompositor
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
@@ -439,7 +449,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_plugindir}/kded/*.so
 %{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/ksyncdbusenv
-%{_libexecdir}/startplasma
 %{_kf5_datadir}/ksmserver/
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
@@ -469,7 +478,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
-%{_datadir}/wayland-sessions/plasmawayland.desktop
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
@@ -554,8 +562,15 @@ fi
 %{_datadir}/sddm/themes/breeze/
 %{_datadir}/sddm/themes/01-breeze-fedora/
 
+%files wayland
+%{_kf5_bindir}/startplasmacompositor
+%{_libexecdir}/startplasma
+%{_datadir}/wayland-sessions/plasmawayland.desktop
 
 %changelog
+* Thu Dec 03 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.0-1
+- Plasma 5.5.0
+
 * Wed Nov 25 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.4.95-1
 - Plasma 5.4.95
 
