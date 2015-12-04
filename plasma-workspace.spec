@@ -340,7 +340,6 @@ Requires:       kwin-wayland >= %{version}
 Requires:       plasma-workspace = %{version}-%{release}
 Requires:       kwayland-integration >= %{version}
 Requires:       qt5-qtwayland%{?_isa}
-BuildArch:      noarch
 %description wayland
 %{summary}.
 
