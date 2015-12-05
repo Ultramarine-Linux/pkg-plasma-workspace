@@ -8,13 +8,13 @@
 %global prison 1
 %endif
 
-Name:    plasma-workspace
-Summary: Plasma workspace, applications and applets
-Version: 5.4.3
-Release: 3%{?dist}
+Name:           plasma-workspace
+Summary:        Plasma workspace, applications and applets
+Version:        5.5.0
+Release:        2%{?dist}
 
-License: GPLv2+
-URL:     https://projects.kde.org/projects/kde/workspace/plasma-workspace
+License:        GPLv2+
+URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
 
 %global revision %(echo %{version} | cut -d. -f3)
 %if %{revision} >= 50
@@ -38,10 +38,7 @@ Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
 Patch13:        plasma-workspace-5.4.2-prison-qt5.patch
-
-# reverted fix which should not have gone to 5.4 branch
-# kdebz#355404
-Patch14:        fix-changing-visibility-systemtray-entries.patch
+Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
@@ -50,7 +47,6 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## master branch Patches
 Patch100: 0001-Proxy-Xembed-icons-to-SNI.patch
-Patch105: 0005-Merge-xembed-SNI-proxy-updates.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -125,14 +121,14 @@ BuildRequires:  kf5-kwallet-devel >= %{kf5_version}
 BuildRequires:  kf5-kxmlrpcclient-devel >= %{kf5_version}
 BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version}
 BuildRequires:  kf5-plasma-devel >= %{kf5_version}
-BuildRequires:  kf5-plasma-devel >= %{kf5_version}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version}
 
 BuildRequires:  kf5-ksysguard-devel >= %{version}
-BuildRequires:  kf5-kscreen-devel >= %{version}
 BuildRequires:  kf5-kwayland-devel >= %{version}
 BuildRequires:  libwayland-client-devel >= 1.3.0
 BuildRequires:  libwayland-server-devel >= 1.3.0
+BuildRequires:  libkscreen-qt5-devel >= %{version}
+BuildRequires:  kscreenlocker-devel >= %{version}
 
 BuildRequires:  kwin-devel
 
@@ -225,7 +221,7 @@ Requires:       kde-platform-plugin
 # Oxygen
 Requires:       oxygen-icon-theme
 Requires:       oxygen-sound-theme >= %{majmin_ver}
-Requires:       oxygen-fonts >= %{majmin_ver}
+Requires:       oxygen-fonts
 
 # PolicyKit authentication agent
 Requires:        polkit-kde
@@ -297,7 +293,7 @@ BuildArch: noarch
 Documentation and user manuals for %{name}.
 
 %package drkonqi
-Summary: DrKonqi KDE crash handler
+Summary: DrKonqi crash handler for KF5/Plasma5
 # when split out
 Obsoletes: plasma-workspace < 5.4.2-2
 Requires: %{name} = %{version}-%{release}
@@ -338,6 +334,14 @@ BuildArch: noarch
 %description -n sddm-breeze
 %{summary}.
 
+%package wayland
+Summary:        Wayland support for Plasma
+Requires:       kwin-wayland >= %{version}
+Requires:       plasma-workspace = %{version}-%{release}
+Requires:       kwayland-integration >= %{version}
+Requires:       qt5-qtwayland%{?_isa}
+%description wayland
+%{summary}.
 
 %prep
 %setup -q
@@ -353,11 +357,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %if 0%{?prison}
 %patch13 -p1 -b .prison-qt5
 %endif
-%patch14 -p1 -b .fix-changing-visibility-systemtray-entries
-
-%patch100 -p1 -b .0001
-%patch105 -p1 -b .0005
-
+%patch14 -p1 -b .plasmawayland
 
 %build
 mkdir %{_target_platform}
@@ -436,7 +436,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
 %{_kf5_bindir}/startkde
-%{_kf5_bindir}/startplasmacompositor
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
@@ -446,11 +445,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_qtplugindir}/phonon_platform/kde.so
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
 %{_kf5_plugindir}/kio/desktop.so
+%{_kf5_plugindir}/kded/*.so
 %{_kf5_qmldir}/org/kde/*
-%{_libexecdir}/kcheckpass
-%{_libexecdir}/kscreenlocker_greet
 %{_libexecdir}/ksyncdbusenv
-%{_libexecdir}/startplasma
 %{_kf5_datadir}/ksmserver/
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
@@ -465,17 +462,14 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %if 0%{?fedora} > 22
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/
 %endif
-%{_kf5_datadir}/plasma/kcms/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
-%{_kf5_datadir}/kconf_update/*
 %{_sysconfdir}/xdg/*.knsrc
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/desktop-directories/*.directory
 %{_datadir}/dbus-1/services/*.service
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservices5/*.protocol
-%{_kf5_datadir}/kservices5/kded/*.desktop
 %{_kf5_datadir}/kservicetypes5/*.desktop
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
@@ -496,8 +490,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %files doc
 %license COPYING.DOC
 %lang(en) %{_docdir}/HTML/en/klipper/
-%lang(ca) %{_docdir}/HTML/ca/klipper/
 %lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker
+%lang(ca) %{_docdir}/HTML/ca/klipper/
 %lang(ca) %{_docdir}/HTML/ca/kcontrol/screenlocker
 
 %post -n libkworkspace5 -p /sbin/ldconfig
@@ -546,7 +540,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_libdir}/cmake/KSMServerDBusInterface/
 %{_libdir}/cmake/LibKWorkspace/
 %{_libdir}/cmake/LibTaskManager/
-%{_libdir}/cmake/ScreenSaverDBusInterface/
 %{_datadir}/dbus-1/interfaces/*.xml
 
 %post drkonqi
@@ -569,8 +562,24 @@ fi
 %{_datadir}/sddm/themes/breeze/
 %{_datadir}/sddm/themes/01-breeze-fedora/
 
+%files wayland
+%{_kf5_bindir}/startplasmacompositor
+%{_libexecdir}/startplasma
+%{_datadir}/wayland-sessions/plasmawayland.desktop
 
 %changelog
+* Sat Dec 05 2015 Daniel Vrátil <dvraitl@fedoraproject.org> - 5.5.0-2
+- remove version dependency on oxygen-fonts, because it's not being released anymore
+
+* Thu Dec 03 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.0-1
+- Plasma 5.5.0
+
+* Wed Nov 25 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.4.95-1
+- Plasma 5.4.95
+
+* Tue Nov 17 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.3-4
+- Unhelpful summary/description for drkonqi packages (#1282810)
+
 * Mon Nov 16 2015 Jan Grulich <jgrulich@redhat.com> - 5.4.3-3
 - Fix changing of visibility for system tray entries
   Resolves: kdebz#355404
