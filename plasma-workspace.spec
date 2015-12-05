@@ -11,7 +11,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -221,7 +221,7 @@ Requires:       kde-platform-plugin
 # Oxygen
 Requires:       oxygen-icon-theme
 Requires:       oxygen-sound-theme >= %{majmin_ver}
-Requires:       oxygen-fonts >= %{majmin_ver}
+Requires:       oxygen-fonts
 
 # PolicyKit authentication agent
 Requires:        polkit-kde
@@ -568,6 +568,9 @@ fi
 %{_datadir}/wayland-sessions/plasmawayland.desktop
 
 %changelog
+* Sat Dec 05 2015 Daniel Vrátil <dvraitl@fedoraproject.org> - 5.5.0-2
+- remove version dependency on oxygen-fonts, because it's not being released anymore
+
 * Thu Dec 03 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.0-1
 - Plasma 5.5.0
 
