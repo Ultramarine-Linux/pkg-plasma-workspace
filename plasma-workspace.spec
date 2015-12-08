@@ -46,7 +46,6 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 ## upstream Patches
 
 ## master branch Patches
-Patch100: 0001-Proxy-Xembed-icons-to-SNI.patch
 
 # udev
 BuildRequires:  zlib-devel
