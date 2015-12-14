@@ -1,0 +1,34 @@
+From 2b59ccd531dcdb7d86577cee1d987f95a9db9bf0 Mon Sep 17 00:00:00 2001
+From: Martin Klapetek <mklapetek@kde.org>
+Date: Wed, 9 Dec 2015 13:29:24 -0500
+Subject: [PATCH 01/10] [notifications] Check if the popup is visible before
+ updating its geometry
+
+This slot gets triggered also on popup hiding, which is unwanted.
+Should also prevent a crash when unloading notifications applet while
+there is an active popup on screen.
+
+BUG: 356402
+FIXED-IN: 5.5.1
+---
+ applets/notifications/plugin/notificationshelper.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/applets/notifications/plugin/notificationshelper.cpp b/applets/notifications/plugin/notificationshelper.cpp
+index ab002d9..208dcc5 100644
+--- a/applets/notifications/plugin/notificationshelper.cpp
++++ b/applets/notifications/plugin/notificationshelper.cpp
+@@ -130,8 +130,8 @@ void NotificationsHelper::addNotificationPopup(QObject *win)
+ 
+ void NotificationsHelper::onPopupShown()
+ {
+-    QObject *popup = sender();
+-    if (!popup) {
++    QWindow *popup = qobject_cast<QWindow*>(sender());
++    if (!popup || !popup->isVisible()) {
+         return;
+     }
+ 
+-- 
+2.5.0
+

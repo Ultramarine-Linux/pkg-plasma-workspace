@@ -1,0 +1,30 @@
+From 9b2396770dd103c6b549763a7f13a896e6af19d8 Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Sun, 13 Dec 2015 20:32:45 +0100
+Subject: [PATCH 08/10] [Clipboard Plasmoid] Fix import to use StandardKey
+
+StandardKey is only available since Qt 5.4
+
+REVIEW: 126294
+---
+ applets/clipboard/contents/ui/ClipboardPage.qml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/applets/clipboard/contents/ui/ClipboardPage.qml b/applets/clipboard/contents/ui/ClipboardPage.qml
+index a8b1b85..5a82730 100644
+--- a/applets/clipboard/contents/ui/ClipboardPage.qml
++++ b/applets/clipboard/contents/ui/ClipboardPage.qml
+@@ -17,8 +17,9 @@ GNU General Public License for more details.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *********************************************************************/
+-import QtQuick 2.0
++import QtQuick 2.4
+ import QtQuick.Layouts 1.1
++
+ import org.kde.plasma.plasmoid 2.0
+ import org.kde.plasma.core 2.0 as PlasmaCore
+ import org.kde.plasma.components 2.0 as PlasmaComponents
+-- 
+2.5.0
+

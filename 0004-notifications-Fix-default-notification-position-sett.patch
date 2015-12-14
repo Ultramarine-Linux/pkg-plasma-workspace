@@ -1,0 +1,43 @@
+From 5d56df0d53851a8cd61344d356bcb552220dd3ed Mon Sep 17 00:00:00 2001
+From: Martin Klapetek <mklapetek@kde.org>
+Date: Thu, 10 Dec 2015 16:29:43 -0500
+Subject: [PATCH 04/10] [notifications] Fix default notification position
+ setting
+
+It can happen that the onAppletLocationChanged() slot gets called before
+init(), making init() reset the calculated position from the slot.
+
+CCBUG: 356461
+---
+ applets/notifications/lib/notificationsapplet.cpp | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/applets/notifications/lib/notificationsapplet.cpp b/applets/notifications/lib/notificationsapplet.cpp
+index 33184c4..891cdb0 100644
+--- a/applets/notifications/lib/notificationsapplet.cpp
++++ b/applets/notifications/lib/notificationsapplet.cpp
+@@ -28,8 +28,6 @@
+ NotificationsApplet::NotificationsApplet(QObject *parent, const QVariantList &data)
+     : Plasma::Applet(parent, data)
+ {
+-    connect(this, &Plasma::Applet::locationChanged,
+-            this, &NotificationsApplet::onAppletLocationChanged);
+ }
+ 
+ NotificationsApplet::~NotificationsApplet()
+@@ -41,7 +39,12 @@ void NotificationsApplet::init()
+     KConfigGroup globalGroup = globalConfig();
+     m_popupPosition = (NotificationsHelper::PositionOnScreen)globalGroup.readEntry("popupPosition", 0); //0 is default
+ 
++    connect(this, &Plasma::Applet::locationChanged,
++            this, &NotificationsApplet::onAppletLocationChanged);
++
+     Plasma::Applet::init();
++
++    onAppletLocationChanged(location());
+ }
+ 
+ void NotificationsApplet::onAppletLocationChanged(Plasma::Types::Location location)
+-- 
+2.5.0
+
