@@ -11,7 +11,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -44,6 +44,19 @@ Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
+Patch101: 0001-notifications-Check-if-the-popup-is-visible-before-u.patch
+Patch102: 0002-notifications-Move-reading-globalConfig-from-ctor-to.patch
+Patch103: 0003-Make-comment-section-of-the-timezones-configuration-.patch
+Patch104: 0004-notifications-Fix-default-notification-position-sett.patch
+Patch106: 0006-Move-shutdown-scripts-into-ksmserver-cleanup.patch
+Patch107: 0007-If-the-user-runs-failsafe-mode-use-software-renderin.patch
+Patch108: 0008-Clipboard-Plasmoid-Fix-import-to-use-StandardKey.patch
+Patch109: 0009-System-Tray-Explicitly-forward-key-events-to-expande.patch
+Patch110: 0010-Mitigate-failed-icon-grabbing-in-xembed-sni-proxy.patch
+
+# revert this one
+Patch150: Forward-mouse-enter-and-leave-events-on-feathered-ed.patch
+
 
 ## master branch Patches
 
@@ -169,10 +182,6 @@ Requires:       khotkeys >= %{majmin_ver}
 %if 0%{?fedora} > 22
 Requires:       plasma-pa
 %endif
-
-# TODO: This should go into -wayland subpackage alongside with other
-# wayland integration stuff --dvratil
-Requires:       kwayland-integration >= %{majmin_ver}
 
 # Without the platformtheme plugins we get broken fonts
 Requires:       kf5-frameworkintegration
@@ -337,13 +346,28 @@ BuildArch: noarch
 Summary:        Wayland support for Plasma
 Requires:       kwin-wayland >= %{version}
 Requires:       plasma-workspace = %{version}-%{release}
-Requires:       kwayland-integration >= %{version}
+Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
 Requires:       qt5-qtwayland%{?_isa}
 %description wayland
 %{summary}.
 
+
 %prep
 %setup -q
+
+# upstream patches
+%patch101 -p1 -b .0001
+%patch102 -p1 -b .0002
+%patch103 -p1 -b .0003
+%patch104 -p1 -b .0004
+%patch106 -p1 -b .0006
+%patch107 -p1 -b .0007
+%patch108 -p1 -b .0008
+%patch109 -p1 -b .0009
+%patch110 -p1 -b .0010
+# revert
+%patch150 -p1 -R -b .kde356415
+
 
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
@@ -357,6 +381,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch13 -p1 -b .prison-qt5
 %endif
 %patch14 -p1 -b .plasmawayland
+
 
 %build
 mkdir %{_target_platform}
@@ -566,7 +591,13 @@ fi
 %{_libexecdir}/startplasma
 %{_datadir}/wayland-sessions/plasmawayland.desktop
 
+
 %changelog
+* Sun Dec 13 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.5.0-3
+- latest upstream fixes (#1291100)
+- revert commit causing regression'ish kde #356415
+- drop kwayland-integration from main pkg (only in -wayland subpkg)
+
 * Sat Dec 05 2015 Daniel Vrátil <dvraitl@fedoraproject.org> - 5.5.0-2
 - remove version dependency on oxygen-fonts, because it's not being released anymore
 

@@ -1,0 +1,122 @@
+From 1dc7f11692a4096b9815ae24f7be9cec10f8f7a5 Mon Sep 17 00:00:00 2001
+From: David Edmundson <kde@davidedmundson.co.uk>
+Date: Sun, 6 Dec 2015 19:47:12 +0000
+Subject: [PATCH 06/10] Move shutdown scripts into ksmserver cleanup
+
+Shutdown scripts are done by startkde after ksmserver quits. Which never
+happens because we've told systemd to shutdown.
+
+Old systems worked because they used to communicate with the display
+manager which then closed us before shutting down, this is no longer the
+case.
+
+This moves handling the shutdown scripts into ksmserver (which already
+handles startup scripts) and runs them before asking logind to shutdown.
+
+BUG: 356190
+REVIEW: 126268
+---
+ ksmserver/server.cpp       | 27 +++++++++++++++++++++++++++
+ ksmserver/server.h         |  2 ++
+ startkde/startkde.cmake    |  9 ---------
+ startkde/startplasma.cmake |  9 ---------
+ 4 files changed, 29 insertions(+), 18 deletions(-)
+
+diff --git a/ksmserver/server.cpp b/ksmserver/server.cpp
+index 9477e54..6a05ff2 100644
+--- a/ksmserver/server.cpp
++++ b/ksmserver/server.cpp
+@@ -757,6 +757,8 @@ void KSMServer::cleanUp()
+     signal(SIGTERM, SIG_DFL);
+     signal(SIGINT, SIG_DFL);
+ 
++    runShutdownScripts();
++
+     KDisplayManager().shutdown( shutdownType, shutdownMode, bootOption );
+ }
+ 
+@@ -1093,3 +1095,28 @@ void KSMServer::openSwitchUserDialog()
+     QScopedPointer<KSMSwitchUserDialog> dlg(new KSMSwitchUserDialog(&dm));
+     dlg->exec();
+ }
++
++void KSMServer::runShutdownScripts()
++{
++    const QStringList shutdownFolders = QStandardPaths::locateAll(QStandardPaths::GenericConfigLocation, QStringLiteral("plasma-workspace/shutdown"), QStandardPaths::LocateDirectory);
++    foreach (const QString &shutDownFolder, shutdownFolders) {
++        QDir dir(shutDownFolder);
++        if (!dir.exists()) {
++            continue;
++        }
++
++        const QStringList entries = dir.entryList(QDir::Files);
++        foreach (const QString &file, entries) {
++            // Don't execute backup files
++            if (!file.endsWith(QLatin1Char('~')) && !file.endsWith(QStringLiteral(".bak")) &&
++                    (file[0] != QLatin1Char('%') || !file.endsWith(QLatin1Char('%'))) &&
++                    (file[0] != QLatin1Char('#') || !file.endsWith(QLatin1Char('#'))))
++            {
++                const QString fullPath = dir.absolutePath() + QLatin1Char('/') + file;
++
++                qCDebug(KSMSERVER) << "running shutdown script" << fullPath;
++                QProcess::execute(fullPath);
++            }
++        }
++    }
++}
+diff --git a/ksmserver/server.h b/ksmserver/server.h
+index 1a2f081..d026ecd 100644
+--- a/ksmserver/server.h
++++ b/ksmserver/server.h
+@@ -202,6 +202,8 @@ private:
+     void resumeStartupInternal();
+     void setupShortcuts();
+ 
++    void runShutdownScripts();
++
+     // public dcop interface
+ 
+  public Q_SLOTS: //public dcop interface
+diff --git a/startkde/startkde.cmake b/startkde/startkde.cmake
+index 37ab5cd..9e52fee 100644
+--- a/startkde/startkde.cmake
++++ b/startkde/startkde.cmake
+@@ -412,15 +412,6 @@ test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
+ # Clean up
+ kdeinit5_shutdown
+ 
+-echo 'startkde: Running shutdown scripts...'  1>&2
+-
+-# Run scripts found in <config locations>/plasma-workspace/shutdown
+-for prefix in `echo "$scriptpath"`; do
+-  for file in `ls "$prefix"/shutdown 2> /dev/null | egrep -v '(~|\.bak)$'`; do
+-    test -x "$prefix/shutdown/$file" && "$prefix/shutdown/$file"
+-  done
+-done
+-
+ unset KDE_FULL_SESSION
+ xprop -root -remove KDE_FULL_SESSION
+ unset KDE_SESSION_VERSION
+diff --git a/startkde/startplasma.cmake b/startkde/startplasma.cmake
+index 8360a63..8928cf6 100644
+--- a/startkde/startplasma.cmake
++++ b/startkde/startplasma.cmake
+@@ -175,15 +175,6 @@ test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
+ # Clean up
+ kdeinit5_shutdown
+ 
+-echo 'startplasma: Running shutdown scripts...'  1>&2
+-
+-# Run scripts found in <config locations>/plasma-workspace/shutdown
+-for prefix in `echo "$scriptpath"`; do
+-  for file in `ls "$prefix"/shutdown 2> /dev/null | egrep -v '(~|\.bak)$'`; do
+-    test -x "$prefix/shutdown/$file" && "$prefix/shutdown/$file"
+-  done
+-done
+-
+ unset KDE_FULL_SESSION
+ xprop -root -remove KDE_FULL_SESSION
+ unset KDE_SESSION_VERSION
+-- 
+2.5.0
+

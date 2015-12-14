@@ -1,0 +1,39 @@
+From 46310dcb50bed485550510ed5f70a623041d84ab Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Sun, 13 Dec 2015 20:34:04 +0100
+Subject: [PATCH 09/10] [System Tray] Explicitly forward key events to expanded
+ task
+
+Somehow key events no longer end up in the expanded task, this could be related
+to the fact that we now have a proper ScrollView instead of a plain ListView/Flickable.
+
+REVIEW: 126293
+---
+ applets/systemtray/package/contents/ui/ExpandedRepresentation.qml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/applets/systemtray/package/contents/ui/ExpandedRepresentation.qml b/applets/systemtray/package/contents/ui/ExpandedRepresentation.qml
+index a53be6c..7f13458 100644
+--- a/applets/systemtray/package/contents/ui/ExpandedRepresentation.qml
++++ b/applets/systemtray/package/contents/ui/ExpandedRepresentation.qml
+@@ -28,6 +28,8 @@ KQuickControlsAddons.MouseEventListener {
+ 
+    acceptedButtons: Qt.RightButton
+ 
++   Keys.forwardTo: root.expandedTask ? [root.expandedTask.taskItemExpanded] : [hiddenView]
++
+    Component.onCompleted: {
+        if (root.expandedTask) {
+            root.expandedTask.taskItemExpanded.parent = expandedItemContainer;
+@@ -109,7 +111,7 @@ KQuickControlsAddons.MouseEventListener {
+         }
+ 
+         ListView {
+-            clip: true
++            id: list
+             anchors.fill: parent
+             spacing: units.smallSpacing
+ 
+-- 
+2.5.0
+
