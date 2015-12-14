@@ -11,7 +11,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -53,10 +53,7 @@ Patch107: 0007-If-the-user-runs-failsafe-mode-use-software-renderin.patch
 Patch108: 0008-Clipboard-Plasmoid-Fix-import-to-use-StandardKey.patch
 Patch109: 0009-System-Tray-Explicitly-forward-key-events-to-expande.patch
 Patch110: 0010-Mitigate-failed-icon-grabbing-in-xembed-sni-proxy.patch
-
-# revert this one
-Patch150: Forward-mouse-enter-and-leave-events-on-feathered-ed.patch
-
+Patch111: 0011-Left-click-on-item-in-task-manager-is-ignored-abritr.patch
 
 ## master branch Patches
 
@@ -365,9 +362,7 @@ Requires:       qt5-qtwayland%{?_isa}
 %patch108 -p1 -b .0008
 %patch109 -p1 -b .0009
 %patch110 -p1 -b .0010
-# revert
-%patch150 -p1 -R -b .kde356415
-
+%patch111 -p1 -b .0011
 
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
@@ -593,6 +588,9 @@ fi
 
 
 %changelog
+* Mon Dec 14 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.0-4
+- proper upstream fix for #356415 (review #126331)
+
 * Sun Dec 13 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.5.0-3
 - latest upstream fixes (#1291100)
 - revert commit causing regression'ish kde #356415
