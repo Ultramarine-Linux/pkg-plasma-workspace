@@ -1,6 +1,6 @@
 # Define (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
-#define bootstrap 1
+%define bootstrap 1
 
 %global kf5_version 5.13.0
 
@@ -11,7 +11,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -588,6 +588,9 @@ fi
 
 
 %changelog
+* Tue Dec 15 2015 Than Ngo <than@redhat.com> - 5.5.0-5
+- enable bootstrap for secondary arch
+
 * Mon Dec 14 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.0-4
 - proper upstream fix for #356415 (review #126331)
 
