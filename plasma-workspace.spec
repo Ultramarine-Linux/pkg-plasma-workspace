@@ -10,8 +10,8 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.0
-Release:        5%{?dist}
+Version:        5.5.1
+Release:        1%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -588,6 +588,9 @@ fi
 
 
 %changelog
+* Fri Dec 18 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.1-1
+- Plasma 5.5.1
+
 * Tue Dec 15 2015 Than Ngo <than@redhat.com> - 5.5.0-5
 - enable bootstrap for secondary arch
 
