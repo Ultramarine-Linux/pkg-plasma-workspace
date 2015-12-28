@@ -10,8 +10,8 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.0
-Release:        5%{?dist}
+Version:        5.5.1
+Release:        1%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -44,16 +44,6 @@ Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
-Patch101: 0001-notifications-Check-if-the-popup-is-visible-before-u.patch
-Patch102: 0002-notifications-Move-reading-globalConfig-from-ctor-to.patch
-Patch103: 0003-Make-comment-section-of-the-timezones-configuration-.patch
-Patch104: 0004-notifications-Fix-default-notification-position-sett.patch
-Patch106: 0006-Move-shutdown-scripts-into-ksmserver-cleanup.patch
-Patch107: 0007-If-the-user-runs-failsafe-mode-use-software-renderin.patch
-Patch108: 0008-Clipboard-Plasmoid-Fix-import-to-use-StandardKey.patch
-Patch109: 0009-System-Tray-Explicitly-forward-key-events-to-expande.patch
-Patch110: 0010-Mitigate-failed-icon-grabbing-in-xembed-sni-proxy.patch
-Patch111: 0011-Left-click-on-item-in-task-manager-is-ignored-abritr.patch
 
 ## master branch Patches
 
@@ -353,16 +343,6 @@ Requires:       qt5-qtwayland%{?_isa}
 %setup -q
 
 # upstream patches
-%patch101 -p1 -b .0001
-%patch102 -p1 -b .0002
-%patch103 -p1 -b .0003
-%patch104 -p1 -b .0004
-%patch106 -p1 -b .0006
-%patch107 -p1 -b .0007
-%patch108 -p1 -b .0008
-%patch109 -p1 -b .0009
-%patch110 -p1 -b .0010
-%patch111 -p1 -b .0011
 
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
@@ -588,6 +568,9 @@ fi
 
 
 %changelog
+* Fri Dec 18 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.1-1
+- Plasma 5.5.1
+
 * Tue Dec 15 2015 Than Ngo <than@redhat.com> - 5.5.0-5
 - enable bootstrap for secondary arch
 
