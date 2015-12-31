@@ -10,8 +10,8 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.1
-Release:        1%{?dist}
+Version: 5.5.2
+Release: 1%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
@@ -568,6 +568,9 @@ fi
 
 
 %changelog
+* Thu Dec 31 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.5.2-1
+- 5.5.2
+
 * Fri Dec 18 2015 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.1-1
 - Plasma 5.5.1
 
