@@ -11,7 +11,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
