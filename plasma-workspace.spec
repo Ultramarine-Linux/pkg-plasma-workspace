@@ -10,11 +10,11 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version: 5.5.2
-Release: 1%{?dist}
+Version:        5.5.2
+Release:        1%{?dist}
 
 License:        GPLv2+
-URL:            https://projects.kde.org/projects/kde/workspace/plasma-workspace
+URL:            https://projects.kde.org/plasma-workspace
 
 %global revision %(echo %{version} | cut -d. -f3)
 %if %{revision} >= 50
@@ -122,14 +122,14 @@ BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version}
 BuildRequires:  kf5-plasma-devel >= %{kf5_version}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version}
 
-BuildRequires:  kf5-ksysguard-devel >= %{version}
-BuildRequires:  kf5-kwayland-devel >= %{version}
+BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
+BuildRequires:  kf5-kwayland-devel >= %{majmin_ver}
 BuildRequires:  libwayland-client-devel >= 1.3.0
 BuildRequires:  libwayland-server-devel >= 1.3.0
-BuildRequires:  libkscreen-qt5-devel >= %{version}
-BuildRequires:  kscreenlocker-devel >= %{version}
+BuildRequires:  libkscreen-qt5-devel >= %{majmin_ver}
+BuildRequires:  kscreenlocker-devel >= %{majmin_ver}
 
-BuildRequires:  kwin-devel
+BuildRequires:  kwin-devel >= %{majmin_ver}
 
 BuildRequires:  chrpath
 BuildRequires:  desktop-file-utils
@@ -174,10 +174,10 @@ Requires:       plasma-pa
 Requires:       kf5-frameworkintegration
 
 # For krunner
-Requires:       plasma-milou
+Requires:       plasma-milou >= %{majmin_ver}
 
 # Power management
-Requires:       powerdevil
+Requires:       powerdevil >= %{majmin_ver}
 
 # startkde
 Requires:       coreutils
@@ -208,10 +208,10 @@ Requires:       f23-kde-theme
 Requires:       systemd
 
 # SysTray support for Qt 4 apps
-Requires:       sni-qt
+Requires:       sni-qt%{?_isa}
 
 # kde(4) platform plugin
-Requires:       kde-platform-plugin
+Requires:       kde-platform-plugin%{?_isa}
 
 # Oxygen
 Requires:       oxygen-icon-theme
@@ -219,7 +219,7 @@ Requires:       oxygen-sound-theme >= %{majmin_ver}
 Requires:       oxygen-fonts
 
 # PolicyKit authentication agent
-Requires:        polkit-kde
+Requires:        polkit-kde >= %{majmin_ver}
 
 # Require any plasmashell (plasma-desktop provides plasmashell(desktop))
 %if 0%{?bootstrap}
@@ -568,6 +568,11 @@ fi
 
 
 %changelog
+* Thu Dec 31 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.5.2-2
+- use %%majmin_ver for most plasma-related deps
+- tighten plugin deps using %%_isa
+- update URL
+
 * Thu Dec 31 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.5.2-1
 - 5.5.2
 
