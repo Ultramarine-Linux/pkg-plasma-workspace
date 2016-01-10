@@ -4,14 +4,10 @@
 
 %global kf5_version 5.13.0
 
-%if 0%{?fedora} > 23
-%global prison 1
-%endif
-
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -37,7 +33,6 @@ Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
-Patch13:        plasma-workspace-5.4.2-prison-qt5.patch
 Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 
 ## upstreamable Patches
@@ -362,9 +357,6 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch12 -p1 -b .startkde
-%if 0%{?prison}
-%patch13 -p1 -b .prison-qt5
-%endif
 %patch14 -p1 -b .plasmawayland
 
 
@@ -578,6 +570,9 @@ fi
 
 
 %changelog
+* Sun Jan 10 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-3
+- drop hacked klipper/prison support (until we have kf5-prison available properly)
+
 * Sat Jan 09 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-2
 - pull in upstream fixes (notifications,xembedsniproxy)
 
