@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -336,6 +336,8 @@ Requires:       kwin-wayland >= %{version}
 Requires:       plasma-workspace = %{version}-%{release}
 Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
 Requires:       qt5-qtwayland%{?_isa}
+# startplasmacompositor deps
+Requires:       qt5-qttools
 %description wayland
 %{summary}.
 
@@ -572,6 +574,9 @@ fi
 
 
 %changelog
+* Mon Jan 11 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-5
+- -wayland: Requires: qt5-qtools (for qdbus-qt5)
+
 * Mon Jan 11 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.3-4
 - startplasmacompositor.patch (#1297528)
 - disable bootstrap
