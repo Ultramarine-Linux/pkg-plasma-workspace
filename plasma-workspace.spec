@@ -1,13 +1,13 @@
 # Define (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
-%define bootstrap 1
+#define bootstrap 1
 
 %global kf5_version 5.13.0
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -33,6 +33,7 @@ Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
+Patch13:        startplasmacompositor.patch
 Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 
 ## upstreamable Patches
@@ -357,6 +358,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch12 -p1 -b .startkde
+%patch13 -p1 -b .startplasmacompositor
 %patch14 -p1 -b .plasmawayland
 
 
@@ -570,6 +572,10 @@ fi
 
 
 %changelog
+* Mon Jan 11 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.3-4
+- startplasmacompositor.patch (#1297528)
+- disable bootstrap
+
 * Sun Jan 10 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-3
 - drop hacked klipper/prison support (until we have kf5-prison available properly)
 
