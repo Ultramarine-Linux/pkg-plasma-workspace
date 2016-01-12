@@ -578,7 +578,7 @@ fi
 - -wayland: Requires: qt5-qtools (for qdbus-qt5)
 
 * Mon Jan 11 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.3-4
-- startplasmacompositor.patch (#1297528)
+- startplasmacompositor.patch (#1297418)
 - disable bootstrap
 
 * Sun Jan 10 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-3
