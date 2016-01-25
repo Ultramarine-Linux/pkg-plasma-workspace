@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.3
-Release:        4%{?dist}
+Release:        6%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -45,6 +45,11 @@ Patch102: 0002-notifications-Replace-the-mainItem-s-Layout.max-minW.patch
 Patch103: 0003-notifications-Ensure-the-applet-gets-correct-screen-.patch
 Patch104: 0004-Device-Notifier-Improve-legibility-of-device-status-.patch
 Patch105: 0005-Check-for-null-geometry-in-client-window.patch
+Patch111: 0011-notifications-Place-the-popup-directly-when-it-is-di.patch
+Patch112: 0012-notifications-Also-place-the-popup-directly-without-.patch
+Patch113: 0013-notifications-Force-the-max-height-of-the-text-item-.patch
+Patch119: 0019-Check-client-geom-exists-in-clicks.patch
+
 
 ## master branch Patches
 
@@ -336,6 +341,8 @@ Requires:       kwin-wayland >= %{version}
 Requires:       plasma-workspace = %{version}-%{release}
 Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
 Requires:       qt5-qtwayland%{?_isa}
+# startplasmacompositor deps
+Requires:       qt5-qttools
 %description wayland
 %{summary}.
 
@@ -349,6 +356,10 @@ Requires:       qt5-qtwayland%{?_isa}
 %patch103 -p1 -b .0003
 %patch104 -p1 -b .0004
 %patch105 -p1 -b .0005
+%patch111 -p1 -b .0011
+%patch112 -p1 -b .0012
+%patch113 -p1 -b .0013
+%patch119 -p1 -b .0019
 
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
@@ -572,8 +583,14 @@ fi
 
 
 %changelog
+* Mon Jan 25 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-6
+- pull in upstream fixes (notifications/xembedsniproxy)
+
+* Mon Jan 11 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-5
+- -wayland: Requires: qt5-qtools (for qdbus-qt5)
+
 * Mon Jan 11 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.3-4
-- startplasmacompositor.patch (#1297528)
+- startplasmacompositor.patch (#1297418)
 - disable bootstrap
 
 * Sun Jan 10 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-3
