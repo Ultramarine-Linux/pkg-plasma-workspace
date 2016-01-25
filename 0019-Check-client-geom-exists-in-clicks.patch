@@ -1,0 +1,28 @@
+From 988a7bef7e84a4a2fc6a2f6ec6145e093dfb84f8 Mon Sep 17 00:00:00 2001
+From: David Edmundson <kde@davidedmundson.co.uk>
+Date: Thu, 21 Jan 2016 16:38:20 +0000
+Subject: [PATCH 19/20] Check client geom exists in clicks
+
+REVIEW:
+---
+ xembed-sni-proxy/sniproxy.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/xembed-sni-proxy/sniproxy.cpp b/xembed-sni-proxy/sniproxy.cpp
+index 9f3ef81..3827fdd 100644
+--- a/xembed-sni-proxy/sniproxy.cpp
++++ b/xembed-sni-proxy/sniproxy.cpp
+@@ -421,6 +421,10 @@ void SNIProxy::sendClick(uint8_t mouseButton, int x, int y)
+     QScopedPointer<xcb_get_geometry_reply_t, QScopedPointerPodDeleter>
+         clientGeom(xcb_get_geometry_reply(c, cookieSize, Q_NULLPTR));
+ 
++    if (!clientGeom) {
++        return;
++    }
++
+     auto cookie = xcb_query_pointer(c, m_windowId);
+     QScopedPointer<xcb_query_pointer_reply_t, QScopedPointerPodDeleter>
+         pointer(xcb_query_pointer_reply(c, cookie, Q_NULLPTR));
+-- 
+2.5.0
+

@@ -1,0 +1,35 @@
+From 4f05c553f07eee25cda8d92ee6a7c298bb5f9860 Mon Sep 17 00:00:00 2001
+From: Martin Klapetek <mklapetek@kde.org>
+Date: Wed, 13 Jan 2016 14:33:42 -0500
+Subject: [PATCH 13/20] [notifications] Force the max height of the text item
+ to be 0 when no text
+
+Force the whole thing to collapse if the children are invisible.
+If there is a big notification followed by a small one, the height
+of the popup does not always shrink back, so this forces it to
+height = 0 when those are invisible. -1 means "default to
+implicitHeight"
+---
+ applets/notifications/package/contents/ui/NotificationItem.qml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/applets/notifications/package/contents/ui/NotificationItem.qml b/applets/notifications/package/contents/ui/NotificationItem.qml
+index 34d611c..f03fd93 100644
+--- a/applets/notifications/package/contents/ui/NotificationItem.qml
++++ b/applets/notifications/package/contents/ui/NotificationItem.qml
+@@ -184,6 +184,12 @@ Item {
+             id: bottomPart
+             Layout.alignment: Qt.AlignTop
+ 
++            // Force the whole thing to collapse if the children are invisible
++            // If there is a big notification followed by a small one, the height
++            // of the popup does not always shrink back, so this forces it to
++            // height=0 when those are invisible. -1 means "default to implicitHeight"
++            Layout.maximumHeight: textItemLoader.visible || actionsColumn.visible ? -1 : 0
++
+             Loader {
+                 id: textItemLoader
+                 Layout.fillWidth: true
+-- 
+2.5.0
+
