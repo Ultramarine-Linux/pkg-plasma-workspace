@@ -6,8 +6,8 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.3
-Release:        6%{?dist}
+Version:        5.5.4
+Release:        1%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -40,16 +40,6 @@ Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
-Patch101: 0001-notifications-Ensure-the-screen-position-selector-wo.patch
-Patch102: 0002-notifications-Replace-the-mainItem-s-Layout.max-minW.patch
-Patch103: 0003-notifications-Ensure-the-applet-gets-correct-screen-.patch
-Patch104: 0004-Device-Notifier-Improve-legibility-of-device-status-.patch
-Patch105: 0005-Check-for-null-geometry-in-client-window.patch
-Patch111: 0011-notifications-Place-the-popup-directly-when-it-is-di.patch
-Patch112: 0012-notifications-Also-place-the-popup-directly-without-.patch
-Patch113: 0013-notifications-Force-the-max-height-of-the-text-item-.patch
-Patch119: 0019-Check-client-geom-exists-in-clicks.patch
-
 
 ## master branch Patches
 
@@ -583,6 +573,9 @@ fi
 
 
 %changelog
+* Wed Jan 27 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.4-1
+- Plasma 5.5.4
+
 * Mon Jan 25 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.3-6
 - pull in upstream fixes (notifications/xembedsniproxy)
 
