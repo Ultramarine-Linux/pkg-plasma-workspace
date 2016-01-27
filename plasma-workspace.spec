@@ -340,17 +340,6 @@ Requires:       qt5-qttools
 %prep
 %setup -q
 
-# upstream patches
-%patch101 -p1 -b .0001
-%patch102 -p1 -b .0002
-%patch103 -p1 -b .0003
-%patch104 -p1 -b .0004
-%patch105 -p1 -b .0005
-%patch111 -p1 -b .0011
-%patch112 -p1 -b .0012
-%patch113 -p1 -b .0013
-%patch119 -p1 -b .0019
-
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?fedora} > 21
