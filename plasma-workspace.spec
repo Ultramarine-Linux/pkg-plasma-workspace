@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -40,6 +40,7 @@ Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
+Patch101: 0001-reset-the-model-on-list-always-shown-hide-change.patch
 
 ## master branch Patches
 
@@ -340,6 +341,8 @@ Requires:       qt5-qttools
 %prep
 %setup -q
 
+%patch101 -p1 -b .0001
+
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?fedora} > 21
@@ -562,6 +565,9 @@ fi
 
 
 %changelog
+* Thu Feb 04 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-2
+- backport systray applets not shown workaround (kde#352055)
+
 * Wed Jan 27 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.4-1
 - Plasma 5.5.4
 

@@ -1,0 +1,74 @@
+From 42a3d8accd4e494d343954ddaa916a6c618d94f3 Mon Sep 17 00:00:00 2001
+From: Marco Martin <notmart@gmail.com>
+Date: Wed, 3 Feb 2016 15:36:31 +0100
+Subject: [PATCH] reset the model on list always shown/hide change
+
+something really wrong is going on on the proxymodel updates
+the wrong item gets removed from the list.
+it may be  a wrong mapping between source and dest model
+(doesn't seem so)
+or may have been some misguided attempt by QML to recycle delegates
+
+anyways resetting the model in some conditions even if expensive
+seems to be the only way to workaround this.
+Anyways this systray implementation is beyond any repair and
+the rewritten version won't have to rely on so many models
+and proxymodels
+
+BUG:357627
+CCBUG:352055
+---
+ applets/systemtray/plugin/tasksproxymodel.cpp | 13 ++++++++++---
+ applets/systemtray/plugin/tasksproxymodel.h   |  5 ++++-
+ 2 files changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/applets/systemtray/plugin/tasksproxymodel.cpp b/applets/systemtray/plugin/tasksproxymodel.cpp
+index 632e84b..b93b05e 100644
+--- a/applets/systemtray/plugin/tasksproxymodel.cpp
++++ b/applets/systemtray/plugin/tasksproxymodel.cpp
+@@ -50,9 +50,9 @@ void TasksProxyModel::setHost(Host *host)
+ 
+             connect(m_host, &Host::taskStatusChanged, this, &TasksProxyModel::invalidateFilter);
+             connect(m_host, &Host::shownCategoriesChanged, this, &TasksProxyModel::invalidateFilter);
+-            connect(m_host, &Host::showAllItemsChanged, this, &TasksProxyModel::invalidateFilter);
+-            connect(m_host, &Host::forcedHiddenItemsChanged, this, &TasksProxyModel::invalidateFilter);
+-            connect(m_host, &Host::forcedShownItemsChanged, this, &TasksProxyModel::invalidateFilter);
++            connect(m_host, &Host::showAllItemsChanged, this, &TasksProxyModel::reset);
++            connect(m_host, &Host::forcedHiddenItemsChanged, this, &TasksProxyModel::reset);
++            connect(m_host, &Host::forcedShownItemsChanged, this, &TasksProxyModel::reset);
+         }
+ 
+         invalidateFilter();
+@@ -74,6 +74,13 @@ void TasksProxyModel::setCategory(Category category)
+     }
+ }
+ 
++void TasksProxyModel::reset()
++{
++    beginResetModel();
++    invalidateFilter();
++    endResetModel();
++}
++
+ bool TasksProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+ {
+     Q_UNUSED(sourceParent);
+diff --git a/applets/systemtray/plugin/tasksproxymodel.h b/applets/systemtray/plugin/tasksproxymodel.h
+index 70e723a..5799d62 100644
+--- a/applets/systemtray/plugin/tasksproxymodel.h
++++ b/applets/systemtray/plugin/tasksproxymodel.h
+@@ -56,7 +56,10 @@ public:
+ 
+     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+ 
+-signals:
++private Q_SLOTS:
++    void reset();
++
++Q_SIGNALS:
+     void hostChanged();
+     void categoryChanged();
+     void countChanged();
+-- 
+2.5.0
+
