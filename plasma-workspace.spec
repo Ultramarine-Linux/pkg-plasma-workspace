@@ -84,7 +84,7 @@ BuildRequires:  libraw1394-devel
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
 %if 0%{?prison}
-BuildRequires:  prison-qt5-devel
+BuildRequires:  kf5-prison-devel
 %endif
 
 BuildRequires:  qt5-qtbase-devel
