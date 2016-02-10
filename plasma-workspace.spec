@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -41,6 +41,11 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
 Patch101: 0001-reset-the-model-on-list-always-shown-hide-change.patch
+
+# master branch
+Patch199: 0099-Use-ConfigureNotify-instead-of-xcb_configure_window-.patch
+Patch200: 0100-Add-transparency-support-for-tray-icon.patch
+Patch201: 0101-Check-whether-there-is-any-BadWindow-error-before-mo.patch
 
 ## master branch Patches
 
@@ -342,6 +347,9 @@ Requires:       qt5-qttools
 %setup -q
 
 %patch101 -p1 -b .0001
+%patch199 -p1 -b .0099
+%patch200 -p1 -b .0100
+%patch201 -p1 -b .0101
 
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
@@ -565,6 +573,9 @@ fi
 
 
 %changelog
+* Tue Feb 09 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-3
+- backport xembedsniproxy fixes
+
 * Thu Feb 04 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-2
 - backport systray applets not shown workaround (kde#352055)
 
