@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -336,6 +336,7 @@ Summary:        Wayland support for Plasma
 Requires:       kwin-wayland >= %{version}
 Requires:       plasma-workspace = %{version}-%{release}
 Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
+Requires:       xorg-x11-server-Xwayland
 Requires:       qt5-qtwayland%{?_isa}
 # startplasmacompositor deps
 Requires:       qt5-qttools
@@ -573,6 +574,9 @@ fi
 
 
 %changelog
+* Mon Feb 22 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-4
+- -wayland: Requires: xorg-x11-server-XWayland
+
 * Tue Feb 09 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-3
 - backport xembedsniproxy fixes
 
