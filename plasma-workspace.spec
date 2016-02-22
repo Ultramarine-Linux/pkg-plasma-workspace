@@ -575,7 +575,7 @@ fi
 
 %changelog
 * Mon Feb 22 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-4
-- -wayland: Requires: xorg-x11-server-XWayland
+- -wayland: Requires: xorg-x11-server-Xwayland
 
 * Tue Feb 09 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-3
 - backport xembedsniproxy fixes
