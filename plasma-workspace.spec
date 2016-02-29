@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.4
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -41,6 +41,8 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
 Patch101: 0001-reset-the-model-on-list-always-shown-hide-change.patch
+Patch104: 0004-User-Switcher-Fix-session-switching-when-automatic-s.patch
+Patch105: 0005-Fix-typo.patch
 
 # master branch
 Patch199: 0099-Use-ConfigureNotify-instead-of-xcb_configure_window-.patch
@@ -348,6 +350,8 @@ Requires:       qt5-qttools
 %setup -q
 
 %patch101 -p1 -b .0001
+%patch104 -p1 -b .0004
+%patch105 -p1 -b .0005
 %patch199 -p1 -b .0099
 %patch200 -p1 -b .0100
 %patch201 -p1 -b .0101
@@ -574,6 +578,9 @@ fi
 
 
 %changelog
+* Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-5
+- pull in some 5.5 branch fixes
+
 * Mon Feb 22 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-4
 - -wayland: Requires: xorg-x11-server-Xwayland
 
