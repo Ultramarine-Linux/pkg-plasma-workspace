@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.4
-Release:        2%{?dist}
+Release:        6%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -41,6 +41,13 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
 Patch101: 0001-reset-the-model-on-list-always-shown-hide-change.patch
+Patch104: 0004-User-Switcher-Fix-session-switching-when-automatic-s.patch
+Patch105: 0005-Fix-typo.patch
+
+# master branch
+Patch199: 0099-Use-ConfigureNotify-instead-of-xcb_configure_window-.patch
+Patch200: 0100-Add-transparency-support-for-tray-icon.patch
+Patch201: 0101-Check-whether-there-is-any-BadWindow-error-before-mo.patch
 
 ## master branch Patches
 
@@ -84,7 +91,7 @@ BuildRequires:  libraw1394-devel
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
 %if 0%{?prison}
-BuildRequires:  prison-qt5-devel
+BuildRequires:  kf5-prison-devel
 %endif
 
 BuildRequires:  qt5-qtbase-devel
@@ -239,6 +246,10 @@ Provides:       kuiserver = %{version}-%{release}
 # https://bugzilla.redhat.com/show_bug.cgi?id=1260394
 Requires: sddm-breeze = %{version}-%{release}
 
+# digitalclock applet
+#BuildRequires: iso-codes
+Requires: iso-codes
+
 %description
 Plasma 5 libraries and runtime components
 
@@ -331,6 +342,7 @@ Summary:        Wayland support for Plasma
 Requires:       kwin-wayland >= %{version}
 Requires:       plasma-workspace = %{version}-%{release}
 Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
+Requires:       xorg-x11-server-Xwayland
 Requires:       qt5-qtwayland%{?_isa}
 # startplasmacompositor deps
 Requires:       qt5-qttools
@@ -342,6 +354,11 @@ Requires:       qt5-qttools
 %setup -q
 
 %patch101 -p1 -b .0001
+%patch104 -p1 -b .0004
+%patch105 -p1 -b .0005
+%patch199 -p1 -b .0099
+%patch200 -p1 -b .0100
+%patch201 -p1 -b .0101
 
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
@@ -565,6 +582,18 @@ fi
 
 
 %changelog
+* Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-6
+- Requires: iso-codes (digitalclock applet)
+
+* Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-5
+- pull in some 5.5 branch fixes
+
+* Mon Feb 22 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-4
+- -wayland: Requires: xorg-x11-server-Xwayland
+
+* Tue Feb 09 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-3
+- backport xembedsniproxy fixes
+
 * Thu Feb 04 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-2
 - backport systray applets not shown workaround (kde#352055)
 

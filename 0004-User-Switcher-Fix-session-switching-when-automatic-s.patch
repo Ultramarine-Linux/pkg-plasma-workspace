@@ -1,0 +1,123 @@
+From 7a0096ba99d7a71ae9f45d7c0011d0ebb1eae23d Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Thu, 25 Feb 2016 22:16:22 +0100
+Subject: [PATCH 4/5] [User Switcher] Fix session switching when automatic
+ screen locking is enabled
+
+When automatic screen locking is enabled, we want to ensure the screen is fully locked
+before we switch sessions or go to the login screen to avoid brief exposure of the desktop
+when we return.
+
+This check happens asynchronously and because the User Switcher dialog closes immediately
+after issuing the switch request, the SessionsModel is already destroyed and the reply is never
+actually processed.
+
+BUG: 356945
+FIXED-IN: 5.5.5
+
+Differential Revision: https://phabricator.kde.org/D1020
+---
+ components/sessionsprivate/sessionsmodel.cpp       | 6 ++++++
+ components/sessionsprivate/sessionsmodel.h         | 4 +++-
+ lookandfeel/contents/userswitcher/UserSwitcher.qml | 7 +++++--
+ 3 files changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/components/sessionsprivate/sessionsmodel.cpp b/components/sessionsprivate/sessionsmodel.cpp
+index 3e3a987..600e682 100644
+--- a/components/sessionsprivate/sessionsmodel.cpp
++++ b/components/sessionsprivate/sessionsmodel.cpp
+@@ -45,8 +45,10 @@ SessionsModel::SessionsModel(QObject *parent)
+         if (active) {
+             if (m_pendingVt) {
+                 m_displayManager.switchVT(m_pendingVt);
++                emit switchedUser(m_pendingVt);
+             } else if (m_pendingReserve) {
+                 m_displayManager.startReserve();
++                emit startNewSession();
+             }
+ 
+             m_pendingVt = 0;
+@@ -78,6 +80,7 @@ void SessionsModel::switchUser(int vt, bool shouldLock)
+ 
+     if (!shouldLock) {
+         m_displayManager.switchVT(vt);
++        emit switchedUser(vt);
+         return;
+     }
+ 
+@@ -85,6 +88,7 @@ void SessionsModel::switchUser(int vt, bool shouldLock)
+         if (locked) {
+             // already locked, switch right away
+             m_displayManager.switchVT(vt);
++            emit switchedUser(vt);
+         } else {
+             m_pendingReserve = false;
+             m_pendingVt = vt;
+@@ -101,6 +105,7 @@ void SessionsModel::startNewSession(bool shouldLock)
+ 
+     if (!shouldLock) {
+         m_displayManager.startReserve();
++        emit startedNewSession();
+         return;
+     }
+ 
+@@ -108,6 +113,7 @@ void SessionsModel::startNewSession(bool shouldLock)
+         if (locked) {
+             // already locked, switch right away
+             m_displayManager.startReserve();
++            emit startedNewSession();
+         } else {
+             m_pendingReserve = true;
+             m_pendingVt = 0;
+diff --git a/components/sessionsprivate/sessionsmodel.h b/components/sessionsprivate/sessionsmodel.h
+index fe7af32..827bd04 100644
+--- a/components/sessionsprivate/sessionsmodel.h
++++ b/components/sessionsprivate/sessionsmodel.h
+@@ -86,9 +86,11 @@ public:
+ 
+ signals:
+     void shouldLockChanged();
+-
+     void countChanged();
+ 
++    void switchedUser(int vt);
++    void startedNewSession();
++
+ private:
+     void checkScreenLocked(const std::function<void (bool)> &cb);
+ 
+diff --git a/lookandfeel/contents/userswitcher/UserSwitcher.qml b/lookandfeel/contents/userswitcher/UserSwitcher.qml
+index 6dd1932..da961a9 100644
+--- a/lookandfeel/contents/userswitcher/UserSwitcher.qml
++++ b/lookandfeel/contents/userswitcher/UserSwitcher.qml
+@@ -38,6 +38,11 @@ Item {
+ 
+     SessionsModel {
+         id: sessionsModel
++        // the calls takes place asynchronously; if we were to dismiss the dialog right
++        // after startNewSession/switchUser we would be destroyed before the reply
++        // returned leaving us do nothing (Bug 356945)
++        onStartedNewSession: root.dismissed()
++        onSwitchedUser: root.dismissed()
+     }
+ 
+     Controls.Action {
+@@ -125,7 +130,6 @@ Item {
+                 visible: sessionsModel.canStartNewSession
+                 onClicked: {
+                     sessionsModel.startNewSession(sessionsModel.shouldLock)
+-                    root.dismissed()
+                 }
+             }
+ 
+@@ -148,7 +152,6 @@ Item {
+                     visible: sessionsModel.count > 0
+                     onClicked: {
+                         sessionsModel.switchUser(block.mainItem.selectedItem.vtNumber, sessionsModel.shouldLock)
+-                        root.dismissed()
+                     }
+ 
+                     Controls.Action {
+-- 
+2.5.0
+
