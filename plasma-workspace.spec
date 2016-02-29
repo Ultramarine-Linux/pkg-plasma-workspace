@@ -7,7 +7,7 @@
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.4
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -245,6 +245,10 @@ Provides:       kuiserver = %{version}-%{release}
 # (hopefully temporary) workaround for dnf Obsoletes bug
 # https://bugzilla.redhat.com/show_bug.cgi?id=1260394
 Requires: sddm-breeze = %{version}-%{release}
+
+# digitalclock applet
+#BuildRequires: iso-codes
+Requires: iso-codes
 
 %description
 Plasma 5 libraries and runtime components
@@ -578,6 +582,9 @@ fi
 
 
 %changelog
+* Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-6
+- Requires: iso-codes (digitalclock applet)
+
 * Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-5
 - pull in some 5.5 branch fixes
 
