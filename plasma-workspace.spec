@@ -6,8 +6,8 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.4
-Release:        6%{?dist}
+Version:        5.5.5
+Release:        1%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -40,9 +40,6 @@ Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
-Patch101: 0001-reset-the-model-on-list-always-shown-hide-change.patch
-Patch104: 0004-User-Switcher-Fix-session-switching-when-automatic-s.patch
-Patch105: 0005-Fix-typo.patch
 
 # master branch
 Patch199: 0099-Use-ConfigureNotify-instead-of-xcb_configure_window-.patch
@@ -272,7 +269,7 @@ Summary: Runtime libraries for %{name}
 Obsoletes: plasma-workspace < 5.4.2-2
 ## omit dep on main pkg for now, means we can avoid pulling in a
 ## huge amount of deps (including kde4) into buildroot -- rex
-#Requires:  %{name}%{?_isa} = %{version}-%{release}
+#Requires:  %%{name}%%{?_isa} = %%{version}-%%{release}
 Requires:  %{name}-common = %{version}-%{release}
 %description libs
 %{summary}.
@@ -582,6 +579,9 @@ fi
 
 
 %changelog
+* Tue Mar 01 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-1
+- Plasma 5.5.5
+
 * Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-6
 - Requires: iso-codes (digitalclock applet)
 
