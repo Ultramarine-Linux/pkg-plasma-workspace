@@ -350,13 +350,6 @@ Requires:       qt5-qttools
 %prep
 %setup -q
 
-%patch101 -p1 -b .0001
-%patch104 -p1 -b .0004
-%patch105 -p1 -b .0005
-%patch199 -p1 -b .0099
-%patch200 -p1 -b .0100
-%patch201 -p1 -b .0101
-
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?fedora} > 21
@@ -367,6 +360,10 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
 %patch14 -p1 -b .plasmawayland
+
+%patch199 -p1 -b .199
+%patch200 -p1 -b .200
+%patch201 -p1 -b .201
 
 
 %build
