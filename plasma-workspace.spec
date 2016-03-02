@@ -6,8 +6,9 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.4
-Release:        6%{?dist}
+Version:        5.5.5
+%global full_version 5.5.5.2
+Release:        2%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -18,7 +19,7 @@ URL:            https://projects.kde.org/plasma-workspace
 %else
 %global stable stable
 %endif
-Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
+Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{full_version}.tar.xz
 
 %global majmin_ver %(echo %{version} | cut -d. -f1,2)
 
@@ -40,9 +41,6 @@ Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
-Patch101: 0001-reset-the-model-on-list-always-shown-hide-change.patch
-Patch104: 0004-User-Switcher-Fix-session-switching-when-automatic-s.patch
-Patch105: 0005-Fix-typo.patch
 
 # master branch
 Patch199: 0099-Use-ConfigureNotify-instead-of-xcb_configure_window-.patch
@@ -272,7 +270,7 @@ Summary: Runtime libraries for %{name}
 Obsoletes: plasma-workspace < 5.4.2-2
 ## omit dep on main pkg for now, means we can avoid pulling in a
 ## huge amount of deps (including kde4) into buildroot -- rex
-#Requires:  %{name}%{?_isa} = %{version}-%{release}
+#Requires:  %%{name}%%{?_isa} = %%{version}-%%{release}
 Requires:  %{name}-common = %{version}-%{release}
 %description libs
 %{summary}.
@@ -353,13 +351,6 @@ Requires:       qt5-qttools
 %prep
 %setup -q
 
-%patch101 -p1 -b .0001
-%patch104 -p1 -b .0004
-%patch105 -p1 -b .0005
-%patch199 -p1 -b .0099
-%patch200 -p1 -b .0100
-%patch201 -p1 -b .0101
-
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?fedora} > 21
@@ -370,6 +361,10 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
 %patch14 -p1 -b .plasmawayland
+
+%patch199 -p1 -b .199
+%patch200 -p1 -b .200
+%patch201 -p1 -b .201
 
 
 %build
@@ -582,6 +577,12 @@ fi
 
 
 %changelog
+* Wed Mar 03 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-2
+- Upstream respun tarball
+
+* Tue Mar 02 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-1
+- Plasma 5.5.5
+
 * Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-6
 - Requires: iso-codes (digitalclock applet)
 
