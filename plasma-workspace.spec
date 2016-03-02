@@ -6,8 +6,9 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.5.2
-Release:        1%{?dist}
+Version:        5.5.5
+%global full_version 5.5.5.2
+Release:        2%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -18,7 +19,7 @@ URL:            https://projects.kde.org/plasma-workspace
 %else
 %global stable stable
 %endif
-Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
+Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{full_version}.tar.xz
 
 %global majmin_ver %(echo %{version} | cut -d. -f1,2)
 
@@ -576,7 +577,7 @@ fi
 
 
 %changelog
-* Wed Mar 03 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5.2-1
+* Wed Mar 03 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-2
 - Upstream respun tarball
 
 * Tue Mar 02 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-1
