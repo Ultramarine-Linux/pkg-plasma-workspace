@@ -6,7 +6,7 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.5
+Version:        5.5.5.2
 Release:        1%{?dist}
 
 License:        GPLv2+
@@ -576,7 +576,10 @@ fi
 
 
 %changelog
-* Tue Mar 01 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-1
+* Wed Mar 03 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5.2-1
+- Upstream respun tarball
+
+* Tue Mar 02 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-1
 - Plasma 5.5.5
 
 * Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-6
