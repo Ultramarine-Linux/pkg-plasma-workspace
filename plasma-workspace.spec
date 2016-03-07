@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -43,9 +43,11 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 ## upstream Patches
 
 # master branch
+Patch136: 0036-SNI-DataEngine-ProtocolVersion-is-an-int.patch
 Patch199: 0099-Use-ConfigureNotify-instead-of-xcb_configure_window-.patch
 Patch200: 0100-Add-transparency-support-for-tray-icon.patch
 Patch201: 0101-Check-whether-there-is-any-BadWindow-error-before-mo.patch
+Patch227: 0127-Avoid-blocking-DBus-calls-in-SNI-startup.patch
 
 ## master branch Patches
 
@@ -362,9 +364,11 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch13 -p1 -b .startplasmacompositor
 %patch14 -p1 -b .plasmawayland
 
+%patch136 -p1 -b .036
 %patch199 -p1 -b .199
 %patch200 -p1 -b .200
 %patch201 -p1 -b .201
+%patch227 -p1 -b .227
 
 
 %build
@@ -577,6 +581,9 @@ fi
 
 
 %changelog
+* Mon Mar 07 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.5-3
+- backport "Avoid blocking DBus calls in SNI startup" (kde#359611)
+
 * Wed Mar 03 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-2
 - Upstream respun tarball
 
