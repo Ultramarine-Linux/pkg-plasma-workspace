@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -211,11 +211,13 @@ Requires:       f23-kde-theme
 
 Requires:       systemd
 
+%if 0%{?fedora} < 24
 # SysTray support for Qt 4 apps
 Requires:       sni-qt%{?_isa}
 
 # kde(4) platform plugin
 Requires:       kde-platform-plugin%{?_isa}
+%endif
 
 # Oxygen
 Requires:       oxygen-icon-theme
@@ -581,6 +583,9 @@ fi
 
 
 %changelog
+* Fri Mar 11 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.5-4
+- f24+: -Requires: sni-qt kde-platform-plugin (use rich/soft deps elsewhere)
+
 * Mon Mar 07 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.5-3
 - backport "Avoid blocking DBus calls in SNI startup" (kde#359611)
 
