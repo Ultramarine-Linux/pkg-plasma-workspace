@@ -211,7 +211,7 @@ Requires:       f23-kde-theme
 
 Requires:       systemd
 
-%if 0%{?fedora} < 24
+%if 0%{?fedora} < 23
 # SysTray support for Qt 4 apps
 Requires:       sni-qt%{?_isa}
 
@@ -584,7 +584,7 @@ fi
 
 %changelog
 * Fri Mar 11 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.5-4
-- f24+: -Requires: sni-qt kde-platform-plugin (use rich/soft deps elsewhere)
+- f23+: -Requires: sni-qt kde-platform-plugin (use rich/soft deps elsewhere)
 
 * Mon Mar 07 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.5-3
 - backport "Avoid blocking DBus calls in SNI startup" (kde#359611)
