@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -244,9 +244,14 @@ Obsoletes:      plasma-workspace < 5.4.2-2
 Obsoletes:      kde-runtime-kuiserver < 1:15.08.2
 Provides:       kuiserver = %{version}-%{release}
 
+%if 0%{?fedora} && 0%{?fedora} < 23
 # (hopefully temporary) workaround for dnf Obsoletes bug
 # https://bugzilla.redhat.com/show_bug.cgi?id=1260394
 Requires: sddm-breeze = %{version}-%{release}
+%endif
+
+# upgrade path, when sddm-breeze was split out
+Obsoletes: plasma-workspace < 5.3.2-8
 
 # digitalclock applet
 #BuildRequires: iso-codes
@@ -583,6 +588,9 @@ fi
 
 
 %changelog
+* Mon Mar 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-5
+- drop Requires: sddm-breeze for f23+ (workaround for bug #1261034)
+
 * Fri Mar 11 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.5-4
 - f23+: -Requires: sni-qt kde-platform-plugin (use rich/soft deps elsewhere)
 
