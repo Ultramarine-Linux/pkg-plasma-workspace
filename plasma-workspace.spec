@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -203,10 +203,16 @@ Provides:       f22-kde-theme-core = %{version}-%{release}
 Requires:       f22-kde-theme >= 22.2
 %global default_lookandfeel org.fedoraproject.fedora.twenty.two
 %endif
-%if 0%{?fedora} > 22
+%if 0%{?fedora} == 23
 Provides:       f23-kde-theme-core = %{version}-%{release}
 Requires:       f23-kde-theme
 %global default_lookandfeel org.fedoraproject.fedora.twenty.three
+%endif
+%if 0%{?fedora} > 23
+Requires:       f24-backgrounds-kde
+%endif
+if ! 0%{?default_lookandfeel:1}
+Requires:       desktop-backgrounds-compat
 %endif
 
 Requires:       systemd
@@ -362,7 +368,7 @@ Requires:       qt5-qttools
 
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
-%if 0%{?fedora} > 21
+%if 0%{?default_lookandfeel:1}
 %patch11 -p1 -b .set-fedora-default-look-and-feel
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
@@ -588,6 +594,9 @@ fi
 
 
 %changelog
+* Mon Mar 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-6
+- generic theming for f24+
+
 * Mon Mar 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-5
 - drop Requires: sddm-breeze for f23+ (workaround for bug #1261034)
 
