@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -199,12 +199,14 @@ Requires:       kde-settings-plasma
 %if 0%{?fedora} > 21
 Provides:       f22-kde-theme-core = %{version}-%{release}
 %endif
+%if 0%{?fedora} > 22
+Provides:       f23-kde-theme-core = %{version}-%{release}
+%endif
 %if 0%{?fedora} == 22
 Requires:       f22-kde-theme >= 22.2
 %global default_lookandfeel org.fedoraproject.fedora.twenty.two
 %endif
 %if 0%{?fedora} == 23
-Provides:       f23-kde-theme-core = %{version}-%{release}
 Requires:       f23-kde-theme
 %global default_lookandfeel org.fedoraproject.fedora.twenty.three
 %endif
@@ -594,6 +596,9 @@ fi
 
 
 %changelog
+* Mon Mar 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-7
+- Provides: f23-kde-theme-core
+
 * Mon Mar 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-6
 - generic theming for f24+
 
