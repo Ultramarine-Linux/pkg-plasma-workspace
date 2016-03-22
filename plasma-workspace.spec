@@ -211,7 +211,7 @@ Requires:       f23-kde-theme
 %if 0%{?fedora} > 23
 Requires:       f24-backgrounds-kde
 %endif
-if ! 0%{?default_lookandfeel:1}
+%if ! 0%{?default_lookandfeel:1}
 Requires:       desktop-backgrounds-compat
 %endif
 
