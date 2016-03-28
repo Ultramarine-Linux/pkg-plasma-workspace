@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -211,6 +211,9 @@ Requires:       f23-kde-theme
 %global default_lookandfeel org.fedoraproject.fedora.twenty.three
 %endif
 %if 0%{?fedora} > 23
+%global         f24_kde_theme_core 1
+#global default_lookandfeel org.fedoraproject.fedora.twenty.four
+# drop when f24-kde-theme is ready
 Requires:       f24-backgrounds-kde
 %endif
 %if ! 0%{?default_lookandfeel:1}
@@ -364,6 +367,13 @@ Requires:       qt5-qttools
 %description wayland
 %{summary}.
 
+%package -n f24-kde-theme-core
+Summary:  Core and Inherited theme elements
+Requires: %{name}-common = %{version}-%{release}
+#Requires: f24-kde-theme
+%description -n f24-kde-theme-core
+%{summary}.
+
 
 %prep
 %setup -q
@@ -418,6 +428,14 @@ install -m 0644 %{SOURCE13} %{buildroot}%{_datadir}/kservices5/plasma-lookandfee
 ## We need to remove original background which will be replaced by Fedora one from f23-kde-theme
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/components/artwork/background.png
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/previews/{lockscreen.png,preview.png,splash.png}
+%endif
+
+%if 0%{?f24_kde_theme_core}
+# Create Fedora Twenty Three look and feel package from the Breeze one
+cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.four}
+# remove items that will be provided by f24-kde-theme
+rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/components/artwork/background.png
+rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/previews/{lockscreen.png,preview.png,splash.png}
 %endif
 
 # make fedora-breeze sddm theme variant.  FIXME/TODO: corrected preview screenshot
@@ -594,8 +612,16 @@ fi
 %{_libexecdir}/startplasma
 %{_datadir}/wayland-sessions/plasmawayland.desktop
 
+%if 0%{?f24_kde_theme_core}
+%files -n f24-kde-theme_core
+%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/
+%endif
+
 
 %changelog
+* Mon Mar 28 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-8
+- f24-kde-theme-core subpkg (readying for f24-kde-theme)
+
 * Mon Mar 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-7
 - Provides: f23-kde-theme-core
 
