@@ -613,7 +613,7 @@ fi
 %{_datadir}/wayland-sessions/plasmawayland.desktop
 
 %if 0%{?f24_kde_theme_core}
-%files -n f24-kde-theme_core
+%files -n f24-kde-theme-core
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/
 %endif
 
