@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        9%{?dist}
+Release:        10%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -211,6 +211,7 @@ Requires:       f23-kde-theme
 %global default_lookandfeel org.fedoraproject.fedora.twenty.three
 %endif
 %if 0%{?fedora} > 23
+Requires:       f24-kde-theme-core
 %global         f24_kde_theme_core 1
 %global default_lookandfeel org.fedoraproject.fedora.twenty.four
 %endif
@@ -355,8 +356,8 @@ BuildArch: noarch
 
 %package wayland
 Summary:        Wayland support for Plasma
+Requires:       %{name} = %{version}-%{release}
 Requires:       kwin-wayland >= %{version}
-Requires:       plasma-workspace = %{version}-%{release}
 Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
 Requires:       xorg-x11-server-Xwayland
 Requires:       qt5-qtwayland%{?_isa}
@@ -367,7 +368,7 @@ Requires:       qt5-qttools
 
 %package -n f24-kde-theme-core
 Summary:  Core and Inherited theme elements
-Requires: %{name}-common = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 Requires: f24-kde-theme
 %description -n f24-kde-theme-core
 %{summary}.
@@ -432,6 +433,7 @@ rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twe
 # Create Fedora Twenty Three look and feel package from the Breeze one
 cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.four}
 # remove items that will be provided by f24-kde-theme
+rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/metadata.desktop
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/components/artwork/background.png
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/previews/{lockscreen.png,preview.png,splash.png}
 %endif
@@ -617,6 +619,11 @@ fi
 
 
 %changelog
+* Wed Mar 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-10
+- f24-kde-theme-core: fix conflict with f24-kde-theme
+- f24-kde-theme-core: add dep to/from plasma-workspace
+- -wayland: s/plasma-workspace/%%name/
+
 * Wed Mar 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-9
 - enable f24-kde-theme default looknfeel (f24+)
 
