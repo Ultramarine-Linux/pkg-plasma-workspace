@@ -8,7 +8,7 @@ Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
 Version:        5.5.5
 %global full_version 5.5.5.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 
 License:        GPLv2+
 URL:            https://projects.kde.org/plasma-workspace
@@ -212,9 +212,7 @@ Requires:       f23-kde-theme
 %endif
 %if 0%{?fedora} > 23
 %global         f24_kde_theme_core 1
-#global default_lookandfeel org.fedoraproject.fedora.twenty.four
-# drop when f24-kde-theme is ready
-Requires:       f24-backgrounds-kde
+%global default_lookandfeel org.fedoraproject.fedora.twenty.four
 %endif
 %if ! 0%{?default_lookandfeel:1}
 Requires:       desktop-backgrounds-compat
@@ -370,7 +368,7 @@ Requires:       qt5-qttools
 %package -n f24-kde-theme-core
 Summary:  Core and Inherited theme elements
 Requires: %{name}-common = %{version}-%{release}
-#Requires: f24-kde-theme
+Requires: f24-kde-theme
 %description -n f24-kde-theme-core
 %{summary}.
 
@@ -619,6 +617,9 @@ fi
 
 
 %changelog
+* Wed Mar 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-9
+- enable f24-kde-theme default looknfeel (f24+)
+
 * Mon Mar 28 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-8
 - f24-kde-theme-core subpkg (readying for f24-kde-theme)
 
