@@ -1,6 +1,6 @@
 # Define (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
-#define bootstrap 1
+%define bootstrap 1
 
 %global kf5_version 5.13.0
 
@@ -606,7 +606,7 @@ fi
 
 %changelog
 * Fri Apr 08 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.1-1
-- Plasma-5.6.1
+- Plasma-5.6.1 (bootstrap)
 
 * Wed Mar 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-10
 - f24-kde-theme-core: fix conflict with f24-kde-theme
