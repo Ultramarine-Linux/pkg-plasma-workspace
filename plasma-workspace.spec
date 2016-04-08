@@ -6,12 +6,11 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.5.5
-%global full_version 5.5.5.2
-Release:        10%{?dist}
+Version:        5.6.1
+Release:        1%{?dist}
 
 License:        GPLv2+
-URL:            https://projects.kde.org/plasma-workspace
+URL:            https://quickgit.kde.org/?p=%{name}.git
 
 %global revision %(echo %{version} | cut -d. -f3)
 %if %{revision} >= 50
@@ -19,7 +18,7 @@ URL:            https://projects.kde.org/plasma-workspace
 %else
 %global stable stable
 %endif
-Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{full_version}.tar.xz
+Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
 
 %global majmin_ver %(echo %{version} | cut -d. -f1,2)
 
@@ -30,24 +29,16 @@ Source12:       twenty.two.desktop
 Source13:       twenty.three.desktop
 
 ## downstream Patches
-Patch10:        plasma-workspace-5.3.0-konsole-in-contextmenu.patch
+Patch10:        plasma-workspace-5.6.1-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
 Patch13:        startplasmacompositor.patch
-Patch14:        plasma-workspace-5.5.0-plasmawayland_desktop.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
-
-# master branch
-Patch136: 0036-SNI-DataEngine-ProtocolVersion-is-an-int.patch
-Patch199: 0099-Use-ConfigureNotify-instead-of-xcb_configure_window-.patch
-Patch200: 0100-Add-transparency-support-for-tray-icon.patch
-Patch201: 0101-Check-whether-there-is-any-BadWindow-error-before-mo.patch
-Patch227: 0127-Avoid-blocking-DBus-calls-in-SNI-startup.patch
 
 ## master branch Patches
 
@@ -158,7 +149,8 @@ Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
 
 # for libkdeinit5_*
 %{?kf5_kinit_requires}
-Requires:       kf5-kactivities
+Requires:       kactivitymanagerd >= %{majmin_ver}
+Requires:       khotkeys >= %{majmin_ver}
 Requires:       kf5-kded
 Requires:       kf5-kdoctools
 Requires:       qt5-qtquickcontrols
@@ -167,7 +159,6 @@ Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
 Requires:       kf5-kxmlrpcclient
-Requires:       khotkeys >= %{majmin_ver}
 
 # The new volume control for PulseAudio
 %if 0%{?fedora} > 22
@@ -386,13 +377,8 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
-%patch14 -p1 -b .plasmawayland
 
-%patch136 -p1 -b .036
-%patch199 -p1 -b .199
-%patch200 -p1 -b .200
-%patch201 -p1 -b .201
-%patch227 -p1 -b .227
+sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
 
 
 %build
@@ -619,6 +605,9 @@ fi
 
 
 %changelog
+* Fri Apr 08 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.1-1
+- Plasma-5.6.1
+
 * Wed Mar 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.5.5-10
 - f24-kde-theme-core: fix conflict with f24-kde-theme
 - f24-kde-theme-core: add dep to/from plasma-workspace
