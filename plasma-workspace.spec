@@ -6,8 +6,8 @@
 
 Name:           plasma-workspace
 Summary:        Plasma workspace, applications and applets
-Version:        5.6.1
-Release:        2%{?dist}
+Version: 5.6.2
+Release: 1%{?dist}
 
 License:        GPLv2+
 URL:            https://quickgit.kde.org/?p=%{name}.git
@@ -605,6 +605,9 @@ fi
 
 
 %changelog
+* Sat Apr 09 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.2-1
+- 5.6.2
+
 * Fri Apr 08 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.1-2
 - de-bootstrap
 
