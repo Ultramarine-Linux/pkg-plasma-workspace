@@ -559,9 +559,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_libdir}/libtaskmanager.so
 %{_libdir}/libplasma-geolocation-interface.so
 %{_libdir}/libkworkspace5.so
-%dir %{_includedir}/KDE
-%dir %{_includedir}/KDE/Plasma/
-%{_includedir}/KDE/Plasma/Weather/
 %dir %{_includedir}/plasma/
 %{_includedir}/plasma/weather/
 %{_includedir}/kworkspace5/
