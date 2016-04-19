@@ -4,13 +4,13 @@
 
 %global kf5_version 5.13.0
 
-Name:           plasma-workspace
-Summary:        Plasma workspace, applications and applets
-Version: 5.6.2
+Name:    plasma-workspace
+Summary: Plasma workspace, applications and applets
+Version: 5.6.3
 Release: 1%{?dist}
 
-License:        GPLv2+
-URL:            https://quickgit.kde.org/?p=%{name}.git
+License: GPLv2+
+URL:     https://quickgit.kde.org/?p=%{name}.git
 
 %global revision %(echo %{version} | cut -d. -f3)
 %if %{revision} >= 50
@@ -602,6 +602,9 @@ fi
 
 
 %changelog
+* Tue Apr 19 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-1
+- 5.6.3
+
 * Sat Apr 09 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.2-1
 - 5.6.2
 
