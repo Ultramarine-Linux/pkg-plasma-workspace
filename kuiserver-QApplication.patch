@@ -1,0 +1,16 @@
+As GUI elements are present in ProgressListModel, use QApplication rather than
+QCoreApplication to ensure a GUI eventloop.
+
+Fixes reported issue https://bugs.kde.org/show_bug.cgi?id=348123
+
+--- plasma-workspace-5.4.2.old/kuiserver/main.cpp       2015-10-01 05:56:51.000000000 -0400
++++ plasma-workspace-5.4.2.new/kuiserver/main.cpp       2015-11-02 16:23:27.424833932 -0500
+@@ -35,7 +35,7 @@ extern "C" Q_DECL_EXPORT int kdemain(int
+ {
+     QLoggingCategory::setFilterRules(QStringLiteral("kuiserver.debug = true"));
+
+-    QCoreApplication app(argc, argv);
++    QApplication app(argc, argv);
+     app.setApplicationName(QStringLiteral("kuiserver"));
+     app.setApplicationVersion(QStringLiteral("2.0"));
+     app.setOrganizationDomain(QStringLiteral("kde.org"));

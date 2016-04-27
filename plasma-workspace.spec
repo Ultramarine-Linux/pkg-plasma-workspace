@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -37,6 +37,8 @@ Patch13:        startplasmacompositor.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
+# https://bugs.kde.org/show_bug.cgi?id=348123#c18
+Patch2:         kuiserver-QApplication.patch
 
 ## upstream Patches
 
@@ -369,6 +371,7 @@ Requires: f24-kde-theme
 %setup -q
 
 %patch1 -p1 -b .installdbgsymbols
+%patch2 -p1 -b .kuiserver_QApplication
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?default_lookandfeel:1}
 %patch11 -p1 -b .set-fedora-default-look-and-feel
@@ -602,6 +605,9 @@ fi
 
 
 %changelog
+* Wed Apr 27 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-2
+- Some processes (kuiserver) are left running after exiting KDE (#348123)
+
 * Tue Apr 19 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-1
 - 5.6.3
 
