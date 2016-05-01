@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.3
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -473,13 +473,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
-%{_kf5_qtplugindir}/plasma/dataengine/*.so
-%{_kf5_qtplugindir}/plasma/packagestructure/*.so
-%{_kf5_qtplugindir}/*.so
-%{_kf5_qtplugindir}/phonon_platform/kde.so
-%{_kf5_qtplugindir}/kpackage/packagestructure/*.so
-%{_kf5_plugindir}/kio/desktop.so
-%{_kf5_plugindir}/kded/*.so
 %{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/ksyncdbusenv
 %{_kf5_datadir}/ksmserver/
@@ -541,6 +534,15 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_sysconfdir}/xdg/taskmanagerrulesrc
 %{_libdir}/libtaskmanager.so.5*
 %{_libdir}/libweather_ion.so.7*
+# multilib'able plugins
+%{_kf5_qtplugindir}/plasma/dataengine/*.so
+%{_kf5_qtplugindir}/plasma/packagestructure/*.so
+%{_kf5_qtplugindir}/*.so
+%dir %{_kf5_qtplugindir}/phonon_platform/
+%{_kf5_qtplugindir}/phonon_platform/kde.so
+%{_kf5_qtplugindir}/kpackage/packagestructure/*.so
+%{_kf5_plugindir}/kio/desktop.so
+%{_kf5_plugindir}/kded/*.so
 
 %files geolocation
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
@@ -605,6 +607,10 @@ fi
 
 
 %changelog
+* Sat Apr 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-3
+- own phonon_platform plugin dir
+- -libs: move multilib'able plugins here
+
 * Wed Apr 27 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-2
 - Some processes (kuiserver) are left running after exiting KDE (#348123)
 
