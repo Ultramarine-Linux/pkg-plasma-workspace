@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.3
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -538,6 +538,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_qtplugindir}/plasma/dataengine/*.so
 %{_kf5_qtplugindir}/plasma/packagestructure/*.so
 %{_kf5_qtplugindir}/*.so
+%exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
+%exclude %{_kf5_qtplugindir}/plasma-geolocation-ip.so
+%exclude %{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
 %dir %{_kf5_qtplugindir}/phonon_platform/
 %{_kf5_qtplugindir}/phonon_platform/kde.so
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
@@ -607,6 +610,9 @@ fi
 
 
 %changelog
+* Sun May 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-4
+- -libs: omit geolocation plugins
+
 * Sat Apr 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-3
 - own phonon_platform plugin dir
 - -libs: move multilib'able plugins here
