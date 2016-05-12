@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.3
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -23,6 +23,7 @@ Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.
 %global majmin_ver %(echo %{version} | cut -d. -f1,2)
 
 # This goes to PAM
+# TODO: this should arguably be in kde-settings with the other pam-related configs
 Source10:       kde
 # Desktop file for Fedora Twenty Two/Three look-and-feel package
 Source12:       twenty.two.desktop
@@ -434,7 +435,7 @@ ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
 
 # Make kcheckpass work
-install -m455 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
+install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
 # installdbgsymbols script
 install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
@@ -610,6 +611,9 @@ fi
 
 
 %changelog
+* Thu May 12 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-5
+- /etc/pam.d/kde is executable (#1335500)
+
 * Sun May 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-4
 - -libs: omit geolocation plugins
 
