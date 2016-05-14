@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.6.3
-Release: 5%{?dist}
+Version: 5.6.4
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -38,8 +38,6 @@ Patch13:        startplasmacompositor.patch
 
 ## upstreamable Patches
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
-# https://bugs.kde.org/show_bug.cgi?id=348123#c18
-Patch2:         kuiserver-QApplication.patch
 
 ## upstream Patches
 
@@ -372,7 +370,6 @@ Requires: f24-kde-theme
 %setup -q
 
 %patch1 -p1 -b .installdbgsymbols
-%patch2 -p1 -b .kuiserver_QApplication
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?default_lookandfeel:1}
 %patch11 -p1 -b .set-fedora-default-look-and-feel
@@ -611,6 +608,9 @@ fi
 
 
 %changelog
+* Sat May 14 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-1
+- 5.6.4
+
 * Thu May 12 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.3-5
 - /etc/pam.d/kde is executable (#1335500)
 
