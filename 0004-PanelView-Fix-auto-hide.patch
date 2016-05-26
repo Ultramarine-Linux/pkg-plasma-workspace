@@ -1,0 +1,37 @@
+From e1ae057fef297b46d17256d497e8e2f4e24c1264 Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Wed, 25 May 2016 14:22:47 +0200
+Subject: [PATCH 4/4] [PanelView] Fix auto hide
+
+The newly introduced HiddenStatus which is used by eg. the desktop pager to completely
+hide itself when there is only one virtual desktop, has a higher value than
+RequiresAttentionStatus for ABI compatibility reasons, so auto-hide was never actually
+enabled if you had this applet (part of the default setup) with just one virtual desktop.
+
+BUG: 362105
+FIXED-IN: 5.6.5
+
+Differential Revision: https://phabricator.kde.org/D1683
+---
+ shell/panelview.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/shell/panelview.cpp b/shell/panelview.cpp
+index 7809d84..4239419 100644
+--- a/shell/panelview.cpp
++++ b/shell/panelview.cpp
+@@ -579,7 +579,10 @@ void PanelView::showConfigurationInterface(Plasma::Applet *applet)
+ void PanelView::restoreAutoHide()
+ {
+     setAutoHideEnabled(edgeActivated()
+-        && (!containment() || containment()->status() < Plasma::Types::RequiresAttentionStatus)
++        && (!containment() ||
++                (containment()->status() < Plasma::Types::RequiresAttentionStatus
++                 || containment()->status() == Plasma::Types::HiddenStatus)
++                )
+         && !geometry().contains(QCursor::pos())
+     );
+ }
+-- 
+2.7.4
+

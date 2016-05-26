@@ -1,0 +1,30 @@
+From 3613733a933f4010f8b570f4aa6a1f5cb4dbe5ba Mon Sep 17 00:00:00 2001
+From: Eike Hein <hein@kde.org>
+Date: Thu, 12 May 2016 17:34:39 +0900
+Subject: [PATCH 1/4] Don't read empty icons from config-stored launcher URL.
+
+CCBUG:362957
+---
+ libtaskmanager/groupmanager.cpp | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/libtaskmanager/groupmanager.cpp b/libtaskmanager/groupmanager.cpp
+index 528a55e..fb7cdc9 100644
+--- a/libtaskmanager/groupmanager.cpp
++++ b/libtaskmanager/groupmanager.cpp
+@@ -1077,7 +1077,11 @@ void GroupManager::setLauncherList(QList<QUrl> launcherList)
+             pixmap.loadFromData(bytes);
+             icon.addPixmap(pixmap);
+         } else {
+-            icon = QIcon::fromTheme(query.queryItemValue(QStringLiteral("icon")));
++            QString iconName = query.queryItemValue(QStringLiteral("icon"));
++
++            if (!iconName.isEmpty()) {
++                icon = QIcon::fromTheme(iconName);
++            }
+         }
+ 
+         l.setQuery(QUrlQuery());
+-- 
+2.7.4
+

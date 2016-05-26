@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -40,6 +40,10 @@ Patch13:        startplasmacompositor.patch
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 
 ## upstream Patches
+Patch101: 0001-Don-t-read-empty-icons-from-config-stored-launcher-U.patch
+Patch102: 0002-Battery-Monitor-Use-Has-Cumulative-instead-of-total-.patch
+Patch103: 0003-KSplashQML-Don-t-wait-for-KWin-to-start-on-Wayland.patch
+Patch104: 0004-PanelView-Fix-auto-hide.patch
 
 ## master branch Patches
 
@@ -369,6 +373,12 @@ Requires: f24-kde-theme
 %prep
 %setup -q
 
+## upstream patches
+%patch101 -p1
+%patch102 -p1
+%patch103 -p1
+%patch104 -p1
+
 %patch1 -p1 -b .installdbgsymbols
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?default_lookandfeel:1}
@@ -608,6 +618,9 @@ fi
 
 
 %changelog
+* Thu May 26 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-2
+- backport 5.6 branch fixes
+
 * Sat May 14 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-1
 - 5.6.4
 

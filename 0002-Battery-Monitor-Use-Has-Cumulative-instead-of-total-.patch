@@ -1,0 +1,34 @@
+From a19fcfaf90db8ebc6e704917448ccfde7ae0ae59 Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Thu, 12 May 2016 14:44:18 +0200
+Subject: [PATCH 2/4] [Battery Monitor] Use "Has Cumulative" instead of total
+ battery count for tray icon
+
+This fixes the battery icon errorneously showing an empty red battery on a desktop
+computer with a wireless mouse/keyboard; instead the "no battery" icon with a
+red cross is shown.
+
+CHANGELOG: Battery icon no longer errorneously reports an empty battery if computer has none
+
+CCBUG: 362924
+Reviewed-By: mgraesslin
+---
+ applets/batterymonitor/package/contents/ui/CompactRepresentation.qml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/applets/batterymonitor/package/contents/ui/CompactRepresentation.qml b/applets/batterymonitor/package/contents/ui/CompactRepresentation.qml
+index b4059cb..90d3792 100755
+--- a/applets/batterymonitor/package/contents/ui/CompactRepresentation.qml
++++ b/applets/batterymonitor/package/contents/ui/CompactRepresentation.qml
+@@ -50,7 +50,7 @@ MouseArea {
+             Item {
+                 id: batteryContainer
+ 
+-                property bool hasBattery: view.singleBattery ? batterymonitor.batteries.count : model["Plugged in"]
++                property bool hasBattery: view.singleBattery ? view.hasBattery : model["Plugged in"]
+                 property int percent: view.singleBattery ? pmSource.data["Battery"]["Percent"] : model["Percent"]
+                 property bool pluggedIn: pmSource.data["AC Adapter"] && pmSource.data["AC Adapter"]["Plugged in"] && (view.singleBattery || model["Is Power Supply"])
+ 
+-- 
+2.7.4
+
