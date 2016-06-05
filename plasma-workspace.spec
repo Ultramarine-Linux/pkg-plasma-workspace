@@ -323,6 +323,7 @@ Requires: dnf-command(debuginfo-install)
 # owner of debuginfo-install
 Requires: yum-utils
 %endif
+Requires: kdialog
 Requires: konsole5
 Requires: polkit
 # owner of setsebool
@@ -636,7 +637,7 @@ fi
 %changelog
 * Sun Jun 05 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-3
 - -drkonqi: support 'dnf debuginfo-install' (f24+)
-- -drkonqi: Requires: konsole5 dnf-command(debuginfo-install) (f24+)
+- -drkonqi: Requires: kdialog konsole5 dnf-command(debuginfo-install) (f24+)
 
 * Thu May 26 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-2
 - backport 5.6 branch fixes
