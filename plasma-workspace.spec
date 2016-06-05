@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -37,7 +37,10 @@ Patch12:        startkde.patch
 Patch13:        startplasmacompositor.patch
 
 ## upstreamable Patches
+# (yum) debuginfo-install improvements
 Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
+# dnf debuginfo-install
+Patch2:         plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
 Patch101: 0001-Don-t-read-empty-icons-from-config-stored-launcher-U.patch
@@ -314,6 +317,13 @@ Summary: DrKonqi crash handler for KF5/Plasma5
 Obsoletes: plasma-workspace < 5.4.2-2
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-common = %{version}-%{release}
+%if 0%{?fedora} > 23
+Requires: dnf-command(debuginfo-install)
+%else
+# owner of debuginfo-install
+Requires: yum-utils
+%endif
+Requires: konsole5
 Requires: polkit
 # owner of setsebool
 Requires(post): policycoreutils
@@ -379,7 +389,13 @@ Requires: f24-kde-theme
 %patch103 -p1
 %patch104 -p1
 
+%if 0%{?fedora} > 23
+# dnf debuginfo-install
+%patch2 -p1 -b .installdgbsymbols
+%else
+# (yum) debuginfo-install
 %patch1 -p1 -b .installdbgsymbols
+%endif
 %patch10 -p1 -b .konsole-in-contextmenu
 %if 0%{?default_lookandfeel:1}
 %patch11 -p1 -b .set-fedora-default-look-and-feel
@@ -618,6 +634,10 @@ fi
 
 
 %changelog
+* Sun Jun 05 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-3
+- -drkonqi: support 'dnf debuginfo-install' (f24+)
+- -drkonqi: Requires: konsole5 dnf-command(debuginfo-install) (f24+)
+
 * Thu May 26 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-2
 - backport 5.6 branch fixes
 
