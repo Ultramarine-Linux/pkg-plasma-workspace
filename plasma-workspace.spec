@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.6.4
-Release: 3%{?dist}
+Version: 5.6.5
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -43,10 +43,6 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 Patch2:         plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
-Patch101: 0001-Don-t-read-empty-icons-from-config-stored-launcher-U.patch
-Patch102: 0002-Battery-Monitor-Use-Has-Cumulative-instead-of-total-.patch
-Patch103: 0003-KSplashQML-Don-t-wait-for-KWin-to-start-on-Wayland.patch
-Patch104: 0004-PanelView-Fix-auto-hide.patch
 
 ## master branch Patches
 
@@ -385,10 +381,6 @@ Requires: f24-kde-theme
 %setup -q
 
 ## upstream patches
-%patch101 -p1
-%patch102 -p1
-%patch103 -p1
-%patch104 -p1
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
@@ -635,6 +627,9 @@ fi
 
 
 %changelog
+* Tue Jun 14 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.5-1
+- 5.6.5
+
 * Sun Jun 05 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.4-3
 - -drkonqi: support 'dnf debuginfo-install' (f24+)
 - -drkonqi: Requires: kdialog konsole5 dnf-command(debuginfo-install) (f24+)
