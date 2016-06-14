@@ -462,7 +462,7 @@ grep drkonqi.mo all.lang > drkonqi.lang
 grep libkworkspace.mo all.lang > libkworkspace5.lang
 grep libtaskmanager.mo all.lang > libs.lang
 # any translations not used elsewhere, include in main pkg
-cat *.lang | uniq -u > %{name}.lang
+cat *.lang | sort | uniq -u > %{name}.lang
 
 
 %check
@@ -536,7 +536,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %lang(en) %{_docdir}/HTML/en/klipper/
 %lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker
 %lang(ca) %{_docdir}/HTML/ca/klipper/
-%lang(ca) %{_docdir}/HTML/ca/kcontrol/screenlocker
+#lang(ca) %{_docdir}/HTML/ca/kcontrol/screenlocker
 
 %post -n libkworkspace5 -p /sbin/ldconfig
 %postun -n libkworkspace5 -p /sbin/ldconfig
