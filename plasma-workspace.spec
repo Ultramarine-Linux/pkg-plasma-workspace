@@ -523,9 +523,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_datadir}/xsessions/plasma.desktop
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
-%exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
-%exclude %{_kf5_qtplugindir}/plasma-geolocation-ip.so
-%exclude %{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
 %exclude %{_kf5_datadir}/kservices5/plasma-geolocation-gps.desktop
 %exclude %{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
@@ -552,8 +549,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_libdir}/libtaskmanager.so.5*
 %{_libdir}/libweather_ion.so.7*
 # multilib'able plugins
-%{_kf5_qtplugindir}/plasma/dataengine/*.so
-%{_kf5_qtplugindir}/plasma/packagestructure/*.so
+%{_kf5_qtplugindir}/plasma/applets/
+%{_kf5_qtplugindir}/plasma/dataengine/
+%{_kf5_qtplugindir}/plasma/packagestructure/
 %{_kf5_qtplugindir}/*.so
 %exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
 %exclude %{_kf5_qtplugindir}/plasma-geolocation-ip.so
