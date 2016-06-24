@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -142,6 +142,7 @@ Conflicts:      kio-extras < 5.4.0
 %if 0%{?fedora} > 21
 Recommends:     %{name}-drkonqi = %{version}-%{release}
 Recommends:     %{name}-geolocation = %{version}-%{release}
+Suggests:       imsettings-qt
 %else
 Requires:       %{name}-drkonqi = %{version}-%{release}
 Requires:       %{name}-geolocation = %{version}-%{release}
@@ -625,6 +626,9 @@ fi
 
 
 %changelog
+* Fri Jun 24 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.5-2
+- Suggests: imsettings-qt (#1349743)
+
 * Tue Jun 14 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.5-1
 - 5.6.5
 
