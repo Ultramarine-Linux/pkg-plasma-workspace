@@ -546,8 +546,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %postun libs -p /sbin/ldconfig
 
 %files libs -f libs.lang
+%{_sysconfdir}/xdg/legacytaskmanagerrulesrc
 %{_sysconfdir}/xdg/taskmanagerrulesrc
-%{_libdir}/libtaskmanager.so.5*
+%{_libdir}/liblegacytaskmanager.so.5
+%{_libdir}/liblegacytaskmanager.so.%{version}
+%{_libdir}/libtaskmanager.so.6
+%{_libdir}/libtaskmanager.so.%{version}
 %{_libdir}/libweather_ion.so.7*
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
@@ -580,6 +584,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 %files devel
 %{_libdir}/libweather_ion.so
+%{_libdir}/liblegacytaskmanager.so
 %{_libdir}/libtaskmanager.so
 %{_libdir}/libplasma-geolocation-interface.so
 %{_libdir}/libkworkspace5.so
@@ -587,12 +592,15 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_includedir}/plasma/weather/
 %{_includedir}/kworkspace5/
 %{_includedir}/plasma/geolocation/
+%{_includedir}/legacytaskmanager/
 %{_includedir}/taskmanager/
 %{_libdir}/cmake/KRunnerAppDBusInterface/
 %{_libdir}/cmake/KSMServerDBusInterface/
 %{_libdir}/cmake/LibKWorkspace/
+%{_libdir}/cmake/LibLegacyTaskManager/
 %{_libdir}/cmake/LibTaskManager/
 %{_datadir}/dbus-1/interfaces/*.xml
+%{_datadir}/kdevappwizard/templates/ion-dataengine.tar.bz2
 
 %post drkonqi
 # make DrKonqi work by default by taming SELinux enough (suggested by dwalsh)
