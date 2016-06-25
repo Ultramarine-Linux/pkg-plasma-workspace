@@ -531,10 +531,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 %files doc
 %license COPYING.DOC
+%lang(cs) %{_docdir}/HTML/cs/kcontrol/screenlocker
 %lang(en) %{_docdir}/HTML/en/klipper/
 %lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker
-%lang(ca) %{_docdir}/HTML/ca/klipper/
-#lang(ca) %{_docdir}/HTML/ca/kcontrol/screenlocker
+%lang(de) %{_docdir}/HTML/de/klipper/
 
 %post -n libkworkspace5 -p /sbin/ldconfig
 %postun -n libkworkspace5 -p /sbin/ldconfig
