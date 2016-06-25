@@ -2,7 +2,7 @@
 # repo or arch where there's no package that would provide plasmashell
 #define bootstrap 1
 
-%global kf5_version 5.13.0
+%global kf5_version 5.23.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
@@ -122,7 +122,7 @@ BuildRequires:  kf5-plasma-devel >= %{kf5_version}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version}
 
 BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
-BuildRequires:  kf5-kwayland-devel >= %{majmin_ver}
+BuildRequires:  kf5-kwayland-devel >= %{kf5_version}
 BuildRequires:  libwayland-client-devel >= 1.3.0
 BuildRequires:  libwayland-server-devel >= 1.3.0
 BuildRequires:  libkscreen-qt5-devel >= %{majmin_ver}
@@ -362,7 +362,7 @@ BuildArch: noarch
 Summary:        Wayland support for Plasma
 Requires:       %{name} = %{version}-%{release}
 Requires:       kwin-wayland >= %{version}
-Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
+Requires:       kwayland-integration%{?_isa} >= %{kf5_version}
 Requires:       xorg-x11-server-Xwayland
 Requires:       qt5-qtwayland%{?_isa}
 # startplasmacompositor deps
