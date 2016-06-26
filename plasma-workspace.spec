@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.95
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -89,7 +89,8 @@ BuildRequires:  libqalculate-devel
 BuildRequires:  kf5-prison-devel
 %endif
 
-BuildRequires:  qt5-qtbase-devel
+BuildRequires:  qt5-qtbase-devel >= 5.6.1
+%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  qt5-qtscript-devel
 BuildRequires:  qt5-qtdeclarative-devel
@@ -634,6 +635,9 @@ fi
 
 
 %changelog
+* Sun Jun 26 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.95-2
+- bump Qt5 dep
+
 * Sat Jun 25 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.95-1
 - 5.6.95
 
