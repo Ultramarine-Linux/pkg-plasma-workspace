@@ -711,10 +711,10 @@ fi
 * Mon Mar 07 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.5-3
 - backport "Avoid blocking DBus calls in SNI startup" (kde#359611)
 
-* Wed Mar 03 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-2
+* Thu Mar 03 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-2
 - Upstream respun tarball
 
-* Tue Mar 02 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-1
+* Wed Mar 02 2016 Daniel Vrátil <dvratil@fedoraproject.org> - 5.5.5-1
 - Plasma 5.5.5
 
 * Mon Feb 29 2016 Rex Dieter <rdieter@fedoraproject.org> 5.5.4-6
