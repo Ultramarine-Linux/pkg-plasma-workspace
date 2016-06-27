@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.6.95
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -363,7 +363,7 @@ BuildArch: noarch
 Summary:        Wayland support for Plasma
 Requires:       %{name} = %{version}-%{release}
 Requires:       kwin-wayland >= %{version}
-Requires:       kwayland-integration%{?_isa} >= %{kf5_version}
+Requires:       kwayland-integration%{?_isa} >= %{majmin_ver}
 Requires:       xorg-x11-server-Xwayland
 Requires:       qt5-qtwayland%{?_isa}
 # startplasmacompositor deps
@@ -635,6 +635,9 @@ fi
 
 
 %changelog
+* Mon Jun 27 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.95-3
+- kwaylad-integration is part of plasma, not kf5
+
 * Sun Jun 26 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.95-2
 - bump Qt5 dep
 
