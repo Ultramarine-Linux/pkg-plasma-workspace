@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.6.95
-Release: 3%{?dist}
+Version: 5.7.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -635,6 +635,9 @@ fi
 
 
 %changelog
+* Thu Jun 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.0-1
+- 5.7.0
+
 * Mon Jun 27 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.95-3
 - kwaylad-integration is part of plasma, not kf5
 
