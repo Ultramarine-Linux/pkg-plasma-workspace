@@ -88,6 +88,7 @@ BuildRequires:  libraw1394-devel
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
 %if 0%{?fedora} > 23
+%global kf5_pim 1
 BuildRequires:  kf5-kholidays-devel
 %endif
 %if 0%{?prison}
@@ -565,6 +566,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_qtplugindir}/plasma/applets/
 %{_kf5_qtplugindir}/plasma/dataengine/
 %{_kf5_qtplugindir}/plasma/packagestructure/
+%if 0%{?kf5_pim}
+%{_kf5_qtplugindir}/plasmacalendarplugins/
+%endif
 %{_kf5_qtplugindir}/*.so
 %exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
 %exclude %{_kf5_qtplugindir}/plasma-geolocation-ip.so
