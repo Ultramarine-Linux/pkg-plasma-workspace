@@ -1,0 +1,29 @@
+From 1ba0e6e5ddd598e9b0cf87a654467f97c06b26c5 Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Wed, 6 Jul 2016 11:26:48 +0200
+Subject: [PATCH 03/19] [System Tray] Increase maximum icon size
+
+BUG: 364431
+FIXED-IN: 5.7.1
+
+Differential Revision: https://phabricator.kde.org/D2097
+---
+ applets/systemtray/package/contents/ui/main.qml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/applets/systemtray/package/contents/ui/main.qml b/applets/systemtray/package/contents/ui/main.qml
+index 20fd211..fa710ed 100644
+--- a/applets/systemtray/package/contents/ui/main.qml
++++ b/applets/systemtray/package/contents/ui/main.qml
+@@ -31,7 +31,7 @@ MouseArea {
+     Layout.minimumHeight: vertical ? tasksRow.implicitHeight+ expander.implicitHeight + units.smallSpacing : units.smallSpacing
+ 
+     property bool vertical: plasmoid.formFactor == PlasmaCore.Types.Vertical
+-    property int itemSize: Math.min(Math.min(width, height), units.iconSizes.smallMedium)
++    property int itemSize: Math.min(Math.min(width, height), units.iconSizes.medium)
+     property int hiddenItemSize: units.iconSizes.smallMedium
+     property alias expanded: dialog.visible
+     property Item activeApplet
+-- 
+2.7.4
+

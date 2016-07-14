@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -43,6 +43,9 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 Patch2:         plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
+# introduces (semi) regression, http://bugs.kde.org/365570
+# revert for now
+Patch3: 0003-System-Tray-Increase-maximum-icon-size.patch
 
 ## master branch Patches
 
@@ -71,10 +74,9 @@ BuildRequires:  xcb-util-wm-devel
 BuildRequires:  xcb-util-devel
 BuildRequires:  glib2-devel
 BuildRequires:  fontconfig-devel
-BuildRequires:  python-devel
+# can remove when kf5-ki18n-5.24.0-2 lands
+BuildRequires:  python
 BuildRequires:  boost-devel
-#BuildRequires:  akonadi-qt5-devel
-#BuildRequires:  kdepimlibs-devel
 BuildRequires:  libusb-devel
 BuildRequires:  libbsd-devel
 BuildRequires:  pam-devel
@@ -85,6 +87,9 @@ BuildRequires:  libraw1394-devel
 %endif
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
+%if 0%{?fedora} > 23
+BuildRequires:  kf5-kholidays-devel
+%endif
 %if 0%{?prison}
 BuildRequires:  kf5-prison-devel
 %endif
@@ -227,6 +232,7 @@ Requires:       kde-platform-plugin%{?_isa}
 %endif
 
 # Oxygen
+# TODO: review if oxygen-fonts, oxygen-icon-theme are still needed (I suspect not) -- rex
 Requires:       oxygen-icon-theme
 Requires:       oxygen-sound-theme >= %{majmin_ver}
 Requires:       oxygen-fonts
@@ -383,7 +389,7 @@ Requires: f24-kde-theme
 %setup -q
 
 ## upstream patches
-
+%patch3 -p1 -R
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
 %patch2 -p1 -b .installdgbsymbols
@@ -636,6 +642,10 @@ fi
 
 
 %changelog
+* Thu Jul 14 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-2
+- BR: kf5-kholidays-devel
+- revert recent upstream systray icon resize (kde#365570)
+
 * Tue Jul 12 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-1
 - 5.7.1
 
