@@ -1,0 +1,12 @@
+diff -up plasma-workspace-5.7.2/applets/systemtray/package/contents/ui/main.qml.orig plasma-workspace-5.7.2/applets/systemtray/package/contents/ui/main.qml
+--- plasma-workspace-5.7.2/applets/systemtray/package/contents/ui/main.qml.orig	2016-07-19 10:36:25.219419321 -0500
++++ plasma-workspace-5.7.2/applets/systemtray/package/contents/ui/main.qml	2016-07-19 10:38:42.199898555 -0500
+@@ -31,7 +31,7 @@ MouseArea {
+     Layout.minimumHeight: vertical ? tasksRow.implicitHeight+ expander.implicitHeight + units.smallSpacing : units.smallSpacing
+ 
+     property bool vertical: plasmoid.formFactor == PlasmaCore.Types.Vertical
+-    property int itemSize: units.roundToIconSize(Math.min(Math.min(width, height), units.iconSizes.medium))
++    property int itemSize: units.roundToIconSize(Math.min(Math.min(width, height), units.iconSizes.smallMedium))
+     property int hiddenItemSize: units.iconSizes.smallMedium
+     property alias expanded: dialog.visible
+     property Item activeApplet

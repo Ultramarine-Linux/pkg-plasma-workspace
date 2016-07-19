@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.7.1
-Release: 3%{?dist}
+Version: 5.7.2
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -35,6 +35,8 @@ Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
 Patch13:        startplasmacompositor.patch
+# revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
+Patch14:        plasma-workspace-5.7.2-systray_iconSizes.patch
 
 ## upstreamable Patches
 # (yum) debuginfo-install improvements
@@ -43,9 +45,6 @@ Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
 Patch2:         plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
-# introduces (semi) regression, http://bugs.kde.org/365570
-# revert for now
-Patch3: 0003-System-Tray-Increase-maximum-icon-size.patch
 
 ## master branch Patches
 
@@ -392,7 +391,6 @@ Requires: f24-kde-theme
 %setup -q
 
 ## upstream patches
-%patch3 -p1 -R
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
 %patch2 -p1 -b .installdgbsymbols
@@ -408,6 +406,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
+%patch14 -p1
 
 sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
 
@@ -648,6 +647,9 @@ fi
 
 
 %changelog
+* Tue Jul 19 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.2-1
+- 5.7.2
+
 * Tue Jul 19 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-3
 - BR: qt5-qtbase-private-devel
 
