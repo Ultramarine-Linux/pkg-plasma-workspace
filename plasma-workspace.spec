@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -96,6 +96,8 @@ BuildRequires:  kf5-prison-devel
 %endif
 
 BuildRequires:  qt5-qtbase-devel >= 5.6.1
+# todo: document why this is needed -- rex
+BuildRequires:  qt5-qtbase-private-devel
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  qt5-qtscript-devel
@@ -646,6 +648,9 @@ fi
 
 
 %changelog
+* Tue Jul 19 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-3
+- BR: qt5-qtbase-private-devel
+
 * Thu Jul 14 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-2
 - BR: kf5-kholidays-devel
 - revert recent upstream systray icon resize (kde#365570)
