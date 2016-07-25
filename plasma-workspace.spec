@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -95,9 +95,9 @@ BuildRequires:  kf5-prison-devel
 %endif
 
 BuildRequires:  qt5-qtbase-devel >= 5.6.1
-# todo: document why this is needed -- rex
-BuildRequires:  qt5-qtbase-private-devel
-%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
+## todo: document why this is needed -- rex
+#BuildRequires:  qt5-qtbase-private-devel
+#{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  qt5-qtscript-devel
 BuildRequires:  qt5-qtdeclarative-devel
@@ -329,7 +329,8 @@ Requires: dnf-command(debuginfo-install)
 # owner of debuginfo-install
 Requires: yum-utils
 %endif
-Requires: kdialog
+## not needed, since we already ensure other dependencies (debuginfo-install, konsole)
+#Requires: kdialog
 Requires: konsole5
 Requires: polkit
 # owner of setsebool
@@ -647,6 +648,10 @@ fi
 
 
 %changelog
+* Mon Jul 25 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.2-2
+- -drkonqi: -Requires: kdialog
+- remove BR: qt5-qtbase-private-devel until we can properly document why it is needed
+
 * Tue Jul 19 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.2-1
 - 5.7.2
 
