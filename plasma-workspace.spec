@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -409,6 +409,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch13 -p1 -b .startplasmacompositor
 %patch14 -p1
 
+# highlight the use of wayland
 sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
 
 
@@ -467,6 +468,13 @@ install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 # installdbgsymbols script
 install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
   %{buildroot}%{_libexecdir}/installdbgsymbols.sh
+
+# revert klipper autostart: https://quickgit.kde.org/?p=plasma-workspace.git&a=commit&h=fc439f63e122cd6d668fb75cf71a5b361da0b10d
+# https://bugzilla.redhat.com/show_bug.cgi?id=1361765
+# https://bugs.kde.org/show_bug.cgi?id=366277
+sed -i.notshowin -e 's|^NotShowIn=KDE;|OnlyShowIn=KDE;|' \
+  %{buildroot}%{_sysconfdir}/xdg/autostart/org.kde.klipper.desktop
+
 
 %find_lang all --with-qt --all-name
 grep drkonqi.mo all.lang > drkonqi.lang
@@ -648,6 +656,9 @@ fi
 
 
 %changelog
+* Sat Jul 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.2-3
+- klipper autostart: OnlyShowIn=KDE (#1361765,kde#366277)
+
 * Mon Jul 25 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.2-2
 - -drkonqi: -Requires: kdialog
 - remove BR: qt5-qtbase-private-devel until we can properly document why it is needed
