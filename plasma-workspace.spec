@@ -472,7 +472,7 @@ install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
 # revert klipper autostart: https://quickgit.kde.org/?p=plasma-workspace.git&a=commit&h=fc439f63e122cd6d668fb75cf71a5b361da0b10d
 # https://bugzilla.redhat.com/show_bug.cgi?id=1361765
 # https://bugs.kde.org/show_bug.cgi?id=366277
-sed -i.notshowin -e 's|^NotShowIn=KDE;|OnlyShowIn=KDE;|' \
+sed -i -e 's|^NotShowIn=KDE;|OnlyShowIn=KDE;|' \
   %{buildroot}%{_sysconfdir}/xdg/autostart/org.kde.klipper.desktop
 
 
