@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -37,6 +37,11 @@ Patch12:        startkde.patch
 Patch13:        startplasmacompositor.patch
 # revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
 Patch14:        plasma-workspace-5.7.2-systray_iconSizes.patch
+# default to folderview (instead of desktop) containment, see also
+# https://mail.kde.org/pipermail/distributions/2016-July/000133.html
+# and example,
+# https://github.com/notmart/artwork-lnf-netrunner-core/blob/master/usr/share/plasma/look-and-feel/org.kde.netrunner-core.desktop/contents/defaults
+Patch15:        plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstreamable Patches
 # (yum) debuginfo-install improvements
@@ -269,7 +274,9 @@ Requires: sddm-breeze = %{version}-%{release}
 Obsoletes: plasma-workspace < 5.3.2-8
 
 # digitalclock applet
-#BuildRequires: iso-codes
+%if ! 0%{?bootstrap}
+BuildRequires: pkgconfig(iso-codes)
+%endif
 Requires: iso-codes
 
 %description
@@ -656,6 +663,10 @@ fi
 
 
 %changelog
+* Tue Aug 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.3-2
+- adapt to upstream looknfeel/default-layout changes
+- BR: iso-codes (technically only runtime dep, but can't hurt)
+
 * Tue Aug 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.3-1
 - 5.7.3
 
