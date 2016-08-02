@@ -1,0 +1,10 @@
+diff -up plasma-workspace-5.7.3/lookandfeel/contents/defaults.orig plasma-workspace-5.7.3/lookandfeel/contents/defaults
+--- plasma-workspace-5.7.3/lookandfeel/contents/defaults.orig	2016-08-02 06:17:43.000000000 -0500
++++ plasma-workspace-5.7.3/lookandfeel/contents/defaults	2016-08-02 12:31:24.335614522 -0500
+@@ -18,3 +18,6 @@ LayoutName=org.kde.breeze.desktop
+ 
+ [kwinrc][DesktopSwitcher]
+ LayoutName=org.kde.breeze.desktop
++
++[Desktop][org.kde.plasma.desktop]
++Containment=org.kde.plasma.folder
