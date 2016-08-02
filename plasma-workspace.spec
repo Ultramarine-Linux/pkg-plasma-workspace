@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.7.2
-Release: 3%{?dist}
+Version: 5.7.3
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -656,6 +656,9 @@ fi
 
 
 %changelog
+* Tue Aug 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.3-1
+- 5.7.3
+
 * Sat Jul 30 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.2-3
 - klipper autostart: OnlyShowIn=KDE (#1361765,kde#366277)
 
