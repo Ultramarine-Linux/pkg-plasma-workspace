@@ -2,7 +2,7 @@
 # repo or arch where there's no package that would provide plasmashell
 #define bootstrap 1
 
-%global kf5_version 5.23.0
+%global kf5_version 5.25.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
@@ -109,7 +109,7 @@ BuildRequires:  qt5-qtdeclarative-devel
 BuildRequires:  qt5-qtwebkit-devel
 BuildRequires:  phonon-qt5-devel
 
-BuildRequires:  kf5-rpm-macros
+BuildRequires:  kf5-rpm-macros >= %{kf5_version}
 BuildRequires:  extra-cmake-modules
 BuildRequires:  kf5-baloo-devel >= %{kf5_version}
 BuildRequires:  kf5-kcmutils-devel >= %{kf5_version}
@@ -545,6 +545,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
 %{_kf5_datadir}/kio_desktop/
+%{_kf5_metainfodir}/*.xml
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
