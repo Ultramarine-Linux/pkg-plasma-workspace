@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.7.3
-Release: 2%{?dist}
+Version: 5.7.4
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -36,7 +36,7 @@ Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 Patch12:        startkde.patch
 Patch13:        startplasmacompositor.patch
 # revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
-Patch14:        plasma-workspace-5.7.2-systray_iconSizes.patch
+Patch14:        plasma-workspace-5.7.4-systray_iconSizes.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -415,6 +415,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
 %patch14 -p1
+%patch15 -p1
 
 # highlight the use of wayland
 sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
@@ -663,6 +664,9 @@ fi
 
 
 %changelog
+* Tue Aug 23 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.4-1
+- 5.7.4
+
 * Tue Aug 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.3-2
 - adapt to upstream looknfeel/default-layout changes
 - BR: iso-codes (technically only runtime dep, but can't hurt)
