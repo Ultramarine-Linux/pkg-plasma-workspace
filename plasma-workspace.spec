@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.3
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -415,6 +415,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
 %patch14 -p1
+%patch15 -p1
 
 # highlight the use of wayland
 sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
@@ -663,6 +664,9 @@ fi
 
 
 %changelog
+* Wed Aug 24 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.3-3
+- apply layout.patch for real (#1350976)
+
 * Tue Aug 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.3-2
 - adapt to upstream looknfeel/default-layout changes
 - BR: iso-codes (technically only runtime dep, but can't hurt)
