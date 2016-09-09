@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -435,7 +435,8 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 
-%if 0%{?fedora} > 21
+#if 0%{?fedora} > 21
+%if 0
 # Create Fedora Twenty Two look and feel package from the Breeze one
 cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.two}
 install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/metadata.desktop
@@ -527,7 +528,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/plasma/wallpapers/
 %dir %{_kf5_datadir}/plasma/look-and-feel/
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
-%if 0%{?fedora} > 21
+#if 0%{?fedora} > 21
+%if 0
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/
 %endif
 %if 0%{?fedora} > 22
@@ -665,6 +667,9 @@ fi
 
 
 %changelog
+* Fri Sep 09 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.4-2
+- drop support for f22 (plasma theme)
+
 * Tue Aug 23 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.4-1
 - 5.7.4
 
