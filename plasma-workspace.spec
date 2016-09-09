@@ -2,11 +2,11 @@
 # repo or arch where there's no package that would provide plasmashell
 #define bootstrap 1
 
-%global kf5_version 5.23.0
+%global kf5_version 5.25.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.7.3
+Version: 5.7.4
 Release: 2%{?dist}
 
 License: GPLv2+
@@ -36,7 +36,7 @@ Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 Patch12:        startkde.patch
 Patch13:        startplasmacompositor.patch
 # revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
-Patch14:        plasma-workspace-5.7.2-systray_iconSizes.patch
+Patch14:        plasma-workspace-5.7.4-systray_iconSizes.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -109,7 +109,7 @@ BuildRequires:  qt5-qtdeclarative-devel
 BuildRequires:  qt5-qtwebkit-devel
 BuildRequires:  phonon-qt5-devel
 
-BuildRequires:  kf5-rpm-macros
+BuildRequires:  kf5-rpm-macros >= %{kf5_version}
 BuildRequires:  extra-cmake-modules
 BuildRequires:  kf5-baloo-devel >= %{kf5_version}
 BuildRequires:  kf5-kcmutils-devel >= %{kf5_version}
@@ -415,6 +415,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
 %patch14 -p1
+%patch15 -p1
 
 # highlight the use of wayland
 sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
@@ -434,7 +435,8 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 
-%if 0%{?fedora} > 21
+#if 0%{?fedora} > 21
+%if 0
 # Create Fedora Twenty Two look and feel package from the Breeze one
 cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.two}
 install -m 0644 %{SOURCE12} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/metadata.desktop
@@ -526,7 +528,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/plasma/wallpapers/
 %dir %{_kf5_datadir}/plasma/look-and-feel/
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
-%if 0%{?fedora} > 21
+#if 0%{?fedora} > 21
+%if 0
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/
 %endif
 %if 0%{?fedora} > 22
@@ -544,6 +547,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
 %{_kf5_datadir}/kio_desktop/
+%{_kf5_metainfodir}/*.xml
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
@@ -663,6 +667,12 @@ fi
 
 
 %changelog
+* Fri Sep 09 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.4-2
+- drop support for f22 (plasma theme)
+
+* Tue Aug 23 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.4-1
+- 5.7.4
+
 * Tue Aug 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.3-2
 - adapt to upstream looknfeel/default-layout changes
 - BR: iso-codes (technically only runtime dep, but can't hurt)
