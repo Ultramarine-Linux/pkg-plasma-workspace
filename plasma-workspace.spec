@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.7.4
-Release: 2%{?dist}
+Version: 5.7.5
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -667,6 +667,9 @@ fi
 
 
 %changelog
+* Tue Sep 13 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.5-1
+- 5.7.5
+
 * Fri Sep 09 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.4-2
 - drop support for f22 (plasma theme)
 
