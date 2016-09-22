@@ -2,20 +2,22 @@
 # repo or arch where there's no package that would provide plasmashell
 #define bootstrap 1
 
-%global kf5_version 5.25.0
+%global kf5_version 5.26.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.7.5
-Release: 2%{?dist}
+Version: 5.7.95
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
 
 %global revision %(echo %{version} | cut -d. -f3)
 %if %{revision} >= 50
+%global majmin_ver %(echo %{version} | cut -d. -f1,2).50
 %global stable unstable
 %else
+%global majmin_ver %(echo %{version} | cut -d. -f1,2)
 %global stable stable
 %endif
 Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
@@ -487,7 +489,6 @@ sed -i -e 's|^NotShowIn=KDE;|OnlyShowIn=KDE;|' \
 %find_lang all --with-qt --all-name
 grep drkonqi.mo all.lang > drkonqi.lang
 grep libkworkspace.mo all.lang > libkworkspace5.lang
-grep libtaskmanager.mo all.lang > libs.lang
 # any translations not used elsewhere, include in main pkg
 cat *.lang | sort | uniq -u > %{name}.lang
 
@@ -573,11 +574,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %post libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
 
-%files libs -f libs.lang
-%{_sysconfdir}/xdg/legacytaskmanagerrulesrc
+%files libs
 %{_sysconfdir}/xdg/taskmanagerrulesrc
-%{_libdir}/liblegacytaskmanager.so.5
-%{_libdir}/liblegacytaskmanager.so.%{version}
 %{_libdir}/libtaskmanager.so.6
 %{_libdir}/libtaskmanager.so.%{version}
 %{_libdir}/libweather_ion.so.7*
@@ -615,7 +613,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 %files devel
 %{_libdir}/libweather_ion.so
-%{_libdir}/liblegacytaskmanager.so
 %{_libdir}/libtaskmanager.so
 %{_libdir}/libplasma-geolocation-interface.so
 %{_libdir}/libkworkspace5.so
@@ -628,7 +625,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_libdir}/cmake/KRunnerAppDBusInterface/
 %{_libdir}/cmake/KSMServerDBusInterface/
 %{_libdir}/cmake/LibKWorkspace/
-%{_libdir}/cmake/LibLegacyTaskManager/
 %{_libdir}/cmake/LibTaskManager/
 %{_datadir}/dbus-1/interfaces/*.xml
 %{_datadir}/kdevappwizard/templates/ion-dataengine.tar.bz2
@@ -665,6 +661,9 @@ fi
 
 
 %changelog
+* Thu Sep 22 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.95-1
+- 5.7.95
+
 * Fri Sep 16 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.5-2
 - restore fedora.twenty.two theme support (#1376102)
 
