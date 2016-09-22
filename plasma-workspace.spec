@@ -32,12 +32,13 @@ Source12:       twenty.two.desktop
 Source13:       twenty.three.desktop
 
 ## downstream Patches
-Patch10:        plasma-workspace-5.6.1-konsole-in-contextmenu.patch
+Patch10:        plasma-workspace-5.7.95-konsole-in-contextmenu.patch
 Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch12:        startkde.patch
 Patch13:        startplasmacompositor.patch
 # revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
+# FIXME/TODO: port patch or drop it -- rex (probably drop at this point)
 Patch14:        plasma-workspace-5.7.4-systray_iconSizes.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
@@ -416,7 +417,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 %patch12 -p1 -b .startkde
 %patch13 -p1 -b .startplasmacompositor
-%patch14 -p1
+#patch14 -p1
 %patch15 -p1
 
 # highlight the use of wayland
