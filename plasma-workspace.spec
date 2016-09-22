@@ -480,13 +480,6 @@ install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
   %{buildroot}%{_libexecdir}/installdbgsymbols.sh
 
-# revert klipper autostart: https://quickgit.kde.org/?p=plasma-workspace.git&a=commit&h=fc439f63e122cd6d668fb75cf71a5b361da0b10d
-# https://bugzilla.redhat.com/show_bug.cgi?id=1361765
-# https://bugs.kde.org/show_bug.cgi?id=366277
-sed -i -e 's|^NotShowIn=KDE;|OnlyShowIn=KDE;|' \
-  %{buildroot}%{_sysconfdir}/xdg/autostart/org.kde.klipper.desktop
-
-
 %find_lang all --with-qt --all-name
 grep drkonqi.mo all.lang > drkonqi.lang
 grep libkworkspace.mo all.lang > libkworkspace5.lang
