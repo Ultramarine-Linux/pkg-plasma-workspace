@@ -614,7 +614,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_includedir}/plasma/weather/
 %{_includedir}/kworkspace5/
 %{_includedir}/plasma/geolocation/
-%{_includedir}/legacytaskmanager/
 %{_includedir}/taskmanager/
 %{_libdir}/cmake/KRunnerAppDBusInterface/
 %{_libdir}/cmake/KSMServerDBusInterface/
