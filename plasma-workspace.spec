@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.7.95
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -306,6 +306,8 @@ Obsoletes: plasma-workspace < 5.4.2-2
 ## huge amount of deps (including kde4) into buildroot -- rex
 #Requires:  %%{name}%%{?_isa} = %%{version}-%%{release}
 Requires:  %{name}-common = %{version}-%{release}
+# consider splitting out plasma_packagestructure content later
+Provides: plasma-packagestructure = %{version}-%{release}
 %description libs
 %{summary}.
 
@@ -656,6 +658,9 @@ fi
 
 
 %changelog
+* Fri Sep 23 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.95-2
+- -libs: Provides: plasma-packagestructure
+
 * Thu Sep 22 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.95-1
 - 5.7.95
 
