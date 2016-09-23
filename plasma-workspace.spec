@@ -513,6 +513,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qmldir}/org/kde/*
+%{_libexecdir}/ksmserver-logout-greeter
 %{_libexecdir}/ksyncdbusenv
 %{_kf5_datadir}/ksmserver/
 %{_kf5_datadir}/ksplash/
@@ -555,6 +556,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %license COPYING.DOC
 #lang(ca) %{_docdir}/HTML/ca/klipper/
 #lang(cs) %{_docdir}/HTML/cs/kcontrol/screenlocker/
+%lang(de) %{_docdir}/HTML/de/klipper/
 %lang(en) %{_docdir}/HTML/en/klipper/
 %lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker/
 #lang(de) %{_docdir}/HTML/de/klipper/
