@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.7.95
-Release: 2%{?dist}
+Version: 5.8.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -658,6 +658,9 @@ fi
 
 
 %changelog
+* Thu Sep 29 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-1
+- 5.8.0
+
 * Fri Sep 23 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.95-2
 - -libs: Provides: plasma-packagestructure
 
