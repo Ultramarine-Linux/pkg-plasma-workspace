@@ -22,8 +22,6 @@ URL:     https://quickgit.kde.org/?p=%{name}.git
 %endif
 Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
 
-%global majmin_ver %(echo %{version} | cut -d. -f1,2)
-
 # This goes to PAM
 # TODO: this should arguably be in kde-settings with the other pam-related configs
 Source10:       kde
