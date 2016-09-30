@@ -554,7 +554,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 %files doc
 %license COPYING.DOC
-#lang(ca) %{_docdir}/HTML/ca/klipper/
+%lang(ca) %{_docdir}/HTML/ca/klipper/
 #lang(cs) %{_docdir}/HTML/cs/kcontrol/screenlocker/
 #lang(de) %{_docdir}/HTML/de/klipper/
 %lang(en) %{_docdir}/HTML/en/klipper/
