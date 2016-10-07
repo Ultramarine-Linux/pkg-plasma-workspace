@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -30,29 +30,40 @@ Source12:       twenty.two.desktop
 Source13:       twenty.three.desktop
 
 ## downstream Patches
-Patch10:        plasma-workspace-5.7.95-konsole-in-contextmenu.patch
-Patch11:        plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
+Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
+Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
-Patch12:        startkde.patch
-Patch13:        startplasmacompositor.patch
+Patch102:       startkde.patch
+Patch103:       startplasmacompositor.patch
 # revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
 # FIXME/TODO: port patch or drop it -- rex (probably drop at this point)
-Patch14:        plasma-workspace-5.7.4-systray_iconSizes.patch
+Patch104:       plasma-workspace-5.7.4-systray_iconSizes.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
 # https://github.com/notmart/artwork-lnf-netrunner-core/blob/master/usr/share/plasma/look-and-feel/org.kde.netrunner-core.desktop/contents/defaults
-Patch15:        plasma-workspace-5.7.3-folderview_layout.patch
+Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstreamable Patches
 # (yum) debuginfo-install improvements
-Patch1:         kde-runtime-4.9.0-installdbgsymbols.patch
+Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 # dnf debuginfo-install
-Patch2:         plasma-workspace-5.6.4-installdbgsymbols.patch
+Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
 
-## master branch Patches
+Patch5: 0005-Fix-usage-of-qdbus-variable-in-startkde.patch
+Patch6: 0006-always-connect-to-Local-source.patch
+Patch8: 0008-Digital-Clock-Silence-warning.patch
+Patch9: 0009-Set-explicit-minimum-size-on-panelSpacer-so-that-App.patch
+Patch10: 0010-Fix-kcminit-phase-1-and-2.patch
+Patch11: 0011-make-sure-allTimezones-is-set.patch
+Patch12: 0012-Notification-Data-Engine-Don-t-group-notification-if.patch
+Patch13: 0013-klipper-Move-notification-from-tray-to-Klipper.patch
+Patch15: 0015-save-the-containment-only-aftyer-switch.patch
+Patch16: 0016-shell-Fix-non-interactive-panelview-on-non-primary-s.patch
+Patch17: 0017-shell-Fix-crash-when-moving-panel-between-two-monito.patch
+Patch18: 0018-delete-containments-upon-activity-deletion.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -402,23 +413,36 @@ Requires: f24-kde-theme
 %setup -q
 
 ## upstream patches
+%patch5 -p1 -b .0005
+%patch6 -p1 -b .0006
+%patch8 -p1 -b .0008
+%patch9 -p1 -b .0009
+%patch10 -p1 -b .0010
+%patch11 -p1 -b .0011
+%patch12 -p1 -b .0012
+%patch13 -p1 -b .0013
+%patch15 -p1 -b .0015
+%patch16 -p1 -b .0016
+%patch17 -p1 -b .0017
+%patch18 -p1 -b .0018
+
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
-%patch2 -p1 -b .installdgbsymbols
+%patch52 -p1 -b .installdgbsymbols
 %else
 # (yum) debuginfo-install
-%patch1 -p1 -b .installdbgsymbols
+%patch51 -p1 -b .installdbgsymbols
 %endif
-%patch10 -p1 -b .konsole-in-contextmenu
+%patch100 -p1 -b .konsole-in-contextmenu
 %if 0%{?default_lookandfeel:1}
-%patch11 -p1 -b .set-fedora-default-look-and-feel
+%patch101 -p1 -b .set-fedora-default-look-and-feel
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
-%patch12 -p1 -b .startkde
-%patch13 -p1 -b .startplasmacompositor
-#patch14 -p1
-%patch15 -p1
+%patch102 -p1 -b .startkde
+%patch103 -p1 -b .startplasmacompositor
+#patch104 -p1
+%patch105 -p1
 
 # highlight the use of wayland
 sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
@@ -655,6 +679,10 @@ fi
 
 
 %changelog
+* Fri Oct 07 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-2
+- pull in upstream branch fixes
+- re-order patches so upstream applied first, then downstream
+
 * Thu Sep 29 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-1
 - 5.8.0
 

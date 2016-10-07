@@ -1,0 +1,59 @@
+From 9c94cd136006959d881a614754a0811ae69f03cc Mon Sep 17 00:00:00 2001
+From: Bhushan Shah <bhush94@gmail.com>
+Date: Thu, 6 Oct 2016 16:29:07 +0530
+Subject: [PATCH 16/19] [shell] Fix non-interactive panelview on non-primary
+ screen
+
+Summary:
+If we don't pass the current screen to QCursor::pos, it will return
+position relative to primary screen, which obviously won't be in panel
+geometry.
+
+Instead pass it currentScreen, this way we don't filter out the mouse
+events for panel.
+
+BUG: 368790
+FIXED-IN: 5.8.1
+
+Test Plan:
+added debug statements and verified that I get correct screen position
+and as well, panel is now interactive on secondary screen.
+
+Reviewers: mart, graesslin, #plasma, sebas
+
+Reviewed By: graesslin, #plasma, sebas
+
+Subscribers: sebas, plasma-devel
+
+Tags: #plasma
+
+Differential Revision: https://phabricator.kde.org/D2960
+---
+ shell/panelview.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/shell/panelview.cpp b/shell/panelview.cpp
+index 45914f4..8ec7a8a 100644
+--- a/shell/panelview.cpp
++++ b/shell/panelview.cpp
+@@ -567,7 +567,7 @@ void PanelView::restoreAutoHide()
+                 (containment()->status() < Plasma::Types::RequiresAttentionStatus
+                  || containment()->status() == Plasma::Types::HiddenStatus)
+                 )
+-        && !geometry().contains(QCursor::pos())
++        && !geometry().contains(QCursor::pos(screenToFollow()))
+     );
+ }
+ 
+@@ -734,7 +734,7 @@ bool PanelView::event(QEvent *e)
+ 
+             //first, don't mess with position if the cursor is actually outside the view:
+             //somebody is doing a click and drag that must not break when the cursor i outside
+-            if (geometry().contains(QCursor::pos())) {
++            if (geometry().contains(QCursor::pos(screenToFollow()))) {
+                 if (!containmentContainsPosition(me->windowPos())) {
+                     auto me2 = new QMouseEvent(me->type(),
+                                     positionAdjustedForContainment(me->windowPos()),
+-- 
+2.7.4
+

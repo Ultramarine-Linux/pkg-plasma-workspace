@@ -1,0 +1,45 @@
+From d3fc0c18787100d1795a9115588acf91b0cd3bb3 Mon Sep 17 00:00:00 2001
+From: David Edmundson <kde@davidedmundson.co.uk>
+Date: Wed, 5 Oct 2016 15:53:32 +0100
+Subject: [PATCH 09/19] Set explicit minimum size on panelSpacer so that
+ AppletContainer doesn't set one
+
+Summary:
+Commit 8e1339887a01e078b04fb18ff575c16998447665 in Plasma 5.8 removed a
+minimum size on the panel spacer, which is what we want, however if no
+minimum size is set on an applet in a panel the panel's AppletContainer
+sets the minmimum width to be the same as the height.
+
+This was preventing people having tiny panel spacers.
+
+BUG: 369823
+
+Test Plan: Reporter tested the patch
+
+Reviewers: #plasma
+
+Subscribers: plasma-devel
+
+Tags: #plasma
+
+Differential Revision: https://phabricator.kde.org/D2938
+---
+ applets/panelspacer/contents/ui/main.qml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/applets/panelspacer/contents/ui/main.qml b/applets/panelspacer/contents/ui/main.qml
+index 0418e8a..4d4302f 100644
+--- a/applets/panelspacer/contents/ui/main.qml
++++ b/applets/panelspacer/contents/ui/main.qml
+@@ -33,6 +33,8 @@ Item {
+     Layout.fillWidth: plasmoid.configuration.expanding
+     Layout.fillHeight: plasmoid.configuration.expanding
+ 
++    Layout.minimumWidth: 1
++    Layout.minimumHeight: 1
+     Layout.preferredWidth: horizontal ? plasmoid.configuration.length : 0
+     Layout.preferredHeight: horizontal ? 0 : plasmoid.configuration.length
+ 
+-- 
+2.7.4
+

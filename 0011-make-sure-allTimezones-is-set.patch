@@ -1,0 +1,72 @@
+From 4e5d70d8b5d1d4595ad0975c77b06ef2cb6fa0e1 Mon Sep 17 00:00:00 2001
+From: Marco Martin <notmart@gmail.com>
+Date: Wed, 5 Oct 2016 15:52:39 +0200
+Subject: [PATCH 11/19] make sure allTimezones is set
+
+Summary:
+on Qt 5.6/5.7 changed signal was emitted at startup as well,
+triggering plasmoid.configuration.onSelectedTimeZonesChanged
+in Qt 5.8 this doesn't happen, giving an empty clock at startup
+this makes sure allTimezones gets built
+
+Test Plan: with Qt 5.8 the clock is shown correctly
+
+Reviewers: #plasma, broulik
+
+Reviewed By: #plasma, broulik
+
+Subscribers: broulik, plasma-devel
+
+Tags: #plasma
+
+Differential Revision: https://phabricator.kde.org/D2946
+---
+ applets/digital-clock/package/contents/ui/main.qml | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/applets/digital-clock/package/contents/ui/main.qml b/applets/digital-clock/package/contents/ui/main.qml
+index f117ea4..66e8420 100644
+--- a/applets/digital-clock/package/contents/ui/main.qml
++++ b/applets/digital-clock/package/contents/ui/main.qml
+@@ -41,6 +41,14 @@ Item {
+         return new Date(msUTC + (dataSource.data[plasmoid.configuration.lastSelectedTimezone]["Offset"] * 1000));
+     }
+ 
++    function initTimezones() {
++        var tz  = Array()
++        if (plasmoid.configuration.selectedTimeZones.indexOf("Local") === -1) {
++            tz.push("Local");
++        }
++        root.allTimezones = tz.concat(plasmoid.configuration.selectedTimeZones);
++    }
++
+     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
+     Plasmoid.compactRepresentation: DigitalClock { }
+     Plasmoid.fullRepresentation: CalendarView { }
+@@ -61,14 +69,7 @@ Item {
+     property var allTimezones
+     Connections {
+         target: plasmoid.configuration
+-        onSelectedTimeZonesChanged: {
+-            var tz  = Array()
+-            if (plasmoid.configuration.selectedTimeZones.indexOf("Local") === -1) {
+-                tz.push("Local");
+-            }
+-            root.allTimezones = tz.concat(plasmoid.configuration.selectedTimeZones);
+-
+-        }
++        onSelectedTimeZonesChanged: root.initTimezones();
+     }
+ 
+     PlasmaCore.DataSource {
+@@ -98,6 +99,7 @@ Item {
+     }
+ 
+     Component.onCompleted: {
++        root.initTimezones();
+         if (KCMShell.authorize("clock.desktop").length > 0) {
+             plasmoid.setAction("clockkcm", i18n("Adjust Date and Time..."), "preferences-system-time");
+         }
+-- 
+2.7.4
+

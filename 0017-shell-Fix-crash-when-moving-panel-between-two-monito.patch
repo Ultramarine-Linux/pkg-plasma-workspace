@@ -1,0 +1,58 @@
+From 5cfb957c87994df3cb9c8aa081ad42e67038a7d8 Mon Sep 17 00:00:00 2001
+From: Bhushan Shah <bhush94@gmail.com>
+Date: Thu, 6 Oct 2016 22:37:10 +0530
+Subject: [PATCH 17/19] [shell] Fix crash when moving panel between two
+ monitors
+
+Summary:
+When moving panel between two screens there is time when panel is on
+edge of screen and screenToFollow is null, at this point if any of the
+resize or position operation gets triggered, it will attempt to get
+screenToFollow's size or geometry and will result in crash as for
+sometime screenToFollow is null.
+
+This is quite a timing related bug, if you manage to move panel in time
+there would be no crash otherwise there are 3-4 different crashes are
+possible.
+
+To solve this we avoid setting null values for screenToFollow, this
+should not happen ideally, but setting breakpoint on setScreenToFollow
+shows that null value is set from QML and should be investigated.
+
+BUG: 369228
+
+Test Plan:
+moved panel around like crazy, can't reproduce crash on
+QScreen::size or QScreen::geometry, without patch it would crash 100%
+
+Reviewers: mart, #plasma, davidedmundson
+
+Reviewed By: #plasma, davidedmundson
+
+Subscribers: plasma-devel
+
+Tags: #plasma
+
+Differential Revision: https://phabricator.kde.org/D2970
+---
+ shell/panelview.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/shell/panelview.cpp b/shell/panelview.cpp
+index 8ec7a8a..f3c3cd0 100644
+--- a/shell/panelview.cpp
++++ b/shell/panelview.cpp
+@@ -682,6 +682,10 @@ void PanelView::setScreenToFollow(QScreen *screen)
+         return;
+     }
+ 
++    if (!screen) {
++        return;
++    }
++
+     /*connect(screen, &QObject::destroyed, this, [this]() {
+         if (PanelView::screen()) {
+             m_screenToFollow = PanelView::screen();
+-- 
+2.7.4
+

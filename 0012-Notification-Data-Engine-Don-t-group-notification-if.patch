@@ -1,0 +1,36 @@
+From fcc806c09859faee0942186dafa2904b3365cf0b Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Thu, 6 Oct 2016 10:59:50 +0200
+Subject: [PATCH 12/19] [Notification Data Engine] Don't group notification if
+ it should replace an existing one
+
+If an application explicitly requests a notification to replace another one (replaces_id set),
+don't group it with another notification.
+
+When creating a KNotification object and then updating it by calling e.g. setText it would
+just append it to the already shown notification.
+
+Differential Revision: https://phabricator.kde.org/D2954
+---
+ dataengines/notifications/notificationsengine.cpp | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/dataengines/notifications/notificationsengine.cpp b/dataengines/notifications/notificationsengine.cpp
+index 6c7e286..2bc4dc2 100644
+--- a/dataengines/notifications/notificationsengine.cpp
++++ b/dataengines/notifications/notificationsengine.cpp
+@@ -193,10 +193,9 @@ uint NotificationsEngine::Notify(const QString &app_name, uint replaces_id,
+ 
+     // group notifications that have the same title coming from the same app
+     // or if they are on the "blacklist", honor the skipGrouping hint sent
+-    if (m_activeNotifications.values().contains(app_name + summary) && !skipGrouping && !m_alwaysReplaceAppsList.contains(app_name)) {
++    if (!replaces_id && m_activeNotifications.values().contains(app_name + summary) && !skipGrouping && !m_alwaysReplaceAppsList.contains(app_name)) {
+         // cut off the "notification " from the source name
+         partOf = m_activeNotifications.key(app_name + summary).midRef(13).toUInt();
+-
+     }
+ 
+     qDebug() << "Currrent active notifications:" << m_activeNotifications;
+-- 
+2.7.4
+

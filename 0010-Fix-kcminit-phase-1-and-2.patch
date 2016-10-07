@@ -1,0 +1,58 @@
+From eb6223bbe650551157417615a5f564a2928fd0e7 Mon Sep 17 00:00:00 2001
+From: David Edmundson <kde@davidedmundson.co.uk>
+Date: Wed, 5 Oct 2016 15:54:05 +0100
+Subject: [PATCH 10/19] Fix kcminit phase 1 and 2
+
+Summary:
+The current code registers the session bus *after* app->exec() this
+effectively means it won't work.
+
+This causes ksmserver to be unable to deliver the calls to start kcminit
+modules at remaining init phases.
+
+Any KCMinit module which are at X-KDE-Init-Phase=1 or 2 will now get
+run. It also means kcminit_startup closes, instead of lingersing on
+startup doing nothing until it times out 5 minutes later.
+
+Test Plan: Confirmed kcminit_startup now exits properly.
+
+Reviewers: #plasma, apol
+
+Reviewed By: apol
+
+Subscribers: plasma-devel
+
+Tags: #plasma
+
+Differential Revision: https://phabricator.kde.org/D2887
+---
+ startkde/kcminit/main.cpp | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/startkde/kcminit/main.cpp b/startkde/kcminit/main.cpp
+index 3f67b46..0633abd 100644
+--- a/startkde/kcminit/main.cpp
++++ b/startkde/kcminit/main.cpp
+@@ -212,6 +212,10 @@ KCMInit::KCMInit( const QCommandLineParser& args )
+ 
+      sendReady();
+      QTimer::singleShot( 300 * 1000, qApp, &QCoreApplication::quit); // just in case
++
++     QDBusConnection::sessionBus().registerObject(QStringLiteral("/kcminit"), this, QDBusConnection::ExportScriptableContents);
++     QDBusConnection::sessionBus().registerService(QStringLiteral("org.kde.kcminit"));
++
+      qApp->exec(); // wait for runPhase1() and runPhase2()
+   }
+   else
+@@ -266,8 +270,6 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
+   about.processCommandLine(&parser);
+ 
+   KCMInit kcminit( parser );
+-  QDBusConnection::sessionBus().registerObject(QStringLiteral("/kcminit"), &kcminit, QDBusConnection::ExportScriptableContents);
+-  QDBusConnection::sessionBus().registerService(QStringLiteral("org.kde.kcminit"));
+   return 0;
+ }
+ 
+-- 
+2.7.4
+
