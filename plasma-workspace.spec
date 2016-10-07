@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -384,7 +384,12 @@ Requires:       kf5-plasma
 # org.kde.plasma.workspace.keyboardlayout
 Requires:       %{name} = %{version}-%{release}
 # /usr/share/backgrounds/default.png
+%if 0%{?fedora}
 Requires:       desktop-backgrounds-compat
+%endif
+%if 0%{?rhel}
+Requires:       system-logos
+%endif
 BuildArch: noarch
 %description -n sddm-breeze
 %{summary}.
@@ -496,6 +501,12 @@ cp -alf %{buildroot}%{_datadir}/sddm/themes/breeze/ \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora
 ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
+rm -fv  %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
+cp -a   %{buildroot}%{_datadir}/sddm/themes/breeze/theme.conf \
+        %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
+sed -i \
+  -e "s|background=.*|background=/usr/share/backgrounds/default.png"
+  %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
 
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -679,6 +690,9 @@ fi
 
 
 %changelog
+* Fri Oct 07 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-3
+- sddm-breeze: make 01-breeze-fedora theme use backgrounds/default.png
+
 * Fri Oct 07 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-2
 - pull in upstream branch fixes
 - re-order patches so upstream applied first, then downstream
