@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.0
-Release: 3%{?dist}
+Release: 0.3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -505,7 +505,7 @@ rm -fv  %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
 cp -a   %{buildroot}%{_datadir}/sddm/themes/breeze/theme.conf \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
 sed -i \
-  -e "s|background=.*|background=/usr/share/backgrounds/default.png|"
+  -e "s|background=.*|background=/usr/share/backgrounds/default.png|" \
   %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
 
 # Make kcheckpass work
