@@ -233,11 +233,12 @@ Requires:       f23-kde-theme
 %global default_lookandfeel org.fedoraproject.fedora.twenty.three
 %endif
 %if 0%{?fedora} == 24
-Requires:       f24-kde-theme-core
+Requires:       f24-kde-theme-core = %{version}-%{release}
 %global         f24_kde_theme_core 1
 %global default_lookandfeel org.fedoraproject.fedora.twenty.four
 %endif
 %if 0%{?fedora} > 24
+Requires:       plasma-lookandfeel-fedora = %{version}-%{release}
 %global default_lookandfeel org.fedoraproject.fedora.desktop
 %endif
 %if ! 0%{?default_lookandfeel:1}
