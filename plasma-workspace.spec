@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -25,9 +25,10 @@ Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.
 # This goes to PAM
 # TODO: this should arguably be in kde-settings with the other pam-related configs
 Source10:       kde
-# Desktop file for Fedora Twenty Two/Three look-and-feel package
+# Desktop file for Fedora look-and-feel packages
 Source12:       twenty.two.desktop
 Source13:       twenty.three.desktop
+Source14:       fedora.desktop
 
 ## downstream Patches
 Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
@@ -413,6 +414,12 @@ Requires: f24-kde-theme
 %description -n f24-kde-theme-core
 %{summary}.
 
+%package -n plasma-lookandfeel-fedora
+Summary:  Fedora look-and-feel for Plasma
+Requires: %{name} = %{version}-%{release}
+%description -n plasma-lookandfeel-fedora
+%{summary}.
+
 
 %prep
 %setup -q
@@ -488,12 +495,22 @@ rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twe
 %endif
 
 %if 0%{?f24_kde_theme_core}
-# Create Fedora Twenty Three look and feel package from the Breeze one
+# Create Fedora Twenty Four look and feel package from the Breeze one
 cp -r %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.twenty.four}
 # remove items that will be provided by f24-kde-theme
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/metadata.desktop
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/components/artwork/background.png
 rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/previews/{lockscreen.png,preview.png,splash.png}
+%endif
+
+%if 0%{?fedora} > 24
+# Create Fedora look and feel package (
+cp -alf %{buildroot}%{_datadir}/plasma/look-and-feel/{org.kde.breeze.desktop,org.fedoraproject.fedora.desktop}
+# remove items to be customized
+rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/metadata.desktop
+rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/components/artwork/background.png
+install -m 0644 %{SOURCE14} %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/metadata.desktop
+install -m 0644 %{SOURCE14} %{buildroot}%{_datadir}/kservices5/plasma-lookandfeel-org.fedoraproject.fedora.desktop
 %endif
 
 # make fedora-breeze sddm theme variant.  FIXME/TODO: corrected preview screenshot
@@ -688,8 +705,16 @@ fi
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/
 %endif
 
+%if 0%{?fedora} > 24
+%files -n plasma-lookandfeel-fedora
+%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/
+%endif
+
 
 %changelog
+* Sat Oct 08 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-4
+- plasma-lookandfeel-fedora (f25+)
+
 * Fri Oct 07 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-3
 - sddm-breeze: make 01-breeze-fedora theme use backgrounds/default.png
 
