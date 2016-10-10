@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -238,6 +238,7 @@ Requires:       f24-kde-theme-core = %{version}-%{release}
 %global default_lookandfeel org.fedoraproject.fedora.twenty.four
 %endif
 %if 0%{?fedora} > 24
+%global         f24_kde_theme_core 1
 Requires:       plasma-lookandfeel-fedora = %{version}-%{release}
 %global default_lookandfeel org.fedoraproject.fedora.desktop
 %endif
@@ -414,13 +415,19 @@ Requires:       qt5-qttools
 %package -n f24-kde-theme-core
 Summary:  Core and Inherited theme elements
 Requires: %{name} = %{version}-%{release}
+# when switched to noarch
+Obsoletes: f24-kde-theme-core < 5.8.0-5
 Requires: f24-kde-theme
+BuildArch: noarch
 %description -n f24-kde-theme-core
 %{summary}.
 
 %package -n plasma-lookandfeel-fedora
 Summary:  Fedora look-and-feel for Plasma
 Requires: %{name} = %{version}-%{release}
+# when switched to noarch
+Obsoletes: plasma-lookandfeel-fedora < 5.8.0-5
+BuildArch: noarch
 %description -n plasma-lookandfeel-fedora
 %{summary}.
 
@@ -716,6 +723,10 @@ fi
 
 
 %changelog
+* Mon Oct 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-5
+- f24-kde-theme/plasma-lookandfeel-fedora noarch
+- continue to produce f24-kde-theme on f25+ builds
+
 * Sat Oct 08 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-4
 - plasma-lookandfeel-fedora (f25+)
 
