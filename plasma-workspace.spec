@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.8.0
-Release: 5%{?dist}
+Version: 5.8.1
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -52,19 +52,6 @@ Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
-
-Patch5: 0005-Fix-usage-of-qdbus-variable-in-startkde.patch
-Patch6: 0006-always-connect-to-Local-source.patch
-Patch8: 0008-Digital-Clock-Silence-warning.patch
-Patch9: 0009-Set-explicit-minimum-size-on-panelSpacer-so-that-App.patch
-Patch10: 0010-Fix-kcminit-phase-1-and-2.patch
-Patch11: 0011-make-sure-allTimezones-is-set.patch
-Patch12: 0012-Notification-Data-Engine-Don-t-group-notification-if.patch
-Patch13: 0013-klipper-Move-notification-from-tray-to-Klipper.patch
-Patch15: 0015-save-the-containment-only-aftyer-switch.patch
-Patch16: 0016-shell-Fix-non-interactive-panelview-on-non-primary-s.patch
-Patch17: 0017-shell-Fix-crash-when-moving-panel-between-two-monito.patch
-Patch18: 0018-delete-containments-upon-activity-deletion.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -436,18 +423,6 @@ BuildArch: noarch
 %setup -q
 
 ## upstream patches
-%patch5 -p1 -b .0005
-%patch6 -p1 -b .0006
-%patch8 -p1 -b .0008
-%patch9 -p1 -b .0009
-%patch10 -p1 -b .0010
-%patch11 -p1 -b .0011
-%patch12 -p1 -b .0012
-%patch13 -p1 -b .0013
-%patch15 -p1 -b .0015
-%patch16 -p1 -b .0016
-%patch17 -p1 -b .0017
-%patch18 -p1 -b .0018
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
@@ -723,6 +698,9 @@ fi
 
 
 %changelog
+* Tue Oct 11 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.1-1
+- 5.8.1
+
 * Mon Oct 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-5
 - f24-kde-theme/plasma-lookandfeel-fedora noarch
 - continue to produce f24-kde-theme on f25+ builds

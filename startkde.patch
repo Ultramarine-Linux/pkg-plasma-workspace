@@ -1,8 +1,7 @@
-diff --git a/startkde/startkde.cmake b/startkde/startkde.cmake
-index 37ab5cd..559949a 100644
---- a/startkde/startkde.cmake
-+++ b/startkde/startkde.cmake
-@@ -16,25 +16,22 @@ trap 'echo GOT SIGHUP' HUP
+diff -up plasma-workspace-5.8.1/startkde/startkde.cmake.startkde plasma-workspace-5.8.1/startkde/startkde.cmake
+--- plasma-workspace-5.8.1/startkde/startkde.cmake.startkde	2016-10-11 07:46:00.000000000 -0500
++++ plasma-workspace-5.8.1/startkde/startkde.cmake	2016-10-11 11:33:58.811705935 -0500
+@@ -17,25 +17,22 @@ trap 'echo GOT SIGHUP' HUP
  # we have to unset this for Darwin since it will screw up KDE's dynamic-loading
  unset DYLD_FORCE_FLAT_NAMESPACE
  
@@ -38,7 +37,7 @@ index 37ab5cd..559949a 100644
  	exit 1
  elif test $kcheckrunning_result -eq 2 ; then
  	echo "\$DISPLAY is not set or cannot connect to the X server."
-@@ -90,53 +87,10 @@ test -f $exportformatssettings && {
+@@ -91,53 +88,10 @@ test -f $exportformatssettings && {
      . $exportformatssettings
  }
  
@@ -93,7 +92,7 @@ index 37ab5cd..559949a 100644
      exit 1
  fi
  [ -r $configDir/startupconfig ] && . $configDir/startupconfig
-@@ -210,48 +164,6 @@ for prefix in `echo $scriptpath`; do
+@@ -215,48 +169,6 @@ for prefix in `echo $scriptpath`; do
    done
  done
  
@@ -142,7 +141,7 @@ index 37ab5cd..559949a 100644
  # Set a left cursor instead of the standard X11 "X" cursor, since I've heard
  # from some users that they're confused and don't know what to do. This is
  # especially necessary on slow machines, where starting KDE takes one or two
-@@ -262,33 +174,15 @@ xset fp rehash
+@@ -267,33 +179,15 @@ xset fp rehash
  #
  xsetroot -cursor_name left_ptr
  
@@ -177,7 +176,7 @@ index 37ab5cd..559949a 100644
      exit 1
  fi
  
-@@ -348,18 +242,16 @@ if test $? -ne 0; then
+@@ -344,18 +238,16 @@ if test $? -ne 0; then
    # Startup error
    echo 'startkde: Could not sync environment to dbus.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
@@ -199,7 +198,7 @@ index 37ab5cd..559949a 100644
    exit 1
  fi
  
-@@ -383,7 +275,7 @@ if test $? -eq 255; then
+@@ -381,7 +273,7 @@ if test $? -eq 255; then
    # Startup error
    echo 'startkde: Could not start ksmserver. Check your installation.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
