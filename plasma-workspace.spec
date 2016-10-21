@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -52,6 +52,11 @@ Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
+
+## upstream Patches (master branch)
+# systray-related fixes
+Patch21: 0001-Port-to-new-plasma-framework-API.patch
+Patch22: 0002-Systray-Move-all-icon-resolution-to-dataengine.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -424,6 +429,10 @@ BuildArch: noarch
 
 ## upstream patches
 
+## not strictly needed atm, we care more about patch22 -- rex
+#patch21 -p1 -b .0001
+%patch22 -p1 -b .0002
+
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
 %patch52 -p1 -b .installdgbsymbols
@@ -698,6 +707,9 @@ fi
 
 
 %changelog
+* Fri Oct 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.2-2
+- backport candidate systray-icon cpu fix from master (kde#356479)
+
 * Tue Oct 18 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.2-1
 - 5.8.2
 
