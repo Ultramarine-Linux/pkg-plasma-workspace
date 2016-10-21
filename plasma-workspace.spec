@@ -55,8 +55,8 @@ Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches (master branch)
 # systray-related fixes
-Patch21: 0001-Port-to-new-plasma-framework-API.patch
-Patch22: 0002-Systray-Move-all-icon-resolution-to-dataengine.patch
+Patch31: 0031-Port-to-new-plasma-framework-API.patch
+Patch33: 0033-Systray-Move-all-icon-resolution-to-dataengine.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -429,9 +429,8 @@ BuildArch: noarch
 
 ## upstream patches
 
-## not strictly needed atm, we care more about patch22 -- rex
-#patch21 -p1 -b .0001
-%patch22 -p1 -b .0002
+#patch31 -p1 -b .0031
+%patch33 -p1 -b .0033
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
