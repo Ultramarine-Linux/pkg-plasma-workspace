@@ -1,0 +1,27 @@
+From b61c232722aa80567590ee6dfee655e93e95f7ff Mon Sep 17 00:00:00 2001
+From: Kai Uwe Broulik <kde@privat.broulik.de>
+Date: Sun, 23 Oct 2016 13:24:00 +0200
+Subject: [PATCH 3/3] Remove unused import QtGraphicalEffects
+
+BUG: 371493
+FIXED-IN: 5.8.3
+---
+ sddm-theme/Background.qml | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/sddm-theme/Background.qml b/sddm-theme/Background.qml
+index 9a15c94..085ea74 100644
+--- a/sddm-theme/Background.qml
++++ b/sddm-theme/Background.qml
+@@ -23,8 +23,6 @@
+ ***************************************************************************/
+ 
+ import QtQuick 2.2
+-import QtGraphicalEffects 1.0
+-
+ 
+ FocusScope {
+     property alias source: image.source
+-- 
+2.7.4
+
