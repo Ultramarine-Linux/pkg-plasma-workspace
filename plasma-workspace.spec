@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -377,6 +377,9 @@ Summary:        SDDM breeze theme
 # upgrade path, when sddm-breeze was split out
 Obsoletes: plasma-workspace < 5.3.2-8
 Requires:       kf5-plasma
+# Background.qml:import QtGraphicalEffects 1.0
+# see also https://bugs.kde.org/show_bug.cgi?id=371493
+Requires:       qt5-graphicaleffects
 # QML imports:
 # org.kde.plasma.workspace.components
 # org.kde.plasma.workspace.keyboardlayout
@@ -706,6 +709,9 @@ fi
 
 
 %changelog
+* Sat Oct 22 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.2-3
+- sddm-breeze: Requires: qt5-qtgraphicaleffects (kde#371493)
+
 * Fri Oct 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.2-2
 - backport candidate systray-icon cpu fix from master (kde#356479)
 
