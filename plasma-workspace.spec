@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.8.2
-Release: 4%{?dist}
+Version: 5.8.3
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -52,8 +52,6 @@ Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches
-Patch2: 0002-Directly-show-the-username-password-textboxes-when-u.patch
-Patch3: 0003-Remove-unused-import-QtGraphicalEffects.patch
 
 ## upstream Patches (master branch)
 # systray-related fixes
@@ -432,8 +430,6 @@ BuildArch: noarch
 %setup -q
 
 ## upstream patches
-%patch2 -p1 -b .0002
-%patch3 -p1 -b .0003
 
 #patch31 -p1 -b .0031
 %patch33 -p1 -b .0033
@@ -712,6 +708,9 @@ fi
 
 
 %changelog
+* Tue Nov 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.3-1
+- 5.8.3
+
 * Sun Oct 23 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.2-4
 - sddm-breeze: Requires: qt5-qtquickcontrols instead (kde#371493)
 
