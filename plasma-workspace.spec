@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.8.3
+Version: 5.8.4
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -708,6 +708,9 @@ fi
 
 
 %changelog
+* Tue Nov 22 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.4-1
+- 5.8.4
+
 * Tue Nov 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.3-1
 - 5.8.3
 
