@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -21,6 +21,9 @@ URL:     https://quickgit.kde.org/?p=%{name}.git
 %global stable stable
 %endif
 Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.tar.xz
+
+# filter qml/plugins provides
+%global __provides_exclude_from ^(%{_kf5_qmldir}/.*\\.so|%{_kf5_qtplugindir}/.*\\.so)$
 
 # This goes to PAM
 # TODO: this should arguably be in kde-settings with the other pam-related configs
@@ -708,6 +711,9 @@ fi
 
 
 %changelog
+* Mon Jan 02 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.5-2
+- filter qml/plugin provides
+
 * Wed Dec 28 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.8.5-1
 - 5.8.5
 
