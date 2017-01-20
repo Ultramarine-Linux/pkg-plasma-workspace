@@ -1,3 +1,10 @@
 /plasma-workspace-5.8.3.tar.xz
 /plasma-workspace-5.8.4.tar.xz
 /plasma-workspace-5.8.5.tar.xz
+/0001-use-a-native-event-filter-to-notice-the-screen-was-s.patch
+/0002-Systray-Move-all-icon-resolution-to-dataengine.patch
+/0003-MPRIS-Data-Engine-Don-t-crash-if-Metadata-is-a-map-b.patch
+/0004-Fix-Pinned-Chrome-disappears-when-all-Chrome-windows.patch
+/0005-better-clean-up-of-duplicate-containments.patch
+/0006-MediaController-Update-position-while-queuedPosition.patch
+/0007-Corona-screenGeometryChanged-on-qscreen-resized.patch
