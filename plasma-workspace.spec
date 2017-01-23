@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.5
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -347,6 +347,10 @@ Documentation and user manuals for %{name}.
 Summary: DrKonqi crash handler for KF5/Plasma5
 # when split out
 Obsoletes: plasma-workspace < 5.4.2-2
+%if 0%{?fedora} > 25
+# retired from kde-runtime on f26+, evr includes epoch++
+Obsoletes: kde-runtime-drkonqi < 1:16.12.1-1
+%endif
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-common = %{version}-%{release}
 %if 0%{?fedora} > 23
@@ -719,6 +723,9 @@ fi
 
 
 %changelog
+* Mon Jan 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.5-4
+- Obsoletes: kde-runtime (#1415360)
+
 * Thu Jan 19 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.5-3
 - pull in 5.8 branch fixes
 
