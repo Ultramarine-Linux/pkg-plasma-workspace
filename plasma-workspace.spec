@@ -724,7 +724,7 @@ fi
 
 %changelog
 * Mon Jan 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.5-4
-- Obsoletes: kde-runtime (#1415360)
+- Obsoletes: kde-runtime-drkonqi (#1415360)
 
 * Thu Jan 19 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.5-3
 - pull in 5.8 branch fixes
