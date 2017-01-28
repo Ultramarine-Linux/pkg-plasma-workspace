@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.5
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -723,6 +723,9 @@ fi
 
 
 %changelog
+* Sat Jan 28 2017 Mukundan Ragavan <nonamedotc@gmail.com> - 5.8.5-5
+- rebuild for libqalculate.so.6
+
 * Mon Jan 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.5-4
 - Obsoletes: kde-runtime-drkonqi (#1415360)
 
