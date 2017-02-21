@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.8.5
-Release: 6%{?dist}
+Version: 5.8.6
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://quickgit.kde.org/?p=%{name}.git
@@ -55,13 +55,6 @@ Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches (5.8 branch) lookaside cache
-Patch1: 0001-use-a-native-event-filter-to-notice-the-screen-was-s.patch
-Patch2: 0002-Systray-Move-all-icon-resolution-to-dataengine.patch
-Patch3: 0003-MPRIS-Data-Engine-Don-t-crash-if-Metadata-is-a-map-b.patch
-Patch4: 0004-Fix-Pinned-Chrome-disappears-when-all-Chrome-windows.patch
-Patch5: 0005-better-clean-up-of-duplicate-containments.patch
-Patch6: 0006-MediaController-Update-position-while-queuedPosition.patch
-Patch7: 0007-Corona-screenGeometryChanged-on-qscreen-resized.patch
 
 ## upstream Patches (master branch)
 
@@ -441,13 +434,6 @@ BuildArch: noarch
 %setup -q
 
 ## upstream patches
-%patch1 -p1 -b .0001
-%patch2 -p1 -b .0002
-%patch3 -p1 -b .0003
-%patch4 -p1 -b .0004
-%patch5 -p1 -b .0005
-%patch6 -p1 -b .0006
-%patch7 -p1 -b .0007
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
@@ -723,6 +709,9 @@ fi
 
 
 %changelog
+* Tue Feb 21 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-1
+- 5.8.6
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.8.5-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
