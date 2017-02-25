@@ -2,12 +2,12 @@
 # repo or arch where there's no package that would provide plasmashell
 #define bootstrap 1
 
-%global kf5_version 5.26.0
+%global kf5_version_min 5.26.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.6
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -116,33 +116,34 @@ BuildRequires:  qt5-qtdeclarative-devel
 BuildRequires:  qt5-qtwebkit-devel
 BuildRequires:  phonon-qt5-devel
 
-BuildRequires:  kf5-rpm-macros >= %{kf5_version}
+BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
 BuildRequires:  extra-cmake-modules
-BuildRequires:  kf5-baloo-devel >= %{kf5_version}
-BuildRequires:  kf5-kcmutils-devel >= %{kf5_version}
-BuildRequires:  kf5-kcrash-devel >= %{kf5_version}
-BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version}
-BuildRequires:  kf5-kdelibs4support-devel >= %{kf5_version}
-BuildRequires:  kf5-kdesu-devel >= %{kf5_version}
-BuildRequires:  kf5-kdewebkit-devel >= %{kf5_version}
-BuildRequires:  kf5-kdoctools-devel >= %{kf5_version}
-BuildRequires:  kf5-kglobalaccel-devel >= %{kf5_version}
-BuildRequires:  kf5-kidletime-devel >= %{kf5_version}
-BuildRequires:  kf5-kinit-devel >= %{kf5_version}
-BuildRequires:  kf5-kjsembed-devel >= %{kf5_version}
-BuildRequires:  kf5-knewstuff-devel >= %{kf5_version}
-BuildRequires:  kf5-knotifyconfig-devel >= %{kf5_version}
-BuildRequires:  kf5-krunner-devel >= %{kf5_version}
-BuildRequires:  kf5-ktexteditor-devel >= %{kf5_version}
-BuildRequires:  kf5-ktextwidgets-devel >= %{kf5_version}
-BuildRequires:  kf5-kwallet-devel >= %{kf5_version}
-BuildRequires:  kf5-kxmlrpcclient-devel >= %{kf5_version}
-BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version}
-BuildRequires:  kf5-plasma-devel >= %{kf5_version}
-BuildRequires:  kf5-threadweaver-devel >= %{kf5_version}
+BuildRequires:  kf5-baloo-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kcmutils-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kcrash-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kdelibs4support-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kdesu-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kdewebkit-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kdoctools-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kglobalaccel-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kidletime-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kinit-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kjsembed-devel >= %{kf5_version_min}
+BuildRequires:  kf5-knewstuff-devel >= %{kf5_version_min}
+BuildRequires:  kf5-knotifyconfig-devel >= %{kf5_version_min}
+BuildRequires:  kf5-krunner-devel >= %{kf5_version_min}
+BuildRequires:  kf5-ktexteditor-devel >= %{kf5_version_min}
+BuildRequires:  kf5-ktextwidgets-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kwallet-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kxmlrpcclient-devel >= %{kf5_version_min}
+BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version_min}
+BuildRequires:  kf5-plasma-devel >= %{kf5_version_min}
+Requires:       kf5-plasma%{?_isa} >= %{_kf5_version}
+BuildRequires:  kf5-threadweaver-devel >= %{kf5_version_min}
 
 BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
-BuildRequires:  kf5-kwayland-devel >= %{kf5_version}
+BuildRequires:  kf5-kwayland-devel >= %{kf5_version_min}
 BuildRequires:  libwayland-client-devel >= 1.3.0
 BuildRequires:  libwayland-server-devel >= 1.3.0
 BuildRequires:  libkscreen-qt5-devel >= %{majmin_ver}
@@ -382,7 +383,7 @@ Requires: %{name}-geolocation = %{version}-%{release}
 Summary:        SDDM breeze theme
 # upgrade path, when sddm-breeze was split out
 Obsoletes: plasma-workspace < 5.3.2-8
-Requires:       kf5-plasma
+Requires:       kf5-plasma >= %{_kf5_version}
 # Background.qml:import QtQuick
 Requires:       qt5-qtquickcontrols
 # QML imports:
@@ -732,6 +733,9 @@ fi
 
 
 %changelog
+* Sat Feb 25 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-3
+- Requires: kf5-plasma >= %%_kf5_version
+
 * Thu Feb 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-2
 - avoid fedora theme crasher (kde#376847)
 
