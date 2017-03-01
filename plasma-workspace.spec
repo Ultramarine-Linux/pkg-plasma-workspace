@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.8.6
-Release: 3%{?dist}
+Version: 5.9.3
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -40,7 +40,6 @@ Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch102:       startkde.patch
-Patch103:       startplasmacompositor.patch
 # revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
 # FIXME/TODO: port patch or drop it -- rex (probably drop at this point)
 Patch104:       plasma-workspace-5.7.4-systray_iconSizes.patch
@@ -454,7 +453,6 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch102 -p1 -b .startkde
-%patch103 -p1 -b .startplasmacompositor
 #patch104 -p1
 %patch105 -p1
 
@@ -588,6 +586,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/ksmserver-logout-greeter
 %{_libexecdir}/ksyncdbusenv
+%{_libexecdir}/ksmserver-switchuser-greeter
 %{_kf5_datadir}/ksmserver/
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
@@ -614,6 +613,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
 %{_kf5_datadir}/kio_desktop/
+%{_kf5_datadir}/kconf_update/krunnerplugins.upd
+%{_kf5_libdir}/kconf_update_bin/krunnerplugins
 %{_kf5_metainfodir}/*.xml
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
@@ -733,6 +734,9 @@ fi
 
 
 %changelog
+* Wed Mar 01 2017 Jan Grulich <jgrulich@redhat.com> - 5.9.3-1
+- 5.9.3
+
 * Sat Feb 25 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-3
 - Requires: kf5-plasma >= %%_kf5_version
 
