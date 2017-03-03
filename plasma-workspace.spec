@@ -37,7 +37,7 @@ Source15:       fedora.desktop
 
 # breeze fedora sddm theme components
 # includes f25-based preview (better than breeze or nothing at least)
-Source20:       breeze-fedora-1.0.tar.gz
+Source20:       breeze-fedora-0.2.tar.gz
 
 ## downstream Patches
 Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
