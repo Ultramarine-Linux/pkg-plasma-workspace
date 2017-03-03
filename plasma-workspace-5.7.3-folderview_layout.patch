@@ -1,0 +1,11 @@
+diff --git a/lookandfeel/contents/defaults b/lookandfeel/contents/defaults
+index 7dbc554..8dca8dc 100644
+--- a/lookandfeel/contents/defaults
++++ b/lookandfeel/contents/defaults
+@@ -21,3 +21,6 @@ LayoutName=org.kde.breeze.desktop
+
+ [kwinrc][WindowDecoration]
+ library=org.kde.breeze
++
++[Desktop][org.kde.plasma.desktop]
++Containment=org.kde.plasma.folder
