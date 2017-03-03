@@ -44,9 +44,6 @@ Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch102:       startkde.patch
-# revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
-# FIXME/TODO: port patch or drop it -- rex (probably drop at this point)
-Patch104:       plasma-workspace-5.7.4-systray_iconSizes.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -457,7 +454,6 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch102 -p1 -b .startkde
-#patch104 -p1
 %patch105 -p1
 
 %if 0%{?fedora} > 21
@@ -717,6 +713,7 @@ fi
 %files -n sddm-breeze
 %{_datadir}/sddm/themes/breeze/
 %{_datadir}/sddm/themes/01-breeze-fedora/
+%config(noreplace) %{_datadir}/sddm/themes/01-breeze-fedora/theme.conf.user
 
 %files wayland
 %{_kf5_bindir}/startplasmacompositor
