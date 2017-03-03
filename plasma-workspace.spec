@@ -2,12 +2,12 @@
 # repo or arch where there's no package that would provide plasmashell
 #define bootstrap 1
 
-%global kf5_version_min 5.26.0
+%global kf5_version_min 5.29.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.9.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -34,6 +34,10 @@ Source13:       twenty.three.desktop
 # copy from f24-kde-theme
 Source14:       twenty.four.desktop
 Source15:       fedora.desktop
+
+# breeze fedora sddm theme components
+# includes f25-based preview (better than breeze or nothing at least)
+Source20:       breeze-fedora-1.0.tar.gz
 
 ## downstream Patches
 Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
@@ -434,7 +438,7 @@ BuildArch: noarch
 
 
 %prep
-%setup -q
+%setup -q -a 20
 
 ## upstream patches
 
@@ -532,17 +536,14 @@ install -m644 -p \
   %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/components/artwork/background.png
 %endif
 
-# make fedora-breeze sddm theme variant.  FIXME/TODO: corrected preview screenshot
+# make fedora-breeze sddm theme variant.
 cp -alf %{buildroot}%{_datadir}/sddm/themes/breeze/ \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora
+# replace items
 ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
-rm -fv  %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
-cp -a   %{buildroot}%{_datadir}/sddm/themes/breeze/theme.conf \
+install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
-sed -i \
-  -e "s|background=.*|background=/usr/share/backgrounds/default.png|" \
-  %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
 
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -734,6 +735,10 @@ fi
 
 
 %changelog
+* Fri Mar 03 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.3-2
+- fix sddm-breeze (01-breeze-fedora theme)
+- bump kf5 dep
+
 * Wed Mar 01 2017 Jan Grulich <jgrulich@redhat.com> - 5.9.3-1
 - 5.9.3
 
