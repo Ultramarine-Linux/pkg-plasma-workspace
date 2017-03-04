@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.9.3
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -732,6 +732,9 @@ fi
 
 
 %changelog
+* Sat Mar 04 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.3-3
+- rebuild
+
 * Fri Mar 03 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.3-2
 - fix sddm-breeze (01-breeze-fedora theme)
 - bump kf5 dep
