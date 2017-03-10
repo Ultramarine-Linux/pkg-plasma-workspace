@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.6
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -57,8 +57,10 @@ Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches (5.8 branch) lookaside cache
-
-## upstream Patches (master branch)
+Patch2: 0002-Logout-Screen-Show-suspend-button-only-if-supported.patch
+Patch3: 0003-try-harder-to-make-the-selected-wallpaper-visible.patch
+Patch4: 0004-Ignore-NoDisplay-true-.desktop-entries-when-matching.patch
+Patch5: 0005-try-proper-order-of-corona-availableScreenRect.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -438,6 +440,10 @@ BuildArch: noarch
 %setup -q
 
 ## upstream patches
+%patch2 -p1 -b .0002
+%patch3 -p1 -b .0003
+%patch4 -p1 -b .0004
+%patch5 -p1 -b .0005
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
@@ -733,6 +739,9 @@ fi
 
 
 %changelog
+* Fri Mar 10 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-4
+- pull in 5.8 branch fixes
+
 * Sat Feb 25 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-3
 - Requires: kf5-plasma >= %%_kf5_version
 

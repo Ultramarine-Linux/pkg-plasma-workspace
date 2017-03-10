@@ -1,1 +1,5 @@
 /plasma-workspace-5.8.6.tar.xz
+/0002-Logout-Screen-Show-suspend-button-only-if-supported.patch
+/0003-try-harder-to-make-the-selected-wallpaper-visible.patch
+/0004-Ignore-NoDisplay-true-.desktop-entries-when-matching.patch
+/0005-try-proper-order-of-corona-availableScreenRect.patch
