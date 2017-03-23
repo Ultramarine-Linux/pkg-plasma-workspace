@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.6
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -61,6 +61,10 @@ Patch2: 0002-Logout-Screen-Show-suspend-button-only-if-supported.patch
 Patch3: 0003-try-harder-to-make-the-selected-wallpaper-visible.patch
 Patch4: 0004-Ignore-NoDisplay-true-.desktop-entries-when-matching.patch
 Patch5: 0005-try-proper-order-of-corona-availableScreenRect.patch
+# https://cgit.kde.org/plasma-workspace.git/patch/?id=721fcd3d309171fde2dc37b84939f7657db91de3
+Patch6: 0006-don-t-emit-availableScreenRectChanged-when-quitting.patch
+# https://cgit.kde.org/plasma-workspace.git/patch/?id=7f2dceb95c5812207c87f4b61d5a90e0306603d6
+Patch7: 0007-manage-mouse-events-when-out-of-the-window.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -739,6 +743,9 @@ fi
 
 
 %changelog
+* Thu Mar 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-5
+- more 5.8 branch fixes
+
 * Fri Mar 10 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-4
 - pull in 5.8 branch fixes
 
