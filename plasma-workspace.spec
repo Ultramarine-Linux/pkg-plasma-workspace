@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.9.3
-Release: 3%{?dist}
+Version: 5.9.4
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -732,6 +732,9 @@ fi
 
 
 %changelog
+* Thu Mar 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.4-1
+- 5.9.4
+
 * Sat Mar 04 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.3-3
 - rebuild
 
