@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.8.6
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -448,6 +448,8 @@ BuildArch: noarch
 %patch3 -p1 -b .0003
 %patch4 -p1 -b .0004
 %patch5 -p1 -b .0005
+%patch6 -p1 -b .0006
+%patch7 -p1 -b .0007
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
@@ -743,6 +745,9 @@ fi
 
 
 %changelog
+* Sat Mar 25 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-6
+- actually apply new branch fixes
+
 * Thu Mar 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-5
 - more 5.8 branch fixes
 
