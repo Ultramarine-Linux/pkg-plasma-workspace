@@ -2,12 +2,12 @@
 # repo or arch where there's no package that would provide plasmashell
 #define bootstrap 1
 
-%global kf5_version_min 5.26.0
+%global kf5_version_min 5.29.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.8.6
-Release: 3%{?dist}
+Version: 5.9.4
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -35,15 +35,15 @@ Source13:       twenty.three.desktop
 Source14:       twenty.four.desktop
 Source15:       fedora.desktop
 
+# breeze fedora sddm theme components
+# includes f25-based preview (better than breeze or nothing at least)
+Source20:       breeze-fedora-0.2.tar.gz
+
 ## downstream Patches
 Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch102:       startkde.patch
-Patch103:       startplasmacompositor.patch
-# revert (semi) regresssion wrt systray icon sizes, http://bugs.kde.org/365570
-# FIXME/TODO: port patch or drop it -- rex (probably drop at this point)
-Patch104:       plasma-workspace-5.7.4-systray_iconSizes.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -435,7 +435,7 @@ BuildArch: noarch
 
 
 %prep
-%setup -q
+%setup -q -a 20
 
 ## upstream patches
 
@@ -454,8 +454,6 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch102 -p1 -b .startkde
-%patch103 -p1 -b .startplasmacompositor
-#patch104 -p1
 %patch105 -p1
 
 %if 0%{?fedora} > 21
@@ -534,17 +532,14 @@ install -m644 -p \
   %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/components/artwork/background.png
 %endif
 
-# make fedora-breeze sddm theme variant.  FIXME/TODO: corrected preview screenshot
+# make fedora-breeze sddm theme variant.
 cp -alf %{buildroot}%{_datadir}/sddm/themes/breeze/ \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora
+# replace items
 ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
-rm -fv  %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
-cp -a   %{buildroot}%{_datadir}/sddm/themes/breeze/theme.conf \
+install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
-sed -i \
-  -e "s|background=.*|background=/usr/share/backgrounds/default.png|" \
-  %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
 
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -588,6 +583,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/ksmserver-logout-greeter
 %{_libexecdir}/ksyncdbusenv
+%{_libexecdir}/ksmserver-switchuser-greeter
 %{_kf5_datadir}/ksmserver/
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
@@ -614,6 +610,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
 %{_kf5_datadir}/kio_desktop/
+%{_kf5_datadir}/kconf_update/krunnerplugins.upd
+%{_kf5_libdir}/kconf_update_bin/krunnerplugins
 %{_kf5_metainfodir}/*.xml
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
@@ -715,6 +713,7 @@ fi
 %files -n sddm-breeze
 %{_datadir}/sddm/themes/breeze/
 %{_datadir}/sddm/themes/01-breeze-fedora/
+%config(noreplace) %{_datadir}/sddm/themes/01-breeze-fedora/theme.conf.user
 
 %files wayland
 %{_kf5_bindir}/startplasmacompositor
@@ -733,6 +732,19 @@ fi
 
 
 %changelog
+* Thu Mar 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.4-1
+- 5.9.4
+
+* Sat Mar 04 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.3-3
+- rebuild
+
+* Fri Mar 03 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.3-2
+- fix sddm-breeze (01-breeze-fedora theme)
+- bump kf5 dep
+
+* Wed Mar 01 2017 Jan Grulich <jgrulich@redhat.com> - 5.9.3-1
+- 5.9.3
+
 * Sat Feb 25 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-3
 - Requires: kf5-plasma >= %%_kf5_version
 
