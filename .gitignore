@@ -3,5 +3,3 @@
 /0003-try-harder-to-make-the-selected-wallpaper-visible.patch
 /0004-Ignore-NoDisplay-true-.desktop-entries-when-matching.patch
 /0005-try-proper-order-of-corona-availableScreenRect.patch
-/0006-don-t-emit-availableScreenRectChanged-when-quitting.patch
-/0007-manage-mouse-events-when-out-of-the-window.patch
