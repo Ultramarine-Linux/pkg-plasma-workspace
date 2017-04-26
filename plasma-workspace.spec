@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.9.4
-Release: 1%{?dist}
+Version: 5.9.5
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -548,7 +548,8 @@ install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
   %{buildroot}%{_libexecdir}/installdbgsymbols.sh
 
-%find_lang all --with-qt --all-name
+%find_lang all --with-html --with-qt --all-name
+grep "%{_kf5_docdir}" all.lang > %{name}-doc.lang
 grep drkonqi.mo all.lang > drkonqi.lang
 grep libkworkspace.mo all.lang > libkworkspace5.lang
 # any translations not used elsewhere, include in main pkg
@@ -561,6 +562,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 %files common
 %license COPYING
+%license COPYING.DOC
 %license COPYING.LIB
 
 %files -f %{name}.lang
@@ -623,13 +625,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %exclude %{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
 %exclude %{_kf5_datadir}/kservicetypes5/plasma-geolocationprovider.desktop
 
-%files doc
-%license COPYING.DOC
-#lang(ca) %{_docdir}/HTML/ca/klipper/
-#lang(cs) %{_docdir}/HTML/cs/kcontrol/screenlocker/
-%lang(de) %{_docdir}/HTML/de/klipper/
-%lang(en) %{_docdir}/HTML/en/klipper/
-%lang(en) %{_docdir}/HTML/en/kcontrol/screenlocker/
+%files doc -f %{name}-doc.lang
 
 %post -n libkworkspace5 -p /sbin/ldconfig
 %postun -n libkworkspace5 -p /sbin/ldconfig
@@ -732,6 +728,12 @@ fi
 
 
 %changelog
+* Wed Apr 26 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.5-2
+- -doc: use %%find_lang --with-html
+
+* Wed Apr 26 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.5-1
+- 5.9.5
+
 * Thu Mar 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.4-1
 - 5.9.4
 
