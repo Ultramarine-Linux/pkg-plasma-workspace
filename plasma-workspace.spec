@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.9.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -56,7 +56,13 @@ Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 # dnf debuginfo-install
 Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
-## upstream Patches (5.8 branch) lookaside cache
+## upstream Patches (5.9 branch) lookaside cache
+Patch1: 0001-recognize-the-WM-even-if-given-with-a-full-path.patch
+Patch2: 0002-launch-autostart-apps-in-ksmserver-using-KRun-not-QP.patch
+Patch3: 0003-use-KProcess-instead-of-QProcess-to-launch-apps-in-k.patch
+Patch4: 0004-selecting-the-topmost-klipper-item-should-always-set.patch
+Patch5: 0005-selecting-the-topmost-klipper-item-should-always-set.patch
+Patch6: 0006-Revert-launch-autostart-apps-in-ksmserver-using-KRun.patch
 
 ## upstream Patches (master branch)
 
@@ -438,6 +444,13 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+## looks like v5.9.5 tag is wrong, some of these were already applied to 5.9.5 tarball
+#patch1 -p1
+#patch2 -p1
+#patch3 -p1
+%patch4 -p1
+#patch5 -p1
+%patch6 -p1
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
@@ -728,6 +741,9 @@ fi
 
 
 %changelog
+* Thu Apr 27 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.5-3
+- pull in upstream 5.9 branch fixes
+
 * Wed Apr 26 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.5-2
 - -doc: use %%find_lang --with-html
 
