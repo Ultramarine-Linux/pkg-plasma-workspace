@@ -1,9 +1,3 @@
 /plasma-workspace-5.8.6.tar.xz
 /breeze-fedora-0.2.tar.gz
-/plasma-workspace-5.9.5.tar.xz
-/0001-recognize-the-WM-even-if-given-with-a-full-path.patch
-/0002-launch-autostart-apps-in-ksmserver-using-KRun-not-QP.patch
-/0003-use-KProcess-instead-of-QProcess-to-launch-apps-in-k.patch
-/0004-selecting-the-topmost-klipper-item-should-always-set.patch
-/0005-selecting-the-topmost-klipper-item-should-always-set.patch
-/0006-Revert-launch-autostart-apps-in-ksmserver-using-KRun.patch
+/plasma-workspace-5.9.5.1.tar.xz
