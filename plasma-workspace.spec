@@ -639,7 +639,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %files libs
 %{_sysconfdir}/xdg/taskmanagerrulesrc
 %{_libdir}/libtaskmanager.so.6
-%{_libdir}/libtaskmanager.so.%{version}
+%{_libdir}/libtaskmanager.so.%{majmin_ver}*
 %{_libdir}/libweather_ion.so.7*
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
