@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.8.6
-Release: 6%{?dist}
+Version: 5.8.7
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -57,14 +57,6 @@ Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
 Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches (5.8 branch) lookaside cache
-Patch2: 0002-Logout-Screen-Show-suspend-button-only-if-supported.patch
-Patch3: 0003-try-harder-to-make-the-selected-wallpaper-visible.patch
-Patch4: 0004-Ignore-NoDisplay-true-.desktop-entries-when-matching.patch
-Patch5: 0005-try-proper-order-of-corona-availableScreenRect.patch
-# https://cgit.kde.org/plasma-workspace.git/patch/?id=721fcd3d309171fde2dc37b84939f7657db91de3
-Patch6: 0006-don-t-emit-availableScreenRectChanged-when-quitting.patch
-# https://cgit.kde.org/plasma-workspace.git/patch/?id=7f2dceb95c5812207c87f4b61d5a90e0306603d6
-Patch7: 0007-manage-mouse-events-when-out-of-the-window.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -444,12 +436,6 @@ BuildArch: noarch
 %setup -q
 
 ## upstream patches
-%patch2 -p1 -b .0002
-%patch3 -p1 -b .0003
-%patch4 -p1 -b .0004
-%patch5 -p1 -b .0005
-%patch6 -p1 -b .0006
-%patch7 -p1 -b .0007
 
 %if 0%{?fedora} > 23
 # dnf debuginfo-install
@@ -745,6 +731,9 @@ fi
 
 
 %changelog
+* Thu May 25 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.7-1
+- 5.8.7
+
 * Sat Mar 25 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.6-6
 - actually apply new branch fixes
 
