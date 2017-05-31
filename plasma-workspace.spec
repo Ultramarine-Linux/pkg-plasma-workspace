@@ -1,6 +1,6 @@
 # Define (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
-#define bootstrap 1
+%define bootstrap 1
 
 %global kf5_version_min 5.29.0
 
