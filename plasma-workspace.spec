@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.9.5.1
-Release: 2%{?dist}
+Version: 5.10.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -77,6 +77,7 @@ BuildRequires:  libXrender-devel
 BuildRequires:  libXfixes-devel
 BuildRequires:  libXrandr-devel
 BuildRequires:  libXcursor-devel
+BuildRequires:  libXtst-devel
 BuildRequires:  libxcb-devel
 BuildRequires:  xcb-util-keysyms-devel
 BuildRequires:  xcb-util-image-devel
@@ -550,7 +551,7 @@ install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
 
 %find_lang all --with-html --with-qt --all-name
 grep "%{_kf5_docdir}" all.lang > %{name}-doc.lang
-grep drkonqi.mo all.lang > drkonqi.lang
+grep drkonqi5.mo all.lang > drkonqi.lang
 grep libkworkspace.mo all.lang > libkworkspace5.lang
 # any translations not used elsewhere, include in main pkg
 cat *.lang | sort | uniq -u > %{name}.lang
@@ -618,6 +619,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_datadir}/applications/org.kde.klipper.desktop
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
+%{_kf5_bindir}/plasma_waitforname
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
@@ -639,7 +641,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %files libs
 %{_sysconfdir}/xdg/taskmanagerrulesrc
 %{_libdir}/libtaskmanager.so.6
-%{_libdir}/libtaskmanager.so.%{majmin_ver}*
+%{_libdir}/libtaskmanager.so.%{version}*
 %{_libdir}/libweather_ion.so.7*
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
@@ -709,7 +711,7 @@ fi
 %files -n sddm-breeze
 %{_datadir}/sddm/themes/breeze/
 %{_datadir}/sddm/themes/01-breeze-fedora/
-%config(noreplace) %{_datadir}/sddm/themes/01-breeze-fedora/theme.conf.user
+#%config(noreplace) %{_datadir}/sddm/themes/01-breeze-fedora/theme.conf.user
 
 %files wayland
 %{_kf5_bindir}/startplasmacompositor
@@ -728,6 +730,9 @@ fi
 
 
 %changelog
+* Wed May 31 2017 Jan Grulich <jgrulich@redhat.com> - 5.10.0-1
+- 5.10.0
+
 * Mon May 15 2017 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.9.5.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_27_Mass_Rebuild
 
