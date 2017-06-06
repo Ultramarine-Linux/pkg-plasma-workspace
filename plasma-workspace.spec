@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.10.0
-Release: 2%{?dist}
+Version: 5.10.1
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -730,6 +730,9 @@ fi
 
 
 %changelog
+* Tue Jun 06 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.1-1
+- 5.10.1
+
 * Wed May 31 2017 Jan Grulich <jgrulich@redhat.com> - 5.10.0-2
 - Disable bootstrap
 
