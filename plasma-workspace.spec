@@ -576,6 +576,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_bindir}/ksmserver
 %{_kf5_bindir}/ksplashqml
 %{_kf5_bindir}/kstartupconfig5
+%{_kf5_sysconfdir}/xdg/kuiserver.*
 %{_kf5_bindir}/kuiserver5
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
