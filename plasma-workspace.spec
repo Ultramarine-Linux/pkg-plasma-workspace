@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.10.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -28,11 +28,6 @@ Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.
 # This goes to PAM
 # TODO: this should arguably be in kde-settings with the other pam-related configs
 Source10:       kde
-# Desktop file for Fedora look-and-feel packages
-Source12:       twenty.two.desktop
-Source13:       twenty.three.desktop
-# copy from f24-kde-theme
-Source14:       twenty.four.desktop
 Source15:       fedora.desktop
 
 # breeze fedora sddm theme components
@@ -157,6 +152,7 @@ BuildRequires:  desktop-file-utils
 
 # Optional
 BuildRequires:  kf5-kactivities-devel
+BuildRequires:  cmake(AppStreamQt) >= 0.10.4
 
 # when kded_desktopnotifier.so moved here
 Conflicts:      kio-extras < 5.4.0
@@ -214,28 +210,7 @@ Requires:       xorg-x11-server-utils
 Requires:       kde-settings-plasma
 
 # Default look-and-feel theme
-%if 0%{?fedora} > 21
-Provides:       f22-kde-theme-core = %{version}-%{release}
-%endif
-%if 0%{?fedora} > 22
-Provides:       f23-kde-theme-core = %{version}-%{release}
-%endif
-%if 0%{?fedora} == 22
-Requires:       f22-kde-theme >= 22.2
-%global default_lookandfeel org.fedoraproject.fedora.twenty.two
-%endif
-%if 0%{?fedora} == 23
-Requires:       f23-kde-theme
-%global default_lookandfeel org.fedoraproject.fedora.twenty.three
-%endif
-%if 0%{?fedora} == 24
-Requires:       f24-kde-theme-core = %{version}-%{release}
-%global         f24_kde_theme_core 1
-%global default_lookandfeel org.fedoraproject.fedora.twenty.four
-%endif
-%if 0%{?fedora} > 24
-%global         f24_kde_theme_core 1
-Requires:       plasma-lookandfeel-fedora = %{version}-%{release}
+%if 0%{?fedora}
 %global default_lookandfeel org.fedoraproject.fedora.desktop
 %endif
 %if ! 0%{?default_lookandfeel:1}
@@ -244,19 +219,11 @@ Requires:       desktop-backgrounds-compat
 
 Requires:       systemd
 
-%if 0%{?fedora} < 23
-# SysTray support for Qt 4 apps
-Requires:       sni-qt%{?_isa}
-
-# kde(4) platform plugin
-Requires:       kde-platform-plugin%{?_isa}
-%endif
-
 # Oxygen
 # TODO: review if oxygen-fonts, oxygen-icon-theme are still needed (I suspect not) -- rex
-Requires:       oxygen-icon-theme
+#Requires:       oxygen-icon-theme
 Requires:       oxygen-sound-theme >= %{majmin_ver}
-Requires:       oxygen-fonts
+#Requires:       oxygen-fonts
 
 # PolicyKit authentication agent
 Requires:        polkit-kde >= %{majmin_ver}
@@ -277,12 +244,6 @@ Obsoletes:      plasma-workspace < 5.4.2-2
 # deprecate/replace kde-runtime-kuiserver, http://bugzilla.redhat.com/1249157
 Obsoletes:      kde-runtime-kuiserver < 1:15.08.2
 Provides:       kuiserver = %{version}-%{release}
-
-%if 0%{?fedora} && 0%{?fedora} < 23
-# (hopefully temporary) workaround for dnf Obsoletes bug
-# https://bugzilla.redhat.com/show_bug.cgi?id=1260394
-Requires: sddm-breeze = %{version}-%{release}
-%endif
 
 # upgrade path, when sddm-breeze was split out
 Obsoletes: plasma-workspace < 5.3.2-8
@@ -415,21 +376,16 @@ Requires:       qt5-qttools
 %description wayland
 %{summary}.
 
-%package -n f24-kde-theme-core
-Summary:  Core and Inherited theme elements
-Requires: %{name} = %{version}-%{release}
-# when switched to noarch
-Obsoletes: f24-kde-theme-core < 5.8.0-5
-Requires: f24-kde-theme
-BuildArch: noarch
-%description -n f24-kde-theme-core
-%{summary}.
-
 %package -n plasma-lookandfeel-fedora
 Summary:  Fedora look-and-feel for Plasma
 Requires: %{name} = %{version}-%{release}
 # when switched to noarch
 Obsoletes: plasma-lookandfeel-fedora < 5.8.0-5
+# https://bugzilla.redhat.com/show_bug.cgi?id=1356890
+Obsoletes: f22-kde-theme < 22.4
+Obsoletes: f23-kde-theme < 23.1
+Obsoletes: f24-kde-theme < 24.6
+Obsoletes: f24-kde-theme-core < 5.10.5-2
 BuildArch: noarch
 %description -n plasma-lookandfeel-fedora
 %{summary}.
@@ -457,29 +413,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch102 -p1 -b .startkde
 %patch105 -p1
 
-%if 0%{?fedora} > 21
-cp -a lookandfeel lookandfeel-f22
-install -m 0644 %{SOURCE12} lookandfeel-f22/metadata.desktop
-cat >> CMakeLists.txt <<EOL
-plasma_install_package(lookandfeel-f22 org.fedoraproject.fedora.twenty.two look-and-feel lookandfeel)
-EOL
-%endif
-%if 0%{?fedora} > 22
-cp -a lookandfeel lookandfeel-f23
-install -m 0644 %{SOURCE13} lookandfeel-f23/metadata.desktop
-cat >> CMakeLists.txt <<EOL
-plasma_install_package(lookandfeel-f23 org.fedoraproject.fedora.twenty.three look-and-feel lookandfeel)
-EOL
-%endif
-%if 0%{?f24_kde_theme_core}
-cp -a lookandfeel lookandfeel-f24
-#install -m 0644 %{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/metadata.desktop lookandfeel-f24/metadata.desktop
-install -m 0644 %{SOURCE14} lookandfeel-f24/metadata.desktop
-cat >> CMakeLists.txt <<EOL
-plasma_install_package(lookandfeel-f24 org.fedoraproject.fedora.twenty.four look-and-feel lookandfeel)
-EOL
-%endif
-%if 0%{?fedora} > 24
+%if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
 install -m 0644 %{SOURCE15} lookandfeel-fedora/metadata.desktop
 cat >> CMakeLists.txt <<EOL
@@ -506,26 +440,7 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 
-%if 0%{?fedora} > 21
-## We need to remove original background which will be replaced by Fedora one from f22-kde-theme
-rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/components/artwork/background.png
-rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/contents/previews/{lockscreen.png,preview.png,splash.png}
-%endif
-
-%if 0%{?fedora} > 22
-## We need to remove original background which will be replaced by Fedora one from f23-kde-theme
-rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/components/artwork/background.png
-rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/contents/previews/{lockscreen.png,preview.png,splash.png}
-%endif
-
-%if 0%{?f24_kde_theme_core}
-# remove items that will be provided by f24-kde-theme
-rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/metadata.desktop
-rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/components/artwork/background.png
-rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/contents/previews/{lockscreen.png,preview.png,splash.png}
-%endif
-
-%if 0%{?fedora} > 24
+%if 0%{?fedora}
 # remove/replace items to be customized
 # not sure of (sym)links are safe yet or not -- rex
 install -m644 -p \
@@ -596,12 +511,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/plasma/wallpapers/
 %dir %{_kf5_datadir}/plasma/look-and-feel/
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
-%if 0%{?fedora} > 21
-%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.two/
-%endif
-%if 0%{?fedora} > 22
-%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.three/
-%endif
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
 %{_sysconfdir}/xdg/*.knsrc
@@ -719,18 +628,18 @@ fi
 %{_libexecdir}/startplasma
 %{_datadir}/wayland-sessions/plasmawayland.desktop
 
-%if 0%{?f24_kde_theme_core}
-%files -n f24-kde-theme-core
-%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.twenty.four/
-%endif
-
-%if 0%{?fedora} > 24
+%if 0%{?fedora}
 %files -n plasma-lookandfeel-fedora
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/
 %endif
 
 
 %changelog
+* Thu Aug 24 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-2
+- drop old stuff
+- RPM Bundling Fedora look and feel themes (#1356890)
+- BR: cmake(AppstreamQt)
+
 * Thu Aug 24 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-1
 - 5.10.5
 
