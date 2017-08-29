@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.10.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -212,6 +212,7 @@ Requires:       kde-settings-plasma
 # Default look-and-feel theme
 %if 0%{?fedora}
 %global default_lookandfeel org.fedoraproject.fedora.desktop
+Requires:       plasma-lookandfeel-fedora = %{version}-%{release}
 %endif
 %if ! 0%{?default_lookandfeel:1}
 Requires:       desktop-backgrounds-compat
@@ -635,6 +636,9 @@ fi
 
 
 %changelog
+* Tue Aug 29 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-3
+- Restore: Requires: plasma-lookandfeel-fedora
+
 * Thu Aug 24 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-2
 - drop old stuff
 - RPM Bundling Fedora look and feel themes (#1356890)
