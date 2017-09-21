@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.10.5
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -636,6 +636,9 @@ fi
 
 
 %changelog
+* Wed Sep 20 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-4
+- rebuild (libqalculate)
+
 * Tue Aug 29 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-3
 - Restore: Requires: plasma-lookandfeel-fedora
 
