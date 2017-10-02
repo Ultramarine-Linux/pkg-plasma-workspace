@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.10.5
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -182,6 +182,9 @@ Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
 Requires:       kf5-kxmlrpcclient
+
+# systemmonitor dataengine
+Requires:       ksysguardd >= %{majmin_ver}
 
 # The new volume control for PulseAudio
 %if 0%{?fedora} > 22
@@ -636,6 +639,9 @@ fi
 
 
 %changelog
+* Mon Oct 02 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-5
+- Requires: ksysguardd (#1497831)
+
 * Wed Sep 20 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-4
 - rebuild (libqalculate)
 
