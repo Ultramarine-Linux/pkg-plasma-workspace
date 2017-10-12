@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.10.5
-Release: 5%{?dist}
+Version: 5.11.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -46,10 +46,6 @@ Patch102:       startkde.patch
 Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstreamable Patches
-# (yum) debuginfo-install improvements
-Patch51:        kde-runtime-4.9.0-installdbgsymbols.patch
-# dnf debuginfo-install
-Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches (5.9 branch) lookaside cache
 
@@ -158,11 +154,9 @@ BuildRequires:  cmake(AppStreamQt) >= 0.10.4
 Conflicts:      kio-extras < 5.4.0
 
 %if 0%{?fedora} > 21
-Recommends:     %{name}-drkonqi = %{version}-%{release}
 Recommends:     %{name}-geolocation = %{version}-%{release}
 Suggests:       imsettings-qt
 %else
-Requires:       %{name}-drkonqi = %{version}-%{release}
 Requires:       %{name}-geolocation = %{version}-%{release}
 %endif
 
@@ -305,31 +299,6 @@ BuildArch: noarch
 %description    doc
 Documentation and user manuals for %{name}.
 
-%package drkonqi
-Summary: DrKonqi crash handler for KF5/Plasma5
-# when split out
-Obsoletes: plasma-workspace < 5.4.2-2
-%if 0%{?fedora} > 25
-# retired from kde-runtime on f26+, evr includes epoch++
-Obsoletes: kde-runtime-drkonqi < 1:16.12.1-1
-%endif
-Requires: %{name} = %{version}-%{release}
-Requires: %{name}-common = %{version}-%{release}
-%if 0%{?fedora} > 23
-Requires: dnf-command(debuginfo-install)
-%else
-# owner of debuginfo-install
-Requires: yum-utils
-%endif
-## not needed, since we already ensure other dependencies (debuginfo-install, konsole)
-#Requires: kdialog
-Requires: konsole5
-Requires: polkit
-# owner of setsebool
-Requires(post): policycoreutils
-%description drkonqi
-%{summary}.
-
 %package geolocation
 Summary: Plasma5 geolocation components
 # when split out
@@ -399,14 +368,6 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-
-%if 0%{?fedora} > 23
-# dnf debuginfo-install
-%patch52 -p1 -b .installdgbsymbols
-%else
-# (yum) debuginfo-install
-%patch51 -p1 -b .installdbgsymbols
-%endif
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
 %if 0%{?default_lookandfeel:1}
@@ -464,13 +425,9 @@ install -m644 -p breeze-fedora/* \
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
-# installdbgsymbols script
-install -p -D -m755 drkonqi/doc/examples/installdbgsymbols_fedora.sh \
-  %{buildroot}%{_libexecdir}/installdbgsymbols.sh
-
 %find_lang all --with-html --with-qt --all-name
+
 grep "%{_kf5_docdir}" all.lang > %{name}-doc.lang
-grep drkonqi5.mo all.lang > drkonqi.lang
 grep libkworkspace.mo all.lang > libkworkspace5.lang
 # any translations not used elsewhere, include in main pkg
 cat *.lang | sort | uniq -u > %{name}.lang
@@ -504,6 +461,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qmldir}/org/kde/*
+%{_libexecdir}/baloorunner
 %{_libexecdir}/ksmserver-logout-greeter
 %{_libexecdir}/ksyncdbusenv
 %{_libexecdir}/ksmserver-switchuser-greeter
@@ -531,6 +489,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_libdir}/kconf_update_bin/krunnerplugins
 %{_kf5_metainfodir}/*.xml
 %{_datadir}/applications/org.kde.klipper.desktop
+%{_datadir}/applications/org.kde.plasmashell.desktop
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
 %{_kf5_bindir}/plasma_waitforname
@@ -606,22 +565,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_datadir}/dbus-1/interfaces/*.xml
 %{_datadir}/kdevappwizard/templates/ion-dataengine.tar.bz2
 
-%post drkonqi
-# make DrKonqi work by default by taming SELinux enough (suggested by dwalsh)
-# if KDE_DEBUG is set, DrKonqi is disabled, so do nothing
-# if it is unset (or empty), check if deny_ptrace is already disabled
-# if not, disable it
-if [ -z "$KDE_DEBUG" ] ; then
-  if [ "`getsebool deny_ptrace 2>/dev/null`" == 'deny_ptrace --> on' ] ; then
-    setsebool -P deny_ptrace off &> /dev/null || :
-  fi
-fi
-
-%files drkonqi -f drkonqi.lang
-%{_libexecdir}/drkonqi
-%{_kf5_datadir}/drkonqi/
-%{_libexecdir}/installdbgsymbols.sh
-
 %files -n sddm-breeze
 %{_datadir}/sddm/themes/breeze/
 %{_datadir}/sddm/themes/01-breeze-fedora/
@@ -639,6 +582,9 @@ fi
 
 
 %changelog
+* Wed Oct 11 2017 Martin Kyral <martin.kyral@gmail.com> - 5.11.0-1
+- 5.11.0
+
 * Mon Oct 02 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-5
 - Requires: ksysguardd (#1497831)
 
