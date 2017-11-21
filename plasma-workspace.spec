@@ -2,12 +2,12 @@
 # repo or arch where there's no package that would provide plasmashell
 # define bootstrap 1
 
-%global kf5_version_min 5.29.0
+%global kf5_version_min 5.34.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.11.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -77,8 +77,6 @@ BuildRequires:  xcb-util-wm-devel
 BuildRequires:  xcb-util-devel
 BuildRequires:  glib2-devel
 BuildRequires:  fontconfig-devel
-# can remove when kf5-ki18n-5.24.0-2 lands
-BuildRequires:  python
 BuildRequires:  boost-devel
 BuildRequires:  libusb-devel
 BuildRequires:  libbsd-devel
@@ -90,18 +88,11 @@ BuildRequires:  libraw1394-devel
 %endif
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
-%if 0%{?fedora} > 23
 %global kf5_pim 1
 BuildRequires:  kf5-kholidays-devel
-%endif
-%if 0%{?prison}
 BuildRequires:  kf5-prison-devel
-%endif
 
-BuildRequires:  qt5-qtbase-devel >= 5.6.1
-## todo: document why this is needed -- rex
-#BuildRequires:  qt5-qtbase-private-devel
-#{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
+BuildRequires:  qt5-qtbase-devel >= 5.7.0
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  qt5-qtscript-devel
 BuildRequires:  qt5-qtdeclarative-devel
@@ -582,6 +573,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Tue Nov 21 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.11.3-2
+- .spec cruft, BR: kf5-prison, bump min qt5/kf5 deps
+
 * Wed Nov 08 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.11.3-1
 - 5.11.3
 
