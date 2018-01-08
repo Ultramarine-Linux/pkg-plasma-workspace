@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.11.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -46,6 +46,7 @@ Patch102:       startkde.patch
 Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstreamable Patches
+Patch200: plasma-workspace-sni-proxy-crash.patch
 
 ## upstream Patches (5.9 branch) lookaside cache
 
@@ -368,6 +369,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 %patch102 -p1 -b .startkde
 %patch105 -p1
+%patch200 -p1 -b .xembedsniproxy_crash
 
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
@@ -573,6 +575,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Mon Jan 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-3
+- include candidate crash fix for xembedsniproxy (#1497829,kde#359664)
+
 * Tue Dec 19 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-2
 - refresh/fix startkde.patch
 
