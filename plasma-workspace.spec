@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.11.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -46,11 +46,11 @@ Patch102:       startkde.patch
 Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstreamable Patches
-Patch200: plasma-workspace-sni-proxy-crash.patch
 
-## upstream Patches (5.9 branch) lookaside cache
+## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
+Patch13: 0013-Fix-for-xembedsniproxy-crash-due-to-NULL-returned-fr.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -360,6 +360,8 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch13 -p1 -b .0013
+
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
 %if 0%{?default_lookandfeel:1}
@@ -369,7 +371,6 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 %patch102 -p1 -b .startkde
 %patch105 -p1
-%patch200 -p1 -b .xembedsniproxy_crash
 
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
@@ -575,6 +576,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Mon Jan 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-4
+- use upstreamed version of previous commit/patch
+
 * Mon Jan 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-3
 - include candidate crash fix for xembedsniproxy (#1497829,kde#359664)
 
