@@ -73,7 +73,7 @@ diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspa
  fi
  
 -qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
-+qdbus=qtbus-qt5
++qdbus=qdbus-qt5
 +$qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
  
  # finally, give the session control to the session manager
