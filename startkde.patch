@@ -1,7 +1,8 @@
-diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspace-5.11.4/startkde/startkde.cmake
---- plasma-workspace-5.11.4/startkde/startkde.cmake.startkde	2017-11-28 06:44:10.000000000 -0600
-+++ plasma-workspace-5.11.4/startkde/startkde.cmake	2017-12-19 10:31:04.000454158 -0600
-@@ -158,48 +158,6 @@ for prefix in `echo $scriptpath`; do
+diff --git a/startkde/startkde.cmake b/startkde/startkde.cmake
+index 54e2850..2c050b8 100644
+--- a/startkde/startkde.cmake
++++ b/startkde/startkde.cmake
+@@ -164,48 +164,6 @@ for prefix in `echo $scriptpath`; do
    done
  done
  
@@ -50,7 +51,7 @@ diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspa
  # Set a left cursor instead of the standard X11 "X" cursor, since I've heard
  # from some users that they're confused and don't know what to do. This is
  # especially necessary on slow machines, where starting KDE takes one or two
-@@ -276,22 +234,21 @@ if test $? -ne 0; then
+@@ -282,22 +240,21 @@ if test $? -ne 0; then
    # Startup error
    echo 'startkde: Could not sync environment to dbus.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
@@ -78,7 +79,7 @@ diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspa
  
  # finally, give the session control to the session manager
  # see kdebase/ksmserver for the description of the rest of the startup sequence
-@@ -324,13 +281,13 @@ if test x"$wait_drkonqi"x = x"true"x ; t
+@@ -330,13 +287,13 @@ if test x"$wait_drkonqi"x = x"true"x ; then
      # wait for remaining drkonqi instances with timeout (in seconds)
      wait_drkonqi_timeout=`kreadconfig5 --file startkderc --group WaitForDrKonqi --key Timeout --default 900`
      wait_drkonqi_counter=0
@@ -95,10 +96,11 @@ diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspa
              done
              break
          fi
-diff -up plasma-workspace-5.11.4/startkde/startplasma.cmake.startkde plasma-workspace-5.11.4/startkde/startplasma.cmake
---- plasma-workspace-5.11.4/startkde/startplasma.cmake.startkde	2017-11-28 06:44:10.000000000 -0600
-+++ plasma-workspace-5.11.4/startkde/startplasma.cmake	2017-12-19 10:38:47.591485023 -0600
-@@ -128,7 +128,8 @@ if test $? -ne 0; then
+diff --git a/startkde/startplasma.cmake b/startkde/startplasma.cmake
+index a5d09fa..a73cb90 100644
+--- a/startkde/startplasma.cmake
++++ b/startkde/startplasma.cmake
+@@ -140,7 +140,8 @@ if test $? -ne 0; then
    exit 1
  fi
  
@@ -108,7 +110,7 @@ diff -up plasma-workspace-5.11.4/startkde/startplasma.cmake.startkde plasma-work
  
  # finally, give the session control to the session manager
  # see kdebase/ksmserver for the description of the rest of the startup sequence
-@@ -157,13 +158,13 @@ if test x"$wait_drkonqi"x = x"true"x ; t
+@@ -169,13 +170,13 @@ if test x"$wait_drkonqi"x = x"true"x ; then
      # wait for remaining drkonqi instances with timeout (in seconds)
      wait_drkonqi_timeout=`kreadconfig5 --file startkderc --group WaitForDrKonqi --key Timeout --default 900`
      wait_drkonqi_counter=0
@@ -125,15 +127,40 @@ diff -up plasma-workspace-5.11.4/startkde/startplasma.cmake.startkde plasma-work
              done
              break
          fi
-diff -up plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake.startkde plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake
---- plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake.startkde	2017-11-28 06:44:10.000000000 -0600
-+++ plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake	2017-12-19 10:38:14.629269525 -0600
-@@ -13,7 +13,7 @@ if [ -n "$bindir" ]; then
-     *) PATH=$bindir:$PATH; export PATH;;
-   esac
- else
--  qdbus=qdbus
-+  qdbus=qdbus-qt5
- fi
+diff --git a/startkde/startplasmacompositor.cmake b/startkde/startplasmacompositor.cmake
+index 8ac47aa..a4ddfb3 100644
+--- a/startkde/startplasmacompositor.cmake
++++ b/startkde/startplasmacompositor.cmake
+@@ -3,6 +3,8 @@
+ #  DEFAULT Plasma STARTUP SCRIPT ( @PROJECT_VERSION@ )
+ #
  
++qdbus=qdbus-qt5
++
  # We need to create config folder so we can write startupconfigkeys
+ if [  ${XDG_CONFIG_HOME} ]; then
+   configDir=$XDG_CONFIG_HOME;
+@@ -120,12 +122,12 @@ fi
+ 
+ # Get a property value from org.freedesktop.locale1
+ queryLocale1() {
+-    qdbus --system org.freedesktop.locale1 /org/freedesktop/locale1 "$1"
++    $qdbus --system org.freedesktop.locale1 /org/freedesktop/locale1 "$1"
+ }
+ 
+ # Query whether org.freedesktop.locale1 is available. If it is, try to
+ # set XKB_DEFAULT_{MODEL,LAYOUT,VARIANT,OPTIONS} accordingly.
+-if qdbus --system org.freedesktop.locale1 >/dev/null 2>/dev/null; then
++if $qdbus --system org.freedesktop.locale1 >/dev/null 2>/dev/null; then
+     # Do not overwrite existing values. There is no point in setting only some
+     # of them as then they would not match anymore.
+     if [ -z "${XKB_DEFAULT_MODEL}" -a -z "${XKB_DEFAULT_LAYOUT}" -a \
+@@ -175,7 +177,7 @@ fi
+ export XDG_DATA_DIRS
+ 
+ # Make sure that D-Bus is running
+-if qdbus >/dev/null 2>/dev/null; then
++if $qdbus >/dev/null 2>/dev/null; then
+     : # ok
+ else
+     echo 'startplasmacompositor: Could not start D-Bus. Can you call qdbus?'  1>&2

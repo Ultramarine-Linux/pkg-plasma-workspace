@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.11.5
-Release: 2%{?dist}
+Version: 5.11.95
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -50,7 +50,6 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 ## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
-Patch13: 0013-Fix-for-xembedsniproxy-crash-due-to-NULL-returned-fr.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -360,7 +359,6 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-%patch13 -p1 -b .0013
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -459,7 +457,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_libexecdir}/ksmserver-logout-greeter
 %{_libexecdir}/ksyncdbusenv
 %{_libexecdir}/ksmserver-switchuser-greeter
-%{_kf5_datadir}/ksmserver/
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
 %{_kf5_datadir}/plasma/services/
@@ -507,9 +504,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 %files libs
 %{_sysconfdir}/xdg/taskmanagerrulesrc
-%{_libdir}/libtaskmanager.so.6
-%{_libdir}/libtaskmanager.so.%{version}*
-%{_libdir}/libweather_ion.so.7*
+%{_libdir}/libcolorcorrect.so.*
+%{_libdir}/libtaskmanager.so.*
+%{_libdir}/libweather_ion.so.*
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
 %{_kf5_qtplugindir}/plasma/dataengine/
@@ -531,6 +528,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
 %{_kf5_qtplugindir}/plasma-geolocation-ip.so
 %{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
+%{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
 %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
 %{_kf5_datadir}/kservices5/plasma-geolocation-gps.desktop
 %{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
@@ -543,17 +541,20 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_libdir}/libplasma-geolocation-interface.so.5*
 
 %files devel
+%{_libdir}/libcolorcorrect.so
 %{_libdir}/libweather_ion.so
 %{_libdir}/libtaskmanager.so
 %{_libdir}/libplasma-geolocation-interface.so
 %{_libdir}/libkworkspace5.so
 %dir %{_includedir}/plasma/
+%{_includedir}/colorcorrect/
 %{_includedir}/plasma/weather/
 %{_includedir}/kworkspace5/
 %{_includedir}/plasma/geolocation/
 %{_includedir}/taskmanager/
 %{_libdir}/cmake/KRunnerAppDBusInterface/
 %{_libdir}/cmake/KSMServerDBusInterface/
+%{_libdir}/cmake/LibColorCorrect
 %{_libdir}/cmake/LibKWorkspace/
 %{_libdir}/cmake/LibTaskManager/
 %{_datadir}/dbus-1/interfaces/*.xml
@@ -576,16 +577,13 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
-* Thu Jan 11 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.5-2
-- fix typo in startkde (#1533628)
+* Mon Jan 15 2018 Jan Grulich <jgrulich@redhat.com> - 5.11.95-1
+- 5.11.95
 
-* Mon Jan 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.5-1
-- 5.11.5
-
-* Mon Jan 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-4
+* Mon Jan 15 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-4
 - use upstreamed version of previous commit/patch
 
-* Mon Jan 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-3
+* Mon Jan 15 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-3
 - include candidate crash fix for xembedsniproxy (#1497829,kde#359664)
 
 * Tue Dec 19 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.11.4-2
