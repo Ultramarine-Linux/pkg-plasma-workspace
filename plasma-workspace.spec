@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.11.95
+Version: 5.12.0
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -577,6 +577,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Fri Feb 02 2018 Jan Grulich <jgrulich@redhat.com> - 5.12.0-1
+- 5.12.0
+
 * Mon Jan 15 2018 Jan Grulich <jgrulich@redhat.com> - 5.11.95-1
 - 5.11.95
 
