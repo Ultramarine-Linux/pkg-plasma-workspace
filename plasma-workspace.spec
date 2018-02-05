@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.12.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -577,6 +577,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Mon Feb 05 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.0-2
+- respin
+
 * Fri Feb 02 2018 Jan Grulich <jgrulich@redhat.com> - 5.12.0-1
 - 5.12.0
 
