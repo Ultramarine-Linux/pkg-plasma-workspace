@@ -55,6 +55,7 @@ Patch52:        plasma-workspace-5.6.4-installdbgsymbols.patch
 
 ## upstream Patches (master branch)
 Patch1:  0001-Make-sure-device-paths-are-quoted.patch
+Patch3:  0003-Remove-compilation-flag-for-non-existing-source-file.patch
 Patch13: 0013-Fix-for-xembedsniproxy-crash-due-to-NULL-returned-fr.patch
 
 # udev
@@ -402,6 +403,7 @@ BuildArch: noarch
 
 ## upstream patches
 %patch1 -p1 -b .0001
+%patch3 -p1 -b .0003
 %patch13 -p1 -b .0013
 
 %if 0%{?fedora} > 23
@@ -646,6 +648,7 @@ fi
 * Thu Feb 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-6
 - CVE-2018-6790 CVE-2018-6791  (#1543454,#1543457,#1543471)
 - backport crash fix for xembedsniproxy (#1497829,kde#359664)
+- backport FTBFS ksmserver
 
 * Mon Oct 02 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.10.5-5
 - Requires: ksysguardd (#1497831)

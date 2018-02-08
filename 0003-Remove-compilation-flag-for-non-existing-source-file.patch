@@ -1,0 +1,32 @@
+From 5c1e0aa887f78f2905dc39829e58854c8893bf63 Mon Sep 17 00:00:00 2001
+From: David Faure <faure@kde.org>
+Date: Sun, 15 Oct 2017 22:27:22 +0200
+Subject: [PATCH 003/280] Remove compilation flag for non-existing source file
+
+"Cannot find source file: fadeeffect.cpp"
+says cmake 3.10.0-rc1
+---
+ ksmserver/CMakeLists.txt | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/ksmserver/CMakeLists.txt b/ksmserver/CMakeLists.txt
+index c52a04a7..4bc0cb23 100644
+--- a/ksmserver/CMakeLists.txt
++++ b/ksmserver/CMakeLists.txt
+@@ -22,13 +22,6 @@ set(ksmserver_KDEINIT_SRCS
+     client.cpp
+ )
+ 
+-INCLUDE(CheckCCompilerFlag)
+-CHECK_CXX_COMPILER_FLAG(-mmmx HAVE_MMMX)
+-
+-if (HAVE_MMMX)
+-   SET_SOURCE_FILES_PROPERTIES(fadeeffect.cpp PROPERTIES COMPILE_FLAGS -mmmx)
+-endif (HAVE_MMMX)
+-
+ set(kcminit_adaptor ${plasma-workspace_SOURCE_DIR}/startkde/kcminit/main.h)
+ set(kcminit_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.KCMinit.xml)
+ 
+-- 
+2.14.3
+
