@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.11.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -50,6 +50,7 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 ## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
+Patch1:  0001-Make-sure-device-paths-are-quoted.patch
 Patch13: 0013-Fix-for-xembedsniproxy-crash-due-to-NULL-returned-fr.patch
 
 # udev
@@ -360,6 +361,7 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch1 -p1 -b .0001
 %patch13 -p1 -b .0013
 
 %patch100 -p1 -b .konsole-in-contextmenu
@@ -576,6 +578,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Thu Feb 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.5-3
+- CVE-2018-6790 CVE-2018-6791  (#1543454,#1543457,#1543471)
+
 * Thu Jan 11 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.5-2
 - fix typo in startkde (#1533628)
 
