@@ -1,7 +1,7 @@
-diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspace-5.11.4/startkde/startkde.cmake
---- plasma-workspace-5.11.4/startkde/startkde.cmake.startkde	2017-11-28 06:44:10.000000000 -0600
-+++ plasma-workspace-5.11.4/startkde/startkde.cmake	2017-12-19 10:31:04.000454158 -0600
-@@ -158,48 +158,6 @@ for prefix in `echo $scriptpath`; do
+diff -up plasma-workspace-5.8.1/startkde/startkde.cmake.startkde plasma-workspace-5.8.1/startkde/startkde.cmake
+--- plasma-workspace-5.8.1/startkde/startkde.cmake.startkde	2016-10-11 07:46:00.000000000 -0500
++++ plasma-workspace-5.8.1/startkde/startkde.cmake	2016-10-11 11:33:58.811705935 -0500
+@@ -215,48 +169,6 @@ for prefix in `echo $scriptpath`; do
    done
  done
  
@@ -50,7 +50,7 @@ diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspa
  # Set a left cursor instead of the standard X11 "X" cursor, since I've heard
  # from some users that they're confused and don't know what to do. This is
  # especially necessary on slow machines, where starting KDE takes one or two
-@@ -276,22 +234,21 @@ if test $? -ne 0; then
+@@ -344,18 +238,16 @@ if test $? -ne 0; then
    # Startup error
    echo 'startkde: Could not sync environment to dbus.'  1>&2
    test -n "$ksplash_pid" && kill "$ksplash_pid" 2>/dev/null
@@ -72,68 +72,3 @@ diff -up plasma-workspace-5.11.4/startkde/startkde.cmake.startkde plasma-workspa
    exit 1
  fi
  
--qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
-+qdbus=qtbus-qt5
-+$qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
- 
- # finally, give the session control to the session manager
- # see kdebase/ksmserver for the description of the rest of the startup sequence
-@@ -324,13 +281,13 @@ if test x"$wait_drkonqi"x = x"true"x ; t
-     # wait for remaining drkonqi instances with timeout (in seconds)
-     wait_drkonqi_timeout=`kreadconfig5 --file startkderc --group WaitForDrKonqi --key Timeout --default 900`
-     wait_drkonqi_counter=0
--    while qdbus | grep "^[^w]*org.kde.drkonqi" > /dev/null ; do
-+    while $qdbus | grep "^[^w]*org.kde.drkonqi" > /dev/null ; do
-         sleep 5
-         wait_drkonqi_counter=$((wait_drkonqi_counter+5))
-         if test "$wait_drkonqi_counter" -ge "$wait_drkonqi_timeout" ; then
-             # ask remaining drkonqis to die in a graceful way
--            qdbus | grep 'org.kde.drkonqi-' | while read address ; do
--                qdbus "$address" "/MainApplication" "quit"
-+            $qdbus | grep 'org.kde.drkonqi-' | while read address ; do
-+                $qdbus "$address" "/MainApplication" "quit"
-             done
-             break
-         fi
-diff -up plasma-workspace-5.11.4/startkde/startplasma.cmake.startkde plasma-workspace-5.11.4/startkde/startplasma.cmake
---- plasma-workspace-5.11.4/startkde/startplasma.cmake.startkde	2017-11-28 06:44:10.000000000 -0600
-+++ plasma-workspace-5.11.4/startkde/startplasma.cmake	2017-12-19 10:38:47.591485023 -0600
-@@ -128,7 +128,8 @@ if test $? -ne 0; then
-   exit 1
- fi
- 
--qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit
-+qdbus=qdbus-qt5
-+$qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit
- 
- # finally, give the session control to the session manager
- # see kdebase/ksmserver for the description of the rest of the startup sequence
-@@ -157,13 +158,13 @@ if test x"$wait_drkonqi"x = x"true"x ; t
-     # wait for remaining drkonqi instances with timeout (in seconds)
-     wait_drkonqi_timeout=`kreadconfig5 --file startkderc --group WaitForDrKonqi --key Timeout --default 900`
-     wait_drkonqi_counter=0
--    while qdbus | grep "^[^w]*org.kde.drkonqi" > /dev/null ; do
-+    while $qdbus | grep "^[^w]*org.kde.drkonqi" > /dev/null ; do
-         sleep 5
-         wait_drkonqi_counter=$((wait_drkonqi_counter+5))
-         if test "$wait_drkonqi_counter" -ge "$wait_drkonqi_timeout" ; then
-             # ask remaining drkonqis to die in a graceful way
--            qdbus | grep 'org.kde.drkonqi-' | while read address ; do
--                qdbus "$address" "/MainApplication" "quit"
-+            $qdbus | grep 'org.kde.drkonqi-' | while read address ; do
-+                $qdbus "$address" "/MainApplication" "quit"
-             done
-             break
-         fi
-diff -up plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake.startkde plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake
---- plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake.startkde	2017-11-28 06:44:10.000000000 -0600
-+++ plasma-workspace-5.11.4/startkde/startplasmacompositor.cmake	2017-12-19 10:38:14.629269525 -0600
-@@ -13,7 +13,7 @@ if [ -n "$bindir" ]; then
-     *) PATH=$bindir:$PATH; export PATH;;
-   esac
- else
--  qdbus=qdbus
-+  qdbus=qdbus-qt5
- fi
- 
- # We need to create config folder so we can write startupconfigkeys
