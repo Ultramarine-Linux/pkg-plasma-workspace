@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.12.2
+Version: 5.12.3
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -39,6 +39,8 @@ Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch102:       startkde.patch
+# fix plasmawayland to not explicitly launch dbus (it should autospawn)
+Patch103:       plasma-workspace-5.12.3-plasmawayland_session.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -368,6 +370,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch102 -p1 -b .startkde
+%patch103 -p1 -b .plasmawayland_session
 %patch105 -p1
 
 %if 0%{?fedora}
@@ -389,7 +392,7 @@ pushd %{_target_platform}
 %{cmake_kf5} ..
 popd
 
-make %{?_smp_mflags} -C %{_target_platform}
+%build_build -C %{_target_platform}
 
 
 %install
@@ -493,14 +496,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 %files doc -f %{name}-doc.lang
 
-%post -n libkworkspace5 -p /sbin/ldconfig
-%postun -n libkworkspace5 -p /sbin/ldconfig
+%ldconfig_scriptlets -n libkworkspace5
 
 %files -n libkworkspace5 -f libkworkspace5.lang
 %{_libdir}/libkworkspace5.so.5*
 
-%post libs -p /sbin/ldconfig
-%postun libs -p /sbin/ldconfig
+%ldconfig_scriptlets libs
 
 %files libs
 %{_sysconfdir}/xdg/taskmanagerrulesrc
@@ -534,8 +535,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
 %{_kf5_datadir}/kservicetypes5/plasma-geolocationprovider.desktop
 
-%post geolocation-libs -p /sbin/ldconfig
-%postun geolocation-libs -p /sbin/ldconfig
+%ldconfig_scriptlets geolocation-libs
 
 %files geolocation-libs
 %{_libdir}/libplasma-geolocation-interface.so.5*
@@ -577,6 +577,11 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Tue Mar 06 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.3-1
+- 5.13.3
+- plasmawayland session: drop explcitly running dbus_launch
+- use %%make_build %%ldconfig_scriptlets
+
 * Wed Feb 21 2018 Jan Grulich <jgrulich@redhat.com> - 5.12.2-1
 - 5.12.2
 

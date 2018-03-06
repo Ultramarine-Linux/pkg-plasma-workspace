@@ -1,0 +1,11 @@
+diff -up plasma-workspace-5.12.3/plasmawayland.desktop.cmake.plasmawayland2 plasma-workspace-5.12.3/plasmawayland.desktop.cmake
+--- plasma-workspace-5.12.3/plasmawayland.desktop.cmake.plasmawayland2	2018-03-06 07:01:06.000000000 -0600
++++ plasma-workspace-5.12.3/plasmawayland.desktop.cmake	2018-03-06 11:35:48.567226903 -0600
+@@ -1,6 +1,6 @@
+ [Desktop Entry]
+ Encoding=UTF-8
+-Exec=dbus-launch --exit-with-session ${CMAKE_INSTALL_FULL_BINDIR}/startplasmacompositor
++Exec=${CMAKE_INSTALL_FULL_BINDIR}/startplasmacompositor
+ TryExec=${CMAKE_INSTALL_FULL_BINDIR}/startplasmacompositor
+ DesktopNames=KDE
+ Name=Plasma
