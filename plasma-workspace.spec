@@ -392,7 +392,7 @@ pushd %{_target_platform}
 %{cmake_kf5} ..
 popd
 
-%build_build -C %{_target_platform}
+%make_build -C %{_target_platform}
 
 
 %install
