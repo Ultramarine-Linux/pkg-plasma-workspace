@@ -35,7 +35,7 @@ Source15:       fedora.desktop
 Source20:       breeze-fedora-0.2.tar.gz
 
 ## downstream Patches
-Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
+Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch102:       startkde.patch
