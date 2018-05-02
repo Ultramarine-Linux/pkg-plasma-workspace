@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.12.4
+Version: 5.12.5
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -35,7 +35,7 @@ Source15:       fedora.desktop
 Source20:       breeze-fedora-0.2.tar.gz
 
 ## downstream Patches
-Patch100:       plasma-workspace-5.7.95-konsole-in-contextmenu.patch
+Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
 Patch102:       startkde.patch
@@ -574,6 +574,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Tue May 01 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.5-1
+- 5.12.5
+
+* Wed Apr 11 2018 Mukundan Ragavan <nonamedotc@gmail.com> - 5.12.4-2
+- rebuild for libqalculate.so.16()
+
 * Fri Mar 30 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.4-1
 - 5.12.4
 
