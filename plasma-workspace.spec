@@ -1,13 +1,13 @@
-# Define (as 1) to enable bootstrap when building plasma-workspace on a new
+# Set (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
-# define bootstrap 1
+#global bootstrap 1
 
-%global kf5_version_min 5.34.0
+%global kf5_version_min 5.42.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.12.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -417,7 +417,7 @@ install -m644 -p breeze-fedora/* \
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
-%find_lang all --with-html --with-qt --all-name
+%find_lang all --with-html --all-name
 
 grep "%{_kf5_docdir}" all.lang > %{name}-doc.lang
 grep libkworkspace.mo all.lang > libkworkspace5.lang
@@ -574,6 +574,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Sun May 06 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.5-2
+- refresh startkde.patch
+- .spec cleanup
+
 * Tue May 01 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.5-1
 - 5.12.5
 
