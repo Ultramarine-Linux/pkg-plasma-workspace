@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.12.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -312,6 +312,8 @@ Obsoletes: plasma-workspace < 5.3.2-8
 Requires:       kf5-plasma >= %{_kf5_version}
 # Background.qml:import QtQuick
 Requires:       qt5-qtquickcontrols
+# on-screen keyboard
+Recommends:     qt5-qtvirtualkeyboard
 # QML imports:
 # org.kde.plasma.workspace.components
 # org.kde.plasma.workspace.keyboardlayout
@@ -574,6 +576,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Wed May 09 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.5-3
+- sddm-breeze: Recommends: qt5-qtvirtualkeyboard
+
 * Sun May 06 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.5-2
 - refresh startkde.patch
 - .spec cleanup
