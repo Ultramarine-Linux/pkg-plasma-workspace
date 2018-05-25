@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.12.5
-Release: 4%{?dist}
+Version: 5.12.90
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -437,6 +437,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %license COPYING.LIB
 
 %files -f %{name}.lang
+%{_kf5_bindir}/gmenudbusmenuproxy
 %{_kf5_bindir}/kcheckrunning
 %{_kf5_bindir}/kcminit
 %{_kf5_bindir}/kcminit_startup
@@ -486,6 +487,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_datadir}/applications/plasma-windowed.desktop
 %{_datadir}/xsessions/plasma.desktop
 %{_kf5_bindir}/plasma_waitforname
+%{_sysconfdir}/xdg/*.categories
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
@@ -576,6 +578,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Fri May 18 2018 Martin Kyral <martin.kyral@gmail.com> - 5.12.90-1
+- 5.12.90
+
 * Fri May 18 2018 Mukundan Ragavan <nonamedotc@gmail.com> - 5.12.5-4
 - rebuild for libqalculate.so.17()
 
