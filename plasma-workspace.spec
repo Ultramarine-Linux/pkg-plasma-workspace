@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.13.0
+Version: 5.13.1
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -578,6 +578,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Tue Jun 19 2018 Martin Kyral <martin.kyral@gmail.com> - 5.13.1-1
+- 5.13.1
+
 * Tue Jun 12 2018 Martin Kyral <martin.kyral@gmail.com> - 5.13.0-1
 - 5.13.0
 
