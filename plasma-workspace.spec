@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.12.5
-Release: 3%{?dist}
+Version: 5.12.6
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -576,6 +576,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Thu Jun 28 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.6-1
+- 5.12.6
+
 * Wed May 09 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.12.5-3
 - sddm-breeze: Recommends: qt5-qtvirtualkeyboard
 
