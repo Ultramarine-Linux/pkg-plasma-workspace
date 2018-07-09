@@ -578,7 +578,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
-* Mon Jul 9 2018 Martin Kyral <martin.kyral@gmail.com> - 5.13.2-1
+* Mon Jul 09 2018 Martin Kyral <martin.kyral@gmail.com> - 5.13.2-1
 - 5.13.2
 
 * Fri Jun 22 2018 Mukundan Ragavan <nonamedotc@gmail.com> - 5.13.1-2
