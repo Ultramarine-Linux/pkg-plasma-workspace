@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.13.1
+Version: 5.13.2
 Release: 2%{?dist}
 
 License: GPLv2+
@@ -578,6 +578,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Mon Jul 9 2018 Martin Kyral <martin.kyral@gmail.com> - 5.13.2-1
+- 5.13.2
+
 * Fri Jun 22 2018 Mukundan Ragavan <nonamedotc@gmail.com> - 5.13.1-2
 - rebuild for libqalculate.so.18()
 
