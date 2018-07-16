@@ -13,10 +13,10 @@ diff -up plasma-workspace-5.12.5/containmentactions/contextmenu/menu.cpp.konsole
  
  ContextMenu::ContextMenu(QObject *parent, const QVariantList &args)
      : Plasma::ContainmentActions(parent, args),
-+      m_runKonsoleAction(0),
-       m_runCommandAction(0),
-       m_lockScreenAction(0),
-       m_logoutAction(0),
++      m_runKonsoleAction(nullptr),
+       m_runCommandAction(nullptr),
+       m_lockScreenAction(nullptr),
+       m_logoutAction(nullptr),
 @@ -75,7 +77,7 @@ void ContextMenu::restore(const KConfigG
          m_actionOrder << QStringLiteral("add widgets") << QStringLiteral("_add panel") << QStringLiteral("lock widgets") << QStringLiteral("_context") << QStringLiteral("configure") << QStringLiteral("remove");
      } else {
@@ -47,7 +47,7 @@ diff -up plasma-workspace-5.12.5/containmentactions/contextmenu/menu.cpp.konsole
          if (KAuthorized::authorizeAction(QStringLiteral("run_command")) && KAuthorized::authorize(QStringLiteral("run_command"))) {
              return m_runCommandAction;
 @@ -192,6 +200,11 @@ QAction *ContextMenu::action(const QStri
-     return 0;
+     return nullptr;
  }
  
 +void ContextMenu::runKonsole()

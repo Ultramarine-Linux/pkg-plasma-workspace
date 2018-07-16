@@ -102,9 +102,9 @@ diff -up plasma-workspace-5.12.5/startkde/startplasma.cmake.startkde plasma-work
    exit 1
  fi
  
--qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit
+-qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
 +qdbus=qdbus-qt5
-+$qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit
++$qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
  
  # finally, give the session control to the session manager
  # see kdebase/ksmserver for the description of the rest of the startup sequence
