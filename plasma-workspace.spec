@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.13.3
-Release: 3%{?dist}
+Version: 5.13.4
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -182,8 +182,12 @@ Requires:       kf5-frameworkintegration
 # For krunner
 Requires:       plasma-milou >= %{majmin_ver}
 
+# powerdevil has a versioned dep on libkworkspace5, so (may?)
+# need to avoid this dep when bootstrapping
+%if ! 0%{?bootstrap}
 # Power management
 Requires:       powerdevil >= %{majmin_ver}
+%endif
 
 # startkde
 Requires:       coreutils
@@ -578,6 +582,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Thu Aug 02 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.13.4-1
+- 5.13.4
+
+* Wed Jul 18 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.13.3-4
+- avoid versioned runtime powerdevil dep when bootstrapping
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.13.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
