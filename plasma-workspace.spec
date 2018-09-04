@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.13.4
-Release: 2%{?dist}
+Version: 5.13.5
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -582,6 +582,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Tue Sep 04 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.13.5-1
+- 5.13.5
+
 * Tue Aug 21 2018 Mukundan Ragavan <nonamedotc@gmail.com> - 5.13.4-2
 - rebuild for libqalculate.so.19()
 
