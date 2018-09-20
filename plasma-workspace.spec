@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.13.5
+Version: 5.13.90
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -463,7 +463,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_libexecdir}/baloorunner
 %{_libexecdir}/ksmserver-logout-greeter
 %{_libexecdir}/ksyncdbusenv
-%{_libexecdir}/ksmserver-switchuser-greeter
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
 %{_kf5_datadir}/plasma/services/
@@ -582,6 +581,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Fri Sep 14 2018 Martin Kyral <martin.kyral@gmail.com> - 5.13.90-1
+- 5.13.90
+
 * Tue Sep 04 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.13.5-1
 - 5.13.5
 
