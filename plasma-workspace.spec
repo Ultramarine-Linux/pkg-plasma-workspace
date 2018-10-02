@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.13.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -237,6 +237,9 @@ Obsoletes:      plasma-workspace < 5.4.2-2
 # deprecate/replace kde-runtime-kuiserver, http://bugzilla.redhat.com/1249157
 Obsoletes:      kde-runtime-kuiserver < 1:15.08.2
 Provides:       kuiserver = %{version}-%{release}
+
+# plasmashell provides dbus service org.freedesktop.Notifications
+Provides: desktop-notification-daemon
 
 # upgrade path, when sddm-breeze was split out
 Obsoletes: plasma-workspace < 5.3.2-8
@@ -581,6 +584,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Tue Oct 02 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.13.90-2
+- Provides: desktop-notification-daemon (#1628758)
+
 * Fri Sep 14 2018 Martin Kyral <martin.kyral@gmail.com> - 5.13.90-1
 - 5.13.90
 
