@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.13.90
-Release: 2%{?dist}
+Version: 5.14.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -584,6 +584,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Sat Oct 06 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.0-1
+- 5.14.0
+
 * Tue Oct 02 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.13.90-2
 - Provides: desktop-notification-daemon (#1628758)
 
