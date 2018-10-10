@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.14.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -46,6 +46,9 @@ Patch102:       startkde.patch
 Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstreamable Patches
+# Fix build with gpsd 3.18
+# https://phabricator.kde.org/D16081
+Patch50: https://phabricator.kde.org/file/data/oopytdz45mdqu5ntev7p/PHID-FILE-zzzrunochlg3gpqxgbdh/D16081.diff
 
 ## upstream Patches lookaside cache
 
@@ -368,6 +371,7 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch50 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -584,6 +588,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Wed Oct 10 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.0-2
+- Fix build with gpsd 3.18 (#1638110)
+
 * Sat Oct 06 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.0-1
 - 5.14.0
 
