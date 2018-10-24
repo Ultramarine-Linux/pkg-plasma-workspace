@@ -2,12 +2,12 @@
 # repo or arch where there's no package that would provide plasmashell
 #global bootstrap 1
 
-%global kf5_version_min 5.42.0
+%global kf5_version_min 5.50.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.14.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -435,7 +435,8 @@ cat *.lang | sort | uniq -u > %{name}.lang
 
 
 %check
-desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.kde.klipper}.desktop
+desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/plasma-windowed.desktop
+desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,plasmashell,systemmonitor}.desktop
 
 
 %files common
@@ -488,9 +489,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_datadir}/kconf_update/krunnerplugins.upd
 %{_kf5_libdir}/kconf_update_bin/krunnerplugins
 %{_kf5_metainfodir}/*.xml
-%{_datadir}/applications/org.kde.klipper.desktop
-%{_datadir}/applications/org.kde.plasmashell.desktop
-%{_datadir}/applications/plasma-windowed.desktop
+%{_kf5_datadir}/applications/org.kde.klipper.desktop
+%{_kf5_datadir}/applications/org.kde.plasmashell.desktop
+%{_kf5_datadir}/applications/plasma-windowed.desktop
+%{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
 %{_datadir}/xsessions/plasma.desktop
 %{_kf5_bindir}/plasma_waitforname
 %{_sysconfdir}/xdg/*.categories
@@ -536,7 +538,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
 %{_kf5_qtplugindir}/plasma-geolocation-ip.so
 %{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
-%{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
 %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
 %{_kf5_datadir}/kservices5/plasma-geolocation-gps.desktop
 %{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
@@ -584,6 +585,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Wed Oct 24 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.2-2
+- move systemmonitor.desktop to main, bump kf5 dep
+
 * Wed Oct 24 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.2-1
 - 5.14.2
 
