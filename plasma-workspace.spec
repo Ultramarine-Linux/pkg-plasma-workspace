@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.14.1
+Version: 5.14.2
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -584,6 +584,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/{plasma-windowed,org.
 
 
 %changelog
+* Wed Oct 24 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.2-1
+- 5.14.2
+
 * Tue Oct 16 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.1-1
 - 5.14.1
 
