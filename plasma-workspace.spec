@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.14.2
-Release: 2%{?dist}
+Version: 5.14.3
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -585,6 +585,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Nov 08 2018 Martin Kyral <martin.kyral@gmail.com> - 5.14.3-1
+- 5.14.3
+
 * Wed Oct 24 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.2-2
 - move systemmonitor.desktop to main, bump kf5 dep
 
