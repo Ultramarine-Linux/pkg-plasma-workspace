@@ -1,6 +1,6 @@
-diff -up plasma-workspace-5.12.5/startkde/startkde.cmake.startkde plasma-workspace-5.12.5/startkde/startkde.cmake
---- plasma-workspace-5.12.5/startkde/startkde.cmake.startkde	2018-05-01 08:03:40.000000000 -0500
-+++ plasma-workspace-5.12.5/startkde/startkde.cmake	2018-05-06 21:12:49.592504191 -0500
+diff -up plasma-workspace-5.12.7/startkde/startkde.cmake.startkde plasma-workspace-5.12.7/startkde/startkde.cmake
+--- plasma-workspace-5.12.7/startkde/startkde.cmake.startkde	2018-09-25 05:09:12.000000000 -0500
++++ plasma-workspace-5.12.7/startkde/startkde.cmake	2018-11-09 16:42:26.164238436 -0600
 @@ -161,48 +161,6 @@ for prefix in `echo $scriptpath`; do
    done
  done
@@ -95,16 +95,16 @@ diff -up plasma-workspace-5.12.5/startkde/startkde.cmake.startkde plasma-workspa
              done
              break
          fi
-diff -up plasma-workspace-5.12.5/startkde/startplasma.cmake.startkde plasma-workspace-5.12.5/startkde/startplasma.cmake
---- plasma-workspace-5.12.5/startkde/startplasma.cmake.startkde	2018-05-01 08:03:40.000000000 -0500
-+++ plasma-workspace-5.12.5/startkde/startplasma.cmake	2018-05-06 21:11:54.749023404 -0500
+diff -up plasma-workspace-5.12.7/startkde/startplasma.cmake.startkde plasma-workspace-5.12.7/startkde/startplasma.cmake
+--- plasma-workspace-5.12.7/startkde/startplasma.cmake.startkde	2018-09-25 05:09:12.000000000 -0500
++++ plasma-workspace-5.12.7/startkde/startplasma.cmake	2018-11-09 16:43:07.865491250 -0600
 @@ -140,7 +140,8 @@ if test $? -ne 0; then
    exit 1
  fi
  
--qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit
+-qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
 +qdbus=qdbus-qt5
-+$qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit
++$qdbus org.kde.KSplash /KSplash org.kde.KSplash.setStage kinit &
  
  # finally, give the session control to the session manager
  # see kdebase/ksmserver for the description of the rest of the startup sequence
@@ -125,9 +125,9 @@ diff -up plasma-workspace-5.12.5/startkde/startplasma.cmake.startkde plasma-work
              done
              break
          fi
-diff -up plasma-workspace-5.12.5/startkde/startplasmacompositor.cmake.startkde plasma-workspace-5.12.5/startkde/startplasmacompositor.cmake
---- plasma-workspace-5.12.5/startkde/startplasmacompositor.cmake.startkde	2018-05-01 08:03:40.000000000 -0500
-+++ plasma-workspace-5.12.5/startkde/startplasmacompositor.cmake	2018-05-06 21:11:54.749023404 -0500
+diff -up plasma-workspace-5.12.7/startkde/startplasmacompositor.cmake.startkde plasma-workspace-5.12.7/startkde/startplasmacompositor.cmake
+--- plasma-workspace-5.12.7/startkde/startplasmacompositor.cmake.startkde	2018-09-25 05:09:12.000000000 -0500
++++ plasma-workspace-5.12.7/startkde/startplasmacompositor.cmake	2018-11-09 16:42:26.164238436 -0600
 @@ -3,6 +3,8 @@
  #  DEFAULT Plasma STARTUP SCRIPT ( @PROJECT_VERSION@ )
  #
