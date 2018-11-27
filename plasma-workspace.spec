@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.14.3
+Version: 5.14.4
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -585,6 +585,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Nov 27 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.14.4-1
+- 5.14.4
+
 * Thu Nov 08 2018 Martin Kyral <martin.kyral@gmail.com> - 5.14.3-1
 - 5.14.3
 
