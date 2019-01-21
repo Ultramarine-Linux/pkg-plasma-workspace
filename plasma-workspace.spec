@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.14.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -585,6 +585,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Jan 21 2019 Mukundan Ragavan <nonamedotc@gmail.com> - 5.14.90-2
+- rebuild for libqlaculate.so.20
+
 * Sun Jan 20 2019 Martin Kyral <martin.kyral@gmail.com> - 5.14.90-1
 - 5.14.90
 
