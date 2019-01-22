@@ -124,6 +124,7 @@ BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version_min}
 BuildRequires:  kf5-plasma-devel >= %{kf5_version_min}
 Requires:       kf5-plasma%{?_isa} >= %{_kf5_version}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kded-devel >= %{kf5_version_min}
 
 BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
 BuildRequires:  kf5-kwayland-devel >= %{kf5_version_min}
@@ -496,6 +497,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/xsessions/plasma.desktop
 %{_kf5_bindir}/plasma_waitforname
 %{_sysconfdir}/xdg/*.categories
+%{_kf5_datadir}/kpackage/kcms/kcm_translations/*
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
@@ -533,6 +535,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
 %{_kf5_plugindir}/kio/desktop.so
 %{_kf5_plugindir}/kded/*.so
+%{_qt5_plugindir}/kcms/kcm_translations.so
 
 %files geolocation
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
