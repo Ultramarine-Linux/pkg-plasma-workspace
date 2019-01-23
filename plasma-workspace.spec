@@ -1,13 +1,13 @@
 # Set (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
-%global bootstrap 1
+#global bootstrap 1
 
 %global kf5_version_min 5.50.0
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.14.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -588,6 +588,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Jan 23 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.14.90-2
+- de-bootstrap
+
 * Sun Jan 20 2019 Martin Kyral <martin.kyral@gmail.com> - 5.14.90-1
 - 5.14.90
 - enable boostrap
