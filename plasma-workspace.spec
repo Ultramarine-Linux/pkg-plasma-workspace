@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.15.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -56,7 +56,6 @@ BuildRequires:  zlib-devel
 BuildRequires:  dbusmenu-qt5-devel
 BuildRequires:  libGL-devel
 BuildRequires:  mesa-libGLES-devel
-#BuildRequires:  wayland-devel
 BuildRequires:  libSM-devel
 BuildRequires:  libX11-devel
 BuildRequires:  libXau-devel
@@ -128,8 +127,7 @@ BuildRequires:  kf5-kded-devel >= %{kf5_version_min}
 
 BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
 BuildRequires:  kf5-kwayland-devel >= %{kf5_version_min}
-BuildRequires:  libwayland-client-devel >= 1.3.0
-BuildRequires:  libwayland-server-devel >= 1.3.0
+BuildRequires:  wayland-devel >= 1.3.0
 BuildRequires:  libkscreen-qt5-devel >= %{majmin_ver}
 BuildRequires:  kscreenlocker-devel >= %{majmin_ver}
 
@@ -588,6 +586,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Feb 28 2019 Pete Walter <pwalter@fedoraproject.org> - 5.15.2-2
+- Update wayland deps
+
 * Tue Feb 26 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.15.2-1
 - 5.15.2
 
