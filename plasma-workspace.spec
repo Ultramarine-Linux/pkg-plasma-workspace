@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.15.2
-Release: 2%{?dist}
+Version: 5.15.3
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -586,6 +586,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Mar 12 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.15.3-1
+- 5.15.3
+
 * Thu Feb 28 2019 Pete Walter <pwalter@fedoraproject.org> - 5.15.2-2
 - Update wayland deps
 
