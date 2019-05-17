@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.15.5
+Version: 5.15.90
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -233,10 +233,6 @@ Requires:       plasmashell >= %{majmin_ver}
 # when -common, libkworkspace5 was split out
 Obsoletes:      plasma-workspace < 5.4.2-2
 
-# deprecate/replace kde-runtime-kuiserver, http://bugzilla.redhat.com/1249157
-Obsoletes:      kde-runtime-kuiserver < 1:15.08.2
-Provides:       kuiserver = %{version}-%{release}
-
 # plasmashell provides dbus service org.freedesktop.Notifications
 Provides: desktop-notification-daemon
 
@@ -454,8 +450,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/ksmserver
 %{_kf5_bindir}/ksplashqml
 %{_kf5_bindir}/kstartupconfig5
-%{_kf5_sysconfdir}/xdg/kuiserver.*
-%{_kf5_bindir}/kuiserver5
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
 %{_kf5_bindir}/startkde
@@ -475,10 +469,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
-%{_sysconfdir}/xdg/*.knsrc
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/desktop-directories/*.directory
 %{_datadir}/dbus-1/services/*.service
+%{_datadir}/knsrcfiles/*.knsrc
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservices5/*.protocol
 %{_kf5_datadir}/kservicetypes5/*.desktop
@@ -495,6 +489,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/xsessions/plasma.desktop
 %{_kf5_bindir}/plasma_waitforname
 %{_sysconfdir}/xdg/*.categories
+%{_sysconfdir}/xdg/plasmanotifyrc
 %{_kf5_datadir}/kpackage/kcms/kcm_translations/*
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
@@ -517,6 +512,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libdir}/libcolorcorrect.so.*
 %{_libdir}/libtaskmanager.so.*
 %{_libdir}/libweather_ion.so.*
+%{_libdir}/libnotificationmanager.*
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
 %{_kf5_qtplugindir}/plasma/dataengine/
@@ -531,7 +527,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %dir %{_kf5_qtplugindir}/phonon_platform/
 %{_kf5_qtplugindir}/phonon_platform/kde.so
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
-%{_kf5_plugindir}/kio/desktop.so
+%{_kf5_plugindir}/kio/*.so
 %{_kf5_plugindir}/kded/*.so
 %{_qt5_plugindir}/kcms/kcm_translations.so
 
@@ -561,11 +557,13 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_includedir}/kworkspace5/
 %{_includedir}/plasma/geolocation/
 %{_includedir}/taskmanager/
+%{_includedir}/notificationmanager/
 %{_libdir}/cmake/KRunnerAppDBusInterface/
 %{_libdir}/cmake/KSMServerDBusInterface/
 %{_libdir}/cmake/LibColorCorrect
 %{_libdir}/cmake/LibKWorkspace/
 %{_libdir}/cmake/LibTaskManager/
+%{_libdir}/cmake/LibNotificationManager/
 %{_datadir}/dbus-1/interfaces/*.xml
 %{_datadir}/kdevappwizard/templates/ion-dataengine.tar.bz2
 
@@ -586,6 +584,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu May 16 2019 Martin Kyral <martin.kyral@gmail.com> - 5.15.90-1
+- 5.15.90
+
 * Thu May 09 2019 Martin Kyral <martin.kyral@gmail.com> - 5.15.5-1
 - 5.15.5
 
