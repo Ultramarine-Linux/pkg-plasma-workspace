@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.16.90
+Version: 5.17.0
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -592,6 +592,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Oct 10 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.0-1
+- 5.17.0
+
 * Fri Sep 20 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.90-1
 - 5.16.90
 
