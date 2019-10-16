@@ -379,7 +379,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch102 -p1 -b .startkde
 %patch105 -p1
 
-%patch200 -p1 -b < dont-bind-model-inside-header-item
+%patch200 -p1 -b < .dont-bind-model-inside-header-item
 
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
