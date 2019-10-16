@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.15.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -50,6 +50,7 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 ## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
+Patch200:       plasma-workspace-5.15.5-dont-bind-model-inside-header-item.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -378,6 +379,8 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch102 -p1 -b .startkde
 %patch105 -p1
 
+%patch200 -p1 -b < dont-bind-model-inside-header-item
+
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
 install -m 0644 %{SOURCE15} lookandfeel-fedora/metadata.desktop
@@ -586,6 +589,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Oct 16 2019 Jan Grulich <jgrulich@redhat.com> - 5.15.5-2
+- Fix crash on received notification
+
 * Thu May 09 2019 Martin Kyral <martin.kyral@gmail.com> - 5.15.5-1
 - 5.15.5
 
