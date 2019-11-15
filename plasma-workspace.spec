@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.16.4
+Version: 5.17.3
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -38,7 +38,7 @@ Source20:       breeze-fedora-0.2.tar.gz
 Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
-Patch102:       startkde.patch
+#Patch102:       startkde.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -101,6 +101,7 @@ BuildRequires:  phonon-qt5-devel
 BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
 BuildRequires:  extra-cmake-modules
 BuildRequires:  kf5-baloo-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kactivities-stats-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcmutils-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcrash-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version_min}
@@ -114,6 +115,7 @@ BuildRequires:  kf5-kinit-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kjsembed-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knewstuff-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knotifyconfig-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kpeople-devel >= %{kf5_version_min}
 BuildRequires:  kf5-krunner-devel >= %{kf5_version_min}
 BuildRequires:  kf5-ktexteditor-devel >= %{kf5_version_min}
 BuildRequires:  kf5-ktextwidgets-devel >= %{kf5_version_min}
@@ -371,7 +373,7 @@ BuildArch: noarch
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
-%patch102 -p1 -b .startkde
+#%patch102 -p1 -b .startkde
 %patch105 -p1
 
 %if 0%{?fedora}
@@ -384,7 +386,7 @@ EOL
 
 
 # highlight the use of wayland
-sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
+sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" login-sessions/plasmawayland.desktop.cmake
 
 
 %build
@@ -441,18 +443,17 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 %files -f %{name}.lang
 %{_kf5_bindir}/gmenudbusmenuproxy
-%{_kf5_bindir}/kcheckrunning
 %{_kf5_bindir}/kcminit
 %{_kf5_bindir}/kcminit_startup
-%{_kf5_bindir}/kdostartupconfig5
 %{_kf5_bindir}/klipper
 %{_kf5_bindir}/krunner
 %{_kf5_bindir}/ksmserver
 %{_kf5_bindir}/ksplashqml
-%{_kf5_bindir}/kstartupconfig5
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
-%{_kf5_bindir}/startkde
+%{_kf5_bindir}/plasma_session
+%{_kf5_bindir}/plasma_waitforname
+%{_kf5_bindir}/startplasma-x11
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
@@ -463,7 +464,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
 %{_kf5_datadir}/plasma/services/
-%{_kf5_datadir}/plasma/shareprovider/
 %{_kf5_datadir}/plasma/wallpapers/
 %dir %{_kf5_datadir}/plasma/look-and-feel/
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
@@ -488,7 +488,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
 %{_datadir}/xsessions/plasma.desktop
 %{_kf5_bindir}/plasma_waitforname
-%{_sysconfdir}/xdg/*.categories
+%{_kf5_datadir}/qlogging-categories5/*.categories
 %{_sysconfdir}/xdg/plasmanotifyrc
 %{_kf5_datadir}/kpackage/kcms/kcm_translations/*
 # PAM
@@ -516,7 +516,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
 %{_kf5_qtplugindir}/plasma/dataengine/
-%{_kf5_qtplugindir}/plasma/packagestructure/
 %if 0%{?kf5_pim}
 %{_kf5_qtplugindir}/plasmacalendarplugins/
 %endif
@@ -530,6 +529,16 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_plugindir}/kio/*.so
 %{_kf5_plugindir}/kded/*.so
 %{_qt5_plugindir}/kcms/kcm_translations.so
+%{_libdir}/kconf_update_bin/krunnerglobalshortcuts
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_applauncher.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_contextmenu.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_paste.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchdesktop.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchwindow.so
+%{_libexecdir}/plasma-sourceenv.sh
+%{_libexecdir}/startplasma-waylandsession
+%{_datadir}/kconf_update/krunnerglobalshortcuts.upd
+%{_datadir}/kglobalaccel/krunner.desktop
 
 %files geolocation
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
@@ -573,8 +582,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 #%config(noreplace) %{_datadir}/sddm/themes/01-breeze-fedora/theme.conf.user
 
 %files wayland
-%{_kf5_bindir}/startplasmacompositor
-%{_libexecdir}/startplasma
+%{_kf5_bindir}/startplasma-wayland
 %{_datadir}/wayland-sessions/plasmawayland.desktop
 
 %if 0%{?fedora}
@@ -584,6 +592,27 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Nov 13 2019 Martin Kyral <martin.kyral@gmail.com> - 5.17.3-1
+- 5.17.3
+
+* Wed Oct 30 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.2-1
+- 5.17.2
+
+* Wed Oct 23 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.1-1
+- 5.17.1
+
+* Thu Oct 10 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.0-1
+- 5.17.0
+
+* Fri Sep 20 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.90-1
+- 5.16.90
+
+* Fri Sep 06 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.5-1
+- 5.16.5
+
+* Tue Aug 27 2019 Mukundan Ragavan <nonamedotc@gmail.com> - 5.16.4-2
+- rebuild for libqalculate
+
 * Tue Jul 30 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.4-1
 - 5.16.4
 
