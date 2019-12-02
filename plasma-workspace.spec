@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.15.5
-Release: 1%{?dist}.1
+Release: 1%{?dist}.2
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -588,6 +588,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Jul 02 2019 Troy Dawson <tdawson@redhat.com> - 5.15.5-1.2
+- Rebuild for updated libqalculate
+
 * Tue Jul 02 2019 Troy Dawson <tdawson@redhat.com> - 5.15.5-1.1
 - Fixup to build on RHEL8
 
