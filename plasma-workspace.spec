@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.15.5
-Release: 1%{?dist}
+Release: 1%{?dist}.2
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -138,12 +138,14 @@ BuildRequires:  desktop-file-utils
 
 # Optional
 BuildRequires:  kf5-kactivities-devel
+%if 0%{?fedora}
 BuildRequires:  cmake(AppStreamQt) >= 0.10.4
+%endif
 
 # when kded_desktopnotifier.so moved here
 Conflicts:      kio-extras < 5.4.0
 
-%if 0%{?fedora} > 21
+%if 0%{?fedora} > 21 || 0%{?rhel} > 7
 Recommends:     %{name}-geolocation = %{version}-%{release}
 Suggests:       imsettings-qt
 %else
@@ -171,7 +173,7 @@ Requires:       kf5-kxmlrpcclient
 Requires:       ksysguardd >= %{majmin_ver}
 
 # The new volume control for PulseAudio
-%if 0%{?fedora} > 22
+%if 0%{?fedora} > 22 || 0%{?rhel} > 7
 Requires:       plasma-pa
 %endif
 
@@ -325,7 +327,7 @@ Recommends:     qt5-qtvirtualkeyboard
 # org.kde.plasma.workspace.keyboardlayout
 Requires:       %{name} = %{version}-%{release}
 # /usr/share/backgrounds/default.png
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires:  desktop-backgrounds-compat
 Requires:       desktop-backgrounds-compat
 %endif
@@ -586,6 +588,12 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Jul 02 2019 Troy Dawson <tdawson@redhat.com> - 5.15.5-1.2
+- Rebuild for updated libqalculate
+
+* Tue Jul 02 2019 Troy Dawson <tdawson@redhat.com> - 5.15.5-1.1
+- Fixup to build on RHEL8
+
 * Thu May 09 2019 Martin Kyral <martin.kyral@gmail.com> - 5.15.5-1
 - 5.15.5
 
