@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.17.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -403,6 +403,9 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 
+# compat symlink
+ln -s startplasma-x11 %{buildroot}%{_kf5_bindir}/startkde
+
 %if 0%{?fedora}
 # remove/replace items to be customized
 # not sure of (sym)links are safe yet or not -- rex
@@ -453,6 +456,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/plasmawindowed
 %{_kf5_bindir}/plasma_session
 %{_kf5_bindir}/plasma_waitforname
+%{_kf5_bindir}/startkde
 %{_kf5_bindir}/startplasma-x11
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
@@ -592,6 +596,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Dec 23 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.17.4-2
+- provide compat /usr/bin/startkde symlink (#1785826, #1785973)
+
 * Thu Dec 05 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.4-1
 - 5.17.4
 
