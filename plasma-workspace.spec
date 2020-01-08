@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.17.4
-Release: 2%{?dist}
+Version: 5.17.5
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -596,6 +596,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Jan 08 2020 Jan Grulich <jgrulich@redhat.com> - 5.17.5-1
+- 5.17.5
+
 * Mon Dec 23 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.17.4-2
 - provide compat /usr/bin/startkde symlink (#1785826, #1785973)
 
