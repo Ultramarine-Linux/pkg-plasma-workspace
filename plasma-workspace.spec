@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.17.90
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -168,6 +168,7 @@ Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
 Requires:       kf5-kxmlrpcclient
+Requires:       kf5-kquickcharts
 
 # systemmonitor dataengine
 Requires:       ksysguardd >= %{majmin_ver}
