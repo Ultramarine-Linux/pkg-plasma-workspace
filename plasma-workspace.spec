@@ -140,12 +140,14 @@ BuildRequires:  desktop-file-utils
 
 # Optional
 BuildRequires:  kf5-kactivities-devel
+%if 0%{?fedora}
 BuildRequires:  cmake(AppStreamQt) >= 0.10.4
+%endif
 
 # when kded_desktopnotifier.so moved here
 Conflicts:      kio-extras < 5.4.0
 
-%if 0%{?fedora} > 21
+%if 0%{?fedora} || 0%{?rhel} > 7
 Recommends:     %{name}-geolocation = %{version}-%{release}
 Suggests:       imsettings-qt
 %else
@@ -174,7 +176,7 @@ Requires:       kf5-kquickcharts
 Requires:       ksysguardd >= %{majmin_ver}
 
 # The new volume control for PulseAudio
-%if 0%{?fedora} > 22
+%if 0%{?fedora} || 0%{?rhel} > 7
 Requires:       plasma-pa
 %endif
 
