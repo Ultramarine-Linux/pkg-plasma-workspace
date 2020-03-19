@@ -426,10 +426,12 @@ ln -sf  %{_datadir}/backgrounds/default.png \
 install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
 
+%if 0%{?fedora} > 30
 ## customize plasma-lookandfeel-fedora defaults
 # from [Wallpaper] Image=Next to Image=Fedora
 sed -i -e 's|^Image=.*$|Image=Fedora|g' \
   %{buildroot}%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/defaults
+%endif
 
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -605,7 +607,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 %changelog
 * Thu Mar 19 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.3-2
-- plasma-lookandfeel-fedora: default to 'Fedora' wallpaper (#1812293)
+- f31+ plasma-lookandfeel-fedora: default to 'Fedora' wallpaper (#1812293)
 
 * Tue Mar 10 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.3-1
 - 5.18.3
