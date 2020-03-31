@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.18.3
-Release: 2%{?dist}
+Version: 5.18.4
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -606,6 +606,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Mar 31 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.4-1
+- 5.18.4
+
 * Thu Mar 19 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.3-2
 - f31+ plasma-lookandfeel-fedora: default to 'Fedora' wallpaper (#1812293)
 
