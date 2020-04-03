@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.18.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -44,6 +44,8 @@ Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # and example,
 # https://github.com/notmart/artwork-lnf-netrunner-core/blob/master/usr/share/plasma/look-and-feel/org.kde.netrunner-core.desktop/contents/defaults
 Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
+# workaround https://bugzilla.redhat.com/show_bug.cgi?id=1754395
+Patch106:	plasma-workspace-5.18.4.1-filter-environment.patch
 
 ## upstreamable Patches
 
@@ -378,6 +380,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 #%patch102 -p1 -b .startkde
 %patch105 -p1
+%patch106 -p1 -b .bz1754395
 
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
@@ -606,6 +609,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Apr 03 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4-2
+- patch to workaround "Qt applications lose system theme if launched via dbus activation" (#1754395)
+
 * Tue Mar 31 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.4-1
 - 5.18.4
 
