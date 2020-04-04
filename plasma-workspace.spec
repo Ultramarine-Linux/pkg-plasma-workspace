@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.18.4
-Release: 2%{?dist}
+Version: 5.18.4.1
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -609,6 +609,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sat Apr 04 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4.1-1
+- 5.18.4.1
+
 * Fri Apr 03 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4-2
 - patch to workaround "Qt applications lose system theme if launched via dbus activation" (#1754395)
 
