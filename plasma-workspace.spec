@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.15.5
-Release: 1%{?dist}.2
+Version: 5.18.4.1
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -38,12 +38,14 @@ Source20:       breeze-fedora-0.2.tar.gz
 Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # remove stuff we don't want or need, plus a minor bit of customization --rex
-Patch102:       startkde.patch
+#Patch102:       startkde.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
 # https://github.com/notmart/artwork-lnf-netrunner-core/blob/master/usr/share/plasma/look-and-feel/org.kde.netrunner-core.desktop/contents/defaults
 Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
+# workaround https://bugzilla.redhat.com/show_bug.cgi?id=1754395
+Patch106:	plasma-workspace-5.18.4.1-filter-environment-v2.patch
 
 ## upstreamable Patches
 
@@ -101,6 +103,7 @@ BuildRequires:  phonon-qt5-devel
 BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
 BuildRequires:  extra-cmake-modules
 BuildRequires:  kf5-baloo-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kactivities-stats-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcmutils-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcrash-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version_min}
@@ -114,6 +117,7 @@ BuildRequires:  kf5-kinit-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kjsembed-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knewstuff-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knotifyconfig-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kpeople-devel >= %{kf5_version_min}
 BuildRequires:  kf5-krunner-devel >= %{kf5_version_min}
 BuildRequires:  kf5-ktexteditor-devel >= %{kf5_version_min}
 BuildRequires:  kf5-ktextwidgets-devel >= %{kf5_version_min}
@@ -145,7 +149,7 @@ BuildRequires:  cmake(AppStreamQt) >= 0.10.4
 # when kded_desktopnotifier.so moved here
 Conflicts:      kio-extras < 5.4.0
 
-%if 0%{?fedora} > 21 || 0%{?rhel} > 7
+%if 0%{?fedora} || 0%{?rhel} > 7
 Recommends:     %{name}-geolocation = %{version}-%{release}
 Suggests:       imsettings-qt
 %else
@@ -168,12 +172,13 @@ Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
 Requires:       kf5-kxmlrpcclient
+Requires:       kf5-kquickcharts
 
 # systemmonitor dataengine
 Requires:       ksysguardd >= %{majmin_ver}
 
 # The new volume control for PulseAudio
-%if 0%{?fedora} > 22 || 0%{?rhel} > 7
+%if 0%{?fedora} || 0%{?rhel} > 7
 Requires:       plasma-pa
 %endif
 
@@ -234,10 +239,6 @@ Requires:       plasmashell >= %{majmin_ver}
 
 # when -common, libkworkspace5 was split out
 Obsoletes:      plasma-workspace < 5.4.2-2
-
-# deprecate/replace kde-runtime-kuiserver, http://bugzilla.redhat.com/1249157
-Obsoletes:      kde-runtime-kuiserver < 1:15.08.2
-Provides:       kuiserver = %{version}-%{release}
 
 # plasmashell provides dbus service org.freedesktop.Notifications
 Provides: desktop-notification-daemon
@@ -377,8 +378,9 @@ BuildArch: noarch
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
-%patch102 -p1 -b .startkde
+#%patch102 -p1 -b .startkde
 %patch105 -p1
+%patch106 -p1 -b .bz1754395
 
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
@@ -390,7 +392,7 @@ EOL
 
 
 # highlight the use of wayland
-sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" plasmawayland.desktop.cmake
+sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" login-sessions/plasmawayland.desktop.cmake
 
 
 %build
@@ -406,6 +408,9 @@ popd
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
+
+# compat symlink
+ln -s startplasma-x11 %{buildroot}%{_kf5_bindir}/startkde
 
 %if 0%{?fedora}
 # remove/replace items to be customized
@@ -423,6 +428,13 @@ ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
 install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
+
+%if 0%{?fedora} > 30
+## customize plasma-lookandfeel-fedora defaults
+# from [Wallpaper] Image=Next to Image=Fedora
+sed -i -e 's|^Image=.*$|Image=Fedora|g' \
+  %{buildroot}%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/defaults
+%endif
 
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -447,20 +459,18 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 %files -f %{name}.lang
 %{_kf5_bindir}/gmenudbusmenuproxy
-%{_kf5_bindir}/kcheckrunning
 %{_kf5_bindir}/kcminit
 %{_kf5_bindir}/kcminit_startup
-%{_kf5_bindir}/kdostartupconfig5
 %{_kf5_bindir}/klipper
 %{_kf5_bindir}/krunner
 %{_kf5_bindir}/ksmserver
 %{_kf5_bindir}/ksplashqml
-%{_kf5_bindir}/kstartupconfig5
-%{_kf5_sysconfdir}/xdg/kuiserver.*
-%{_kf5_bindir}/kuiserver5
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
+%{_kf5_bindir}/plasma_session
+%{_kf5_bindir}/plasma_waitforname
 %{_kf5_bindir}/startkde
+%{_kf5_bindir}/startplasma-x11
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
@@ -471,16 +481,15 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
 %{_kf5_datadir}/plasma/services/
-%{_kf5_datadir}/plasma/shareprovider/
 %{_kf5_datadir}/plasma/wallpapers/
 %dir %{_kf5_datadir}/plasma/look-and-feel/
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
-%{_sysconfdir}/xdg/*.knsrc
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/desktop-directories/*.directory
 %{_datadir}/dbus-1/services/*.service
+%{_datadir}/knsrcfiles/*.knsrc
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservices5/*.protocol
 %{_kf5_datadir}/kservicetypes5/*.desktop
@@ -496,7 +505,8 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
 %{_datadir}/xsessions/plasma.desktop
 %{_kf5_bindir}/plasma_waitforname
-%{_sysconfdir}/xdg/*.categories
+%{_kf5_datadir}/qlogging-categories5/*.categories
+%{_sysconfdir}/xdg/plasmanotifyrc
 %{_kf5_datadir}/kpackage/kcms/kcm_translations/*
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
@@ -519,10 +529,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libdir}/libcolorcorrect.so.*
 %{_libdir}/libtaskmanager.so.*
 %{_libdir}/libweather_ion.so.*
+%{_libdir}/libnotificationmanager.*
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
 %{_kf5_qtplugindir}/plasma/dataengine/
-%{_kf5_qtplugindir}/plasma/packagestructure/
 %if 0%{?kf5_pim}
 %{_kf5_qtplugindir}/plasmacalendarplugins/
 %endif
@@ -533,9 +543,19 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %dir %{_kf5_qtplugindir}/phonon_platform/
 %{_kf5_qtplugindir}/phonon_platform/kde.so
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
-%{_kf5_plugindir}/kio/desktop.so
+%{_kf5_plugindir}/kio/*.so
 %{_kf5_plugindir}/kded/*.so
 %{_qt5_plugindir}/kcms/kcm_translations.so
+%{_libdir}/kconf_update_bin/krunnerglobalshortcuts
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_applauncher.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_contextmenu.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_paste.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchdesktop.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchwindow.so
+%{_libexecdir}/plasma-sourceenv.sh
+%{_libexecdir}/startplasma-waylandsession
+%{_datadir}/kconf_update/krunnerglobalshortcuts.upd
+%{_datadir}/kglobalaccel/krunner.desktop
 
 %files geolocation
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
@@ -563,11 +583,13 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_includedir}/kworkspace5/
 %{_includedir}/plasma/geolocation/
 %{_includedir}/taskmanager/
+%{_includedir}/notificationmanager/
 %{_libdir}/cmake/KRunnerAppDBusInterface/
 %{_libdir}/cmake/KSMServerDBusInterface/
 %{_libdir}/cmake/LibColorCorrect
 %{_libdir}/cmake/LibKWorkspace/
 %{_libdir}/cmake/LibTaskManager/
+%{_libdir}/cmake/LibNotificationManager/
 %{_datadir}/dbus-1/interfaces/*.xml
 %{_datadir}/kdevappwizard/templates/ion-dataengine.tar.bz2
 
@@ -577,8 +599,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 #%config(noreplace) %{_datadir}/sddm/themes/01-breeze-fedora/theme.conf.user
 
 %files wayland
-%{_kf5_bindir}/startplasmacompositor
-%{_libexecdir}/startplasma
+%{_kf5_bindir}/startplasma-wayland
 %{_datadir}/wayland-sessions/plasmawayland.desktop
 
 %if 0%{?fedora}
@@ -588,11 +609,104 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
-* Tue Jul 02 2019 Troy Dawson <tdawson@redhat.com> - 5.15.5-1.2
-- Rebuild for updated libqalculate
+* Thu Apr 09 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4.1-2
+- update patch "Qt applications lose system theme if launched via dbus activation" (#1754395)
 
-* Tue Jul 02 2019 Troy Dawson <tdawson@redhat.com> - 5.15.5-1.1
-- Fixup to build on RHEL8
+* Sat Apr 04 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4.1-1
+- 5.18.4.1
+
+* Fri Apr 03 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4-2
+- patch to workaround "Qt applications lose system theme if launched via dbus activation" (#1754395)
+
+* Tue Mar 31 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.4-1
+- 5.18.4
+
+* Thu Mar 19 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.3-2
+- f31+ plasma-lookandfeel-fedora: default to 'Fedora' wallpaper (#1812293)
+
+* Tue Mar 10 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.3-1
+- 5.18.3
+
+* Sun Mar 08 2020 Mukundan Ragavan <nonamedotc@gmail.com> - 5.18.2-2
+- rebuild for libqalculate
+
+* Tue Feb 25 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.2-1
+- 5.18.2
+
+* Tue Feb 18 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.1-1
+- 5.18.1
+
+* Tue Feb 11 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.0-1
+- 5.18.0
+
+* Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.17.90-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Thu Jan 16 2020 Jan Grulich <jgrulich@redhat.com> - 5.17.90-1
+- 5.17.90
+
+* Wed Jan 08 2020 Jan Grulich <jgrulich@redhat.com> - 5.17.5-1
+- 5.17.5
+
+* Mon Dec 23 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.17.4-2
+- provide compat /usr/bin/startkde symlink (#1785826, #1785973)
+
+* Thu Dec 05 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.4-1
+- 5.17.4
+
+* Fri Nov 29 2019 Mukundan Ragavan <nonamedotc@gmail.com> - 5.17.3-2
+- rebuild for libqalculate
+
+* Wed Nov 13 2019 Martin Kyral <martin.kyral@gmail.com> - 5.17.3-1
+- 5.17.3
+
+* Wed Oct 30 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.2-1
+- 5.17.2
+
+* Wed Oct 23 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.1-1
+- 5.17.1
+
+* Thu Oct 10 2019 Jan Grulich <jgrulich@redhat.com> - 5.17.0-1
+- 5.17.0
+
+* Fri Sep 20 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.90-1
+- 5.16.90
+
+* Fri Sep 06 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.5-1
+- 5.16.5
+
+* Tue Aug 27 2019 Mukundan Ragavan <nonamedotc@gmail.com> - 5.16.4-2
+- rebuild for libqalculate
+
+* Tue Jul 30 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.4-1
+- 5.16.4
+
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 5.16.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Wed Jul 10 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.3-1
+- 5.16.3
+
+* Wed Jul 03 2019 Björn Esser <besser82@fedoraproject.org> - 5.16.2-2
+- Rebuild (gpsd)
+
+* Wed Jun 26 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.2-1
+- 5.16.2
+
+* Tue Jun 18 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.16.1-1
+- 5.16.1
+
+* Tue Jun 11 2019 Martin Kyral <martin.kyral@gmail.com> - 5.16.0-1
+- 5.16.0
+
+* Sun May 19 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.15.90-3
+- de-bootstrap
+
+* Sun May 19 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.15.90-2
+- bootstrap build
+
+* Thu May 16 2019 Martin Kyral <martin.kyral@gmail.com> - 5.15.90-1
+- 5.15.90
 
 * Thu May 09 2019 Martin Kyral <martin.kyral@gmail.com> - 5.15.5-1
 - 5.15.5
