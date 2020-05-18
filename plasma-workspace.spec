@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.18.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -49,9 +49,9 @@ Patch106:	plasma-workspace-5.18.4.1-filter-environment-v2.patch
 
 ## upstreamable Patches
 
-## upstream Patches lookaside cache
-
-## upstream Patches (master branch)
+## upstream Patches
+# 5.19 branch
+Patch50: 2958702524348e9e4fcbdf490be731e92b353dad.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -370,6 +370,7 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch50 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -609,6 +610,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon May 18 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.5-2
+- (branch) 5.19 backport "Stop multiplying duration values"
+
 * Tue May 05 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.5-1
 - 5.18.5
 
