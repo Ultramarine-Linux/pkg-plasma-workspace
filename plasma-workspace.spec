@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.19.0
-Release: 2%{?dist}
+Version: 5.19.1
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -607,6 +607,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Jun 17 2020 Martin Kyral <martin.kyral@gmail.com> - 5.19.1-1
+- 5.19.1
+
 * Thu Jun 11 2020 Marie Loise Nolden <loise@kde.org> - 5.19.0-2
 - drop qtwebkit build dependencies
 
