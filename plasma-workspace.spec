@@ -468,7 +468,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
 %{_kf5_bindir}/plasma_session
-%{_kf5_bindir}/plasma-shutdown
 %{_kf5_bindir}/plasma_waitforname
 %{_kf5_bindir}/startkde
 %{_kf5_bindir}/startplasma-x11
@@ -505,6 +504,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/applications/plasma-windowed.desktop
 %{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
 %{_datadir}/xsessions/plasma.desktop
+%{_kf5_bindir}/plasma_waitforname
 %{_kf5_datadir}/qlogging-categories5/*.categories
 %{_sysconfdir}/xdg/plasmanotifyrc
 %{_kf5_datadir}/kpackage/kcms/kcm_translations/*
