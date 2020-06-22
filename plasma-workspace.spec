@@ -6,7 +6,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.18.5
+Version: 5.19.1
 Release: 2%{?dist}
 
 License: GPLv2+
@@ -97,7 +97,6 @@ BuildRequires:  qt5-qtbase-devel >= 5.7.0
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  qt5-qtscript-devel
 BuildRequires:  qt5-qtdeclarative-devel
-BuildRequires:  qt5-qtwebkit-devel
 BuildRequires:  phonon-qt5-devel
 
 BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
@@ -109,7 +108,6 @@ BuildRequires:  kf5-kcrash-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdelibs4support-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdesu-devel >= %{kf5_version_min}
-BuildRequires:  kf5-kdewebkit-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdoctools-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kglobalaccel-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kidletime-devel >= %{kf5_version_min}
@@ -609,8 +607,20 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
-* Sat Jun 20 2020 Adam Williamson <awilliam@redhat.com> - 5.18.5-2
-- Rebuild for libgps soname bump
+* Thu Jun 18 2020 Björn Esser <besser82@fedoraproject.org> - 5.19.1-2
+- Rebuild (gpsd)
+
+* Wed Jun 17 2020 Martin Kyral <martin.kyral@gmail.com> - 5.19.1-1
+- 5.19.1
+
+* Thu Jun 11 2020 Marie Loise Nolden <loise@kde.org> - 5.19.0-2
+- drop qtwebkit build dependencies
+
+* Tue Jun 9 2020 Martin Kyral <martin.kyral@gmail.com> - 5.19.0-1
+- 5.19.0
+
+* Fri May 15 2020 Martin Kyral <martin.kyral@gmail.com> - 5.18.90-1
+- 5.18.90
 
 * Tue May 05 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.5-1
 - 5.18.5
