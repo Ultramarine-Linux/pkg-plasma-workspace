@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.19.1
-Release: 2%{?dist}
+Version: 5.19.2
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -607,6 +607,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Jun 23 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.2-1
+- 5.19.2
+
 * Thu Jun 18 2020 Björn Esser <besser82@fedoraproject.org> - 5.19.1-2
 - Rebuild (gpsd)
 
