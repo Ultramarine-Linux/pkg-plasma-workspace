@@ -389,10 +389,6 @@ EOL
 %endif
 
 
-# highlight the use of wayland
-sed -i.plasmawayland -e "s|Plasma|Plasma (Wayland)|g" login-sessions/plasmawayland.desktop.cmake
-
-
 %build
 mkdir %{_target_platform}
 pushd %{_target_platform}
