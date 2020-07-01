@@ -7,7 +7,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.19.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -177,14 +177,14 @@ Requires:       ksysguardd >= %{majmin_ver}
 
 # The new volume control for PulseAudio
 %if 0%{?fedora} || 0%{?rhel} > 7
-Requires:       plasma-pa
+Recommends:       plasma-pa >= %{majmin_ver}
 %endif
 
 # Without the platformtheme plugins we get broken fonts
 Requires:       kf5-frameworkintegration
 
 # For krunner
-Requires:       plasma-milou >= %{majmin_ver}
+Recommends:       plasma-milou >= %{majmin_ver}
 
 # powerdevil has a versioned dep on libkworkspace5, so (may?)
 # need to avoid this dep when bootstrapping
@@ -603,6 +603,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Jul 01 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.19.2-2
+- Recommends: plasma-pa, plasma-milou
+
 * Tue Jun 23 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.2-1
 - 5.19.2
 
