@@ -6,8 +6,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.17.5
-Release: 1%{?dist}
+Version: 5.18.5
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -44,12 +44,14 @@ Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # and example,
 # https://github.com/notmart/artwork-lnf-netrunner-core/blob/master/usr/share/plasma/look-and-feel/org.kde.netrunner-core.desktop/contents/defaults
 Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
+# workaround https://bugzilla.redhat.com/show_bug.cgi?id=1754395
+Patch106:	plasma-workspace-5.18.4.1-filter-environment-v2.patch
 
 ## upstreamable Patches
 
-## upstream Patches lookaside cache
-
-## upstream Patches (master branch)
+## upstream Patches
+# 5.19 branch
+Patch50: 2958702524348e9e4fcbdf490be731e92b353dad.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -140,12 +142,14 @@ BuildRequires:  desktop-file-utils
 
 # Optional
 BuildRequires:  kf5-kactivities-devel
+%if 0%{?fedora}
 BuildRequires:  cmake(AppStreamQt) >= 0.10.4
+%endif
 
 # when kded_desktopnotifier.so moved here
 Conflicts:      kio-extras < 5.4.0
 
-%if 0%{?fedora} > 21
+%if 0%{?fedora} || 0%{?rhel} > 7
 Recommends:     %{name}-geolocation = %{version}-%{release}
 Suggests:       imsettings-qt
 %else
@@ -168,12 +172,13 @@ Requires:       kf5-filesystem
 Requires:       kf5-baloo
 Requires:       kf5-kglobalaccel >= 5.7
 Requires:       kf5-kxmlrpcclient
+Requires:       kf5-kquickcharts
 
 # systemmonitor dataengine
 Requires:       ksysguardd >= %{majmin_ver}
 
 # The new volume control for PulseAudio
-%if 0%{?fedora} > 22
+%if 0%{?fedora} || 0%{?rhel} > 7
 Requires:       plasma-pa
 %endif
 
@@ -365,6 +370,7 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch50 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -375,6 +381,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %endif
 #%patch102 -p1 -b .startkde
 %patch105 -p1
+%patch106 -p1 -b .bz1754395
 
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
@@ -422,6 +429,13 @@ ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
 install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
+
+%if 0%{?fedora} > 30
+## customize plasma-lookandfeel-fedora defaults
+# from [Wallpaper] Image=Next to Image=Fedora
+sed -i -e 's|^Image=.*$|Image=Fedora|g' \
+  %{buildroot}%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/defaults
+%endif
 
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -596,6 +610,48 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon May 18 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.5-2
+- (branch) 5.19 backport "Stop multiplying duration values"
+
+* Tue May 05 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.5-1
+- 5.18.5
+
+* Thu Apr 09 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4.1-2
+- update patch "Qt applications lose system theme if launched via dbus activation" (#1754395)
+
+* Sat Apr 04 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4.1-1
+- 5.18.4.1
+
+* Fri Apr 03 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.4-2
+- patch to workaround "Qt applications lose system theme if launched via dbus activation" (#1754395)
+
+* Tue Mar 31 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.4-1
+- 5.18.4
+
+* Thu Mar 19 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.18.3-2
+- f31+ plasma-lookandfeel-fedora: default to 'Fedora' wallpaper (#1812293)
+
+* Tue Mar 10 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.3-1
+- 5.18.3
+
+* Sun Mar 08 2020 Mukundan Ragavan <nonamedotc@gmail.com> - 5.18.2-2
+- rebuild for libqalculate
+
+* Tue Feb 25 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.2-1
+- 5.18.2
+
+* Tue Feb 18 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.1-1
+- 5.18.1
+
+* Tue Feb 11 2020 Jan Grulich <jgrulich@redhat.com> - 5.18.0-1
+- 5.18.0
+
+* Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.17.90-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Thu Jan 16 2020 Jan Grulich <jgrulich@redhat.com> - 5.17.90-1
+- 5.17.90
+
 * Wed Jan 08 2020 Jan Grulich <jgrulich@redhat.com> - 5.17.5-1
 - 5.17.5
 
