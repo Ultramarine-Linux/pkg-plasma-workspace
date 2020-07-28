@@ -9,7 +9,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.19.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -202,8 +202,7 @@ Requires:       socat
 Requires:       xmessage
 Requires:       qt5-qttools
 
-Requires:       xorg-x11-utils
-Requires:       xorg-x11-server-utils
+Requires:       iceauth xrdb xprop
 
 Requires:       kde-settings-plasma
 
@@ -601,6 +600,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Jul 28 2020 Adam Jackson <ajax@redhat.com> - 5.19.4-2
+- Require iceuth xrgb xprop, not xorg-x11-{server-,}utils
+
 * Tue Jul 28 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.4-1
 - 5.19.4
 
