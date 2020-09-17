@@ -6,10 +6,13 @@
 
 %global kf5_version_min 5.50.0
 
+# Control wayland by default
+%bcond_with wayland_default
+
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.19.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -251,6 +254,18 @@ BuildRequires: pkgconfig(iso-codes)
 %endif
 Requires: iso-codes
 
+# Split of Xorg session into subpackage
+Obsoletes: plasma-workspace < 5.19.5-2
+
+# Require Xorg/Wayland sessions appropriately
+%if ! %{with wayland_default}
+Recommends: %{name}-wayland = %{version}-%{release}
+Requires:   %{name}-xorg = %{version}-%{release}
+%else
+Requires:   %{name}-wayland = %{version}-%{release}
+Recommends: %{name}-xorg = %{version}-%{release}
+%endif
+
 %description
 Plasma 5 libraries and runtime components
 
@@ -350,6 +365,16 @@ Requires:       qt5-qttools
 %description wayland
 %{summary}.
 
+%package xorg
+Summary:        Xorg support for Plasma
+# Split of Xorg session into subpackage
+Obsoletes:      %{name} < 5.19.5-2
+Requires:       %{name} = %{version}-%{release}
+Requires:       kwin-x11 >= %{majmin_ver}
+Requires:       xorg-x11-server-Xorg
+%description xorg
+%{summary}.
+
 %package -n plasma-lookandfeel-fedora
 Summary:  Fedora look-and-feel for Plasma
 Requires: %{name} = %{version}-%{release}
@@ -400,8 +425,16 @@ EOL
 
 chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 
+%if ! %{with wayland_default}
 # compat symlink
 ln -s startplasma-x11 %{buildroot}%{_kf5_bindir}/startkde
+%else
+# compat symlink
+ln -s startplasma-wayland %{buildroot}%{_kf5_bindir}/startkde
+# rename desktop files
+mv %{buildroot}%{_datadir}/wayland-sessions/plasmawayland.desktop %{buildroot}%{_datadir}/wayland-sessions/plasma.desktop
+mv %{buildroot}%{_datadir}/xsessions/plasma.desktop %{buildroot}%{_datadir}/xsessions/plasmaxorg.desktop
+%endif
 
 %if 0%{?fedora}
 # remove/replace items to be customized
@@ -462,7 +495,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/plasma-shutdown
 %{_kf5_bindir}/plasma_waitforname
 %{_kf5_bindir}/startkde
-%{_kf5_bindir}/startplasma-x11
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_libdir}/libkdeinit5_*.so
@@ -495,7 +527,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/applications/org.kde.plasmashell.desktop
 %{_kf5_datadir}/applications/plasma-windowed.desktop
 %{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
-%{_datadir}/xsessions/plasma.desktop
 %{_kf5_datadir}/qlogging-categories5/*.categories
 %{_sysconfdir}/xdg/plasmanotifyrc
 %{_kf5_datadir}/kpackage/kcms/kcm_translations/*
@@ -591,7 +622,19 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 %files wayland
 %{_kf5_bindir}/startplasma-wayland
+%if ! %{with wayland_default}
 %{_datadir}/wayland-sessions/plasmawayland.desktop
+%else
+%{_datadir}/wayland-sessions/plasma.desktop
+%endif
+
+%files xorg
+%{_kf5_bindir}/startplasma-x11
+%if ! %{with wayland_default}
+%{_datadir}/xsessions/plasma.desktop
+%else
+%{_datadir}/xsessions/plasmaxorg.desktop
+%endif
 
 %if 0%{?fedora}
 %files -n plasma-lookandfeel-fedora
@@ -600,6 +643,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Sep 17 2020 Neal Gompa <ngompa13@gmail.com> - 5.19.5-2
+- Split out Xorg session and set up conditional for Wayland by default
+
 * Tue Sep 01 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.5-1
 - 5.19.5
 
