@@ -75,6 +75,7 @@ BuildRequires:  libXfixes-devel
 BuildRequires:  libXrandr-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libXtst-devel
+BuildRequires:  libXft-devel
 BuildRequires:  libxcb-devel
 BuildRequires:  xcb-util-keysyms-devel
 BuildRequires:  xcb-util-image-devel
@@ -89,6 +90,7 @@ BuildRequires:  libbsd-devel
 BuildRequires:  pam-devel
 BuildRequires:  lm_sensors-devel
 BuildRequires:  pciutils-devel
+BuildRequires:  pipewire-devel
 %ifnarch s390 s390x
 BuildRequires:  libraw1394-devel
 %endif
@@ -99,9 +101,13 @@ BuildRequires:  kf5-kholidays-devel
 BuildRequires:  kf5-prison-devel
 
 BuildRequires:  qt5-qtbase-devel >= 5.7.0
+BuildRequires:  qt5-qtbase-private-devel
+%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  qt5-qtscript-devel
 BuildRequires:  qt5-qtdeclarative-devel
+BuildRequires:  qt5-qtsvg-devel
+BuildRequires:  qt5-qtwayland-devel
 BuildRequires:  phonon-qt5-devel
 
 BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
@@ -132,13 +138,16 @@ Requires:       kf5-plasma%{?_isa} >= %{_kf5_version}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kded-devel >= %{kf5_version_min}
 
+
 BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
 BuildRequires:  kf5-kwayland-devel >= %{kf5_version_min}
 BuildRequires:  wayland-devel >= 1.3.0
 BuildRequires:  libkscreen-qt5-devel >= %{majmin_ver}
 BuildRequires:  kscreenlocker-devel >= %{majmin_ver}
-
 BuildRequires:  kwin-devel >= %{majmin_ver}
+
+BuildRequires:  kuserfeedback-devel
+BuildRequires:  plasma-wayland-protocols-devel
 
 BuildRequires:  chrpath
 BuildRequires:  desktop-file-utils
@@ -497,11 +506,20 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/startkde
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
+%{_kf5_bindir}/kcolorschemeeditor
+%{_kf5_bindir}/kde-systemd-start-condition
+%{_kf5_bindir}/kfontinst
+%{_kf5_bindir}/kfontview
+%{_kf5_bindir}/krdb
+%{_kf5_bindir}/lookandfeeltool
 %{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/baloorunner
 %{_libexecdir}/ksmserver-logout-greeter
-%{_libexecdir}/ksyncdbusenv
+%{_libexecdir}/kf5/kauth/fontinst*
+%{_libexecdir}/kfontprint
+%{_libexecdir}/plasma-changeicons
+%{_libexecdir}/plasma-dbus-run-session-if-needed
 %{_kf5_datadir}/ksplash/
 %{_kf5_datadir}/plasma/plasmoids/
 %{_kf5_datadir}/plasma/services/
@@ -511,9 +529,22 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
 %{_sysconfdir}/xdg/autostart/*.desktop
+%{_datadir}/icons/hicolor/*/*/*font*.png
+%{_datadir}/icons/hicolor/scalable/apps/preferences-desktop-font-installer.svgz
 %{_datadir}/desktop-directories/*.directory
 %{_datadir}/dbus-1/services/*.service
+%{_datadir}/dbus-1/system-services/org.kde.fontinst.service
+%{_datadir}/dbus-1/system.d/org.kde.fontinst.conf
 %{_datadir}/knsrcfiles/*.knsrc
+%{_datadir}/kdisplay/app-defaults/*
+%{_datadir}/kfontinst/icons/hicolor/*/actions/*font*.png
+%{_datadir}/konqsidebartng/virtual_folders/services/fonts.desktop
+%{_datadir}/krunner/dbusplugins/plasma-runner-baloosearch.desktop
+%{_datadir}/kxmlgui5/kfontinst/kfontviewpart.rc
+%{_datadir}/kxmlgui5/kfontview/kfontviewui.rc
+%{_kf5_datadir}/kcontrol/pics/logo.png
+%{_kf5_datadir}/kcontrol/pics/mini-world.png
+%{_kf5_datadir}/kservices5/ServiceMenus/installfont.desktop
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservices5/*.protocol
 %{_kf5_datadir}/kservicetypes5/*.desktop
@@ -521,15 +552,32 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/config.kcfg/*
 %{_kf5_datadir}/kio_desktop/
 %{_kf5_datadir}/kconf_update/krunnerplugins.upd
+%{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.pl
+%{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.upd
+%{_kf5_datadir}/kconf_update/icons_remove_effects.upd
+%{_kf5_datadir}/kconf_update/krdb_libpathwipe.upd
+%{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.pl
+%{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.upd
 %{_kf5_libdir}/kconf_update_bin/krunnerplugins
 %{_kf5_metainfodir}/*.xml
 %{_kf5_datadir}/applications/org.kde.klipper.desktop
 %{_kf5_datadir}/applications/org.kde.plasmashell.desktop
 %{_kf5_datadir}/applications/plasma-windowed.desktop
 %{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
+%{_kf5_datadir}/applications/org.kde.kcolorschemeeditor.desktop
+%{_kf5_datadir}/applications/org.kde.kfontview.desktop
 %{_kf5_datadir}/qlogging-categories5/*.categories
 %{_sysconfdir}/xdg/plasmanotifyrc
 %{_kf5_datadir}/kpackage/kcms/kcm_translations/*
+%{_kf5_datadir}/kpackage/kcms/kcm5_icons/*
+%{_kf5_datadir}/kpackage/kcms/kcm_colors/*
+%{_kf5_datadir}/kpackage/kcms/kcm_cursortheme/*
+%{_kf5_datadir}/kpackage/kcms/kcm_desktoptheme/*
+%{_kf5_datadir}/kpackage/kcms/kcm_feedback/*
+%{_kf5_datadir}/kpackage/kcms/kcm_fonts/*
+%{_kf5_datadir}/kpackage/kcms/kcm_lookandfeel/*
+%{_kf5_datadir}/kpackage/kcms/kcm_style/*
+%{_kf5_datadir}/polkit-1/actions/org.kde.fontinst.policy
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
@@ -552,6 +600,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libdir}/libtaskmanager.so.*
 %{_libdir}/libweather_ion.so.*
 %{_libdir}/libnotificationmanager.*
+%{_libdir}/libkfontinst*
 # multilib'able plugins
 %{_kf5_qtplugindir}/plasma/applets/
 %{_kf5_qtplugindir}/plasma/dataengine/
@@ -567,8 +616,18 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
 %{_kf5_plugindir}/kio/*.so
 %{_kf5_plugindir}/kded/*.so
+%{_kf5_plugindir}/krunner/krunner*
 %{_qt5_plugindir}/kcms/kcm_translations.so
+%{_qt5_plugindir}/kcms/kcm_colors.so
+%{_qt5_plugindir}/kcms/kcm_cursortheme.so
+%{_qt5_plugindir}/kcms/kcm_desktoptheme.so
+%{_qt5_plugindir}/kcms/kcm_feedback.so
+%{_qt5_plugindir}/kcms/kcm_fonts.so
+%{_qt5_plugindir}/kcms/kcm_icons.so
+%{_qt5_plugindir}/kcms/kcm_lookandfeel.so
+%{_qt5_plugindir}/kcms/kcm_style.so
 %{_libdir}/kconf_update_bin/krunnerglobalshortcuts
+%{_libdir}/kconf_update_bin/krdb_clearlibrarypath
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_applauncher.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_contextmenu.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_paste.so
