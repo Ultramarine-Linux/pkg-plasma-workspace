@@ -12,7 +12,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.19.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -643,6 +643,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Sep 28 07:57:38 CEST 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.5-3
+- Rebuild (qt5)
+
 * Thu Sep 17 2020 Neal Gompa <ngompa13@gmail.com> - 5.19.5-2
 - Split out Xorg session and set up conditional for Wayland by default
 
