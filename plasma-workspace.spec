@@ -7,12 +7,16 @@
 %global kf5_version_min 5.50.0
 
 # Control wayland by default
+%if (0%{?fedora} && 0%{?fedora} < 34) || (0%{?rhel} && 0%{?rhel} < 9)
 %bcond_with wayland_default
+%else
+%bcond_without wayland_default
+%endif
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.19.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -702,6 +706,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sat Oct 03 2020 Neal Gompa <ngompa13@gmail.com> - 5.19.90-2
+- Use Wayland by default for F34+
+  https://fedoraproject.org/wiki/Changes/WaylandByDefaultForPlasma
+
 * Fri Sep 18 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.90-1
 - 5.19.90
 
