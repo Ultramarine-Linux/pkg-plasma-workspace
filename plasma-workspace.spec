@@ -451,8 +451,7 @@ mv %{buildroot}%{_datadir}/xsessions/plasma.desktop %{buildroot}%{_datadir}/xses
 
 %if 0%{?fedora}
 # remove/replace items to be customized
-# not sure of (sym)links are safe yet or not -- rex
-install -m644 -p \
+ln -sf \
   %{_datadir}/backgrounds/default.png \
   %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/components/artwork/background.png
 %endif
