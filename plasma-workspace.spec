@@ -12,7 +12,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.19.5
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -57,6 +57,8 @@ Patch106:	plasma-workspace-5.18.4.1-filter-environment-v2.patch
 ## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
+# reworked upstream patch to apply to 5.19
+Patch305: 0305-sddm-theme-lockscreen-Fix-login-button-size.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -394,6 +396,7 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch305 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -643,6 +646,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Oct 07 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.19.5-4
+- backport "Fix login button size" upstream fix
+
 * Mon Sep 28 07:57:38 CEST 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.5-3
 - Rebuild (qt5)
 
