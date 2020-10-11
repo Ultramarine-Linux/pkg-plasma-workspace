@@ -15,8 +15,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.19.90
-Release: 2%{?dist}
+Version: 5.20.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -705,6 +705,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sun Oct 11 19:50:04 CEST 2020 Jan Grulich <jgrulich@redhat.com> - 5.20.0-1
+- 5.20.0
+
 * Sat Oct 03 2020 Neal Gompa <ngompa13@gmail.com> - 5.19.90-2
 - Use Wayland by default for F34+
   https://fedoraproject.org/wiki/Changes/WaylandByDefaultForPlasma
