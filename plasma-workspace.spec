@@ -724,12 +724,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 - Use Wayland by default for F34+
   https://fedoraproject.org/wiki/Changes/WaylandByDefaultForPlasma
 
-* Fri Sep 18 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.90-1
-- 5.19.90
-
-* Wed Oct 07 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.19.5-4
-- backport "Fix login button size" upstream fix
-
 * Mon Sep 28 07:57:38 CEST 2020 Jan Grulich <jgrulich@redhat.com> - 5.19.5-3
 - Rebuild (qt5)
 
