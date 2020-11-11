@@ -61,8 +61,6 @@ Patch106:	plasma-workspace-5.18.4.1-filter-environment-v2.patch
 ## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
-# reworked upstream patch to apply to 5.19
-Patch305: 0305-sddm-theme-lockscreen-Fix-login-button-size.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -409,7 +407,6 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-%patch305 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
