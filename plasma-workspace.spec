@@ -15,8 +15,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.20.3
-Release: 3%{?dist}
+Version: 5.20.4
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -61,8 +61,6 @@ Patch106:	plasma-workspace-5.18.4.1-filter-environment-v2.patch
 ## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
-# https://bugzilla.redhat.com/show_bug.cgi?id=1861700
-Patch200: plasma-workspace-5.20.3-fix-crashes-on-logout.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -409,7 +407,6 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-%patch200 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -708,6 +705,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Dec  1 09:43:00 CET 2020 Jan Grulich <jgrulich@redhat.com> - 5.20.4-1
+- 5.20.4
+
 * Wed Nov 25 08:17:45 CET 2020 Jan Grulich <jgrulich@redhat.com> - 5.20.3-3
 - rebuild (qt5)
 
