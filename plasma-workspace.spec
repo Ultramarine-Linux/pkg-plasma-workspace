@@ -16,7 +16,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://cgit.kde.org/%{name}.git
@@ -180,15 +180,14 @@ Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
 %{?kf5_kinit_requires}
 Requires:       kactivitymanagerd >= %{majmin_ver}
 Requires:       khotkeys >= %{majmin_ver}
-Requires:       kf5-kded
-Requires:       kf5-kdoctools
+Requires:       kf5-baloo >= %{kf5_version_min}
+Requires:       kf5-kded >= %{kf5_version_min}
+Requires:       kf5-kdoctools >= %{kf5_version_min}
+Requires:       kf5-kglobalaccel >= %{kf5_version_min}
+Requires:       kf5-kxmlrpcclient >= %{kf5_version_min}
+Requires:       kf5-kquickcharts >= %{kf5_version_min}
 Requires:       qt5-qtquickcontrols
 Requires:       qt5-qtgraphicaleffects
-Requires:       kf5-filesystem
-Requires:       kf5-baloo
-Requires:       kf5-kglobalaccel >= 5.7
-Requires:       kf5-kxmlrpcclient
-Requires:       kf5-kquickcharts
 
 # systemmonitor dataengine
 Requires:       ksysguardd >= %{majmin_ver}
@@ -211,9 +210,12 @@ Recommends:       plasma-milou >= %{majmin_ver}
 Requires:       powerdevil >= %{majmin_ver}
 %endif
 
-# startkde
+Requires:       dbus
+# dbus-update-activation-environment
+Requires:       dbus-tools
+
+# startkde (TODO: review, this is no longer a shell script)
 Requires:       coreutils
-Requires:       dbus-x11
 Requires:       socat
 Requires:       xmessage
 Requires:       qt5-qttools
@@ -234,10 +236,7 @@ Requires:       desktop-backgrounds-compat
 Requires:       systemd
 
 # Oxygen
-# TODO: review if oxygen-fonts, oxygen-icon-theme are still needed (I suspect not) -- rex
-#Requires:       oxygen-icon-theme
 Requires:       oxygen-sound-theme >= %{majmin_ver}
-#Requires:       oxygen-fonts
 
 # PolicyKit authentication agent
 Requires:        polkit-kde >= %{majmin_ver}
@@ -705,6 +704,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Dec 22 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.20.4-2
+- runtime dep cleanup, mostly -dbus-x11, +dbus +dbus-tools
+
 * Tue Dec  1 09:43:00 CET 2020 Jan Grulich <jgrulich@redhat.com> - 5.20.4-1
 - 5.20.4
 
