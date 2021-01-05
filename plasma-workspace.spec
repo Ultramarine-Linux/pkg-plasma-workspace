@@ -15,7 +15,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.15.5
+Version: 5.20.5
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -701,8 +701,8 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
-* Tue Jan  5 15:52:05 CET 2021 Jan Grulich <jgrulich@redhat.com> - 5.15.5-1
-- 5.15.5
+* Tue Jan  5 16:03:33 CET 2021 Jan Grulich <jgrulich@redhat.com> - 5.20.5-1
+- 5.20.5
 
 * Tue Dec 22 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.20.4-2
 - runtime dep cleanup, mostly -dbus-x11, +dbus +dbus-tools
