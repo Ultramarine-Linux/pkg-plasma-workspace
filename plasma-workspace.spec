@@ -15,7 +15,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.20.4
+Version: 5.20.5
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -46,8 +46,6 @@ Source20:       breeze-fedora-0.2.tar.gz
 ## downstream Patches
 Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
-# remove stuff we don't want or need, plus a minor bit of customization --rex
-#Patch102:       startkde.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -180,15 +178,14 @@ Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
 %{?kf5_kinit_requires}
 Requires:       kactivitymanagerd >= %{majmin_ver}
 Requires:       khotkeys >= %{majmin_ver}
-Requires:       kf5-kded
-Requires:       kf5-kdoctools
+Requires:       kf5-baloo >= %{kf5_version_min}
+Requires:       kf5-kded >= %{kf5_version_min}
+Requires:       kf5-kdoctools >= %{kf5_version_min}
+Requires:       kf5-kglobalaccel >= %{kf5_version_min}
+Requires:       kf5-kxmlrpcclient >= %{kf5_version_min}
+Requires:       kf5-kquickcharts >= %{kf5_version_min}
 Requires:       qt5-qtquickcontrols
 Requires:       qt5-qtgraphicaleffects
-Requires:       kf5-filesystem
-Requires:       kf5-baloo
-Requires:       kf5-kglobalaccel >= 5.7
-Requires:       kf5-kxmlrpcclient
-Requires:       kf5-kquickcharts
 
 # systemmonitor dataengine
 Requires:       ksysguardd >= %{majmin_ver}
@@ -211,9 +208,12 @@ Recommends:       plasma-milou >= %{majmin_ver}
 Requires:       powerdevil >= %{majmin_ver}
 %endif
 
-# startkde
+Requires:       dbus
+# dbus-update-activation-environment
+Requires:       dbus-tools
+
+# startkde (TODO: review, this is no longer a shell script)
 Requires:       coreutils
-Requires:       dbus-x11
 Requires:       socat
 Requires:       xmessage
 Requires:       qt5-qttools
@@ -234,10 +234,7 @@ Requires:       desktop-backgrounds-compat
 Requires:       systemd
 
 # Oxygen
-# TODO: review if oxygen-fonts, oxygen-icon-theme are still needed (I suspect not) -- rex
-#Requires:       oxygen-icon-theme
 Requires:       oxygen-sound-theme >= %{majmin_ver}
-#Requires:       oxygen-fonts
 
 # PolicyKit authentication agent
 Requires:        polkit-kde >= %{majmin_ver}
@@ -415,7 +412,6 @@ BuildArch: noarch
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
-#%patch102 -p1 -b .startkde
 %patch105 -p1
 %patch106 -p1 -b .bz1754395
 
@@ -705,6 +701,12 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Jan  5 16:03:33 CET 2021 Jan Grulich <jgrulich@redhat.com> - 5.20.5-1
+- 5.20.5
+
+* Tue Dec 22 2020 Rex Dieter <rdieter@fedoraproject.org> - 5.20.4-2
+- runtime dep cleanup, mostly -dbus-x11, +dbus +dbus-tools
+
 * Tue Dec  1 09:43:00 CET 2020 Jan Grulich <jgrulich@redhat.com> - 5.20.4-1
 - 5.20.4
 
