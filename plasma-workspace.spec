@@ -16,10 +16,10 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.5
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
-URL:     https://cgit.kde.org/%{name}.git
+URL:     https://invent.kde.org/plasma/%{name}
 
 %global revision %(echo %{version} | cut -d. -f3)
 %if %{revision} >= 50
@@ -700,6 +700,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Jan 14 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.5-4
+- rebuild (gpsd)
+- update URL
+
 * Thu Jan 14 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.5-3
 - pull in upstream fix for sanitized user environment (#1754395)
 
