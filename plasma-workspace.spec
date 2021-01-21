@@ -15,8 +15,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.20.5
-Release: 4%{?dist}
+Version: 5.20.90
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -57,7 +57,6 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 ## upstream Patches lookaside cache
 
 ## upstream Patches (master branch)
-Patch416: 0416-libkworkspace-Only-update-env-vars-with-alphanumeric.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -403,7 +402,6 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-%patch416 -p1 -b 0416
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -700,6 +698,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Jan 21 2021 Jan Grulich <jgrulich@redhat.com> - 5.20.90-1
+- 5.20.90 (beta)
+
 * Thu Jan 14 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.5-4
 - rebuild (gpsd)
 - update URL
