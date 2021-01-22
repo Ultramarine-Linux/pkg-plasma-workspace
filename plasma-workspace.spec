@@ -4,7 +4,7 @@
 # repo or arch where there's no package that would provide plasmashell
 #global bootstrap 1
 
-%global kf5_version_min 5.50.0
+%global kf5_version_min 5.78.0
 
 # Control wayland by default
 %if (0%{?fedora} && 0%{?fedora} < 34) || (0%{?rhel} && 0%{?rhel} < 9)
@@ -16,7 +16,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -42,6 +42,14 @@ Source15:       fedora.desktop
 # breeze fedora sddm theme components
 # includes f25-based preview (better than breeze or nothing at least)
 Source20:       breeze-fedora-0.2.tar.gz
+
+# breeze fedora plasma theme components
+# includes breeze twilight settings and preview files
+# this will not be needed in 5.22 when breeze twilight replaces breeze
+# cf. https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/552
+Source30:       breezetwilight-defaults
+Source31:       breezetwilight-fullscreenpreview.jpg
+Source32:       breezetwilight-preview.png
 
 ## downstream Patches
 Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
@@ -137,6 +145,8 @@ BuildRequires:  kf5-plasma-devel >= %{kf5_version_min}
 Requires:       kf5-plasma%{?_isa} >= %{_kf5_version}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kded-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kirigami2-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kquickcharts-devel >= %{kf5_version_min}
 
 
 BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
@@ -148,6 +158,7 @@ BuildRequires:  kwin-devel >= %{majmin_ver}
 
 BuildRequires:  kuserfeedback-devel
 BuildRequires:  plasma-wayland-protocols-devel
+BuildRequires:  plasma-breeze-devel >= %{version}
 
 BuildRequires:  chrpath
 BuildRequires:  desktop-file-utils
@@ -373,14 +384,18 @@ Requires:       qt5-qttools
 %description wayland
 %{summary}.
 
-%package xorg
+%package x11
 Summary:        Xorg support for Plasma
+# Rename this package to match upstream
+Obsoletes:      %{name}-xorg < 5.20.90-2
+Provides:       %{name}-xorg = %{version}-%{release}
+Provides:       %{name}-xorg%{?_isa} = %{version}-%{release}
 # Split of Xorg session into subpackage
 Obsoletes:      %{name} < 5.19.5-2
 Requires:       %{name} = %{version}-%{release}
 Requires:       kwin-x11 >= %{majmin_ver}
 Requires:       xorg-x11-server-Xorg
-%description xorg
+%description x11
 %{summary}.
 
 %package -n plasma-lookandfeel-fedora
@@ -415,6 +430,9 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
 install -m 0644 %{SOURCE15} lookandfeel-fedora/metadata.desktop
+install -m 0644 %{SOURCE30} lookandfeel-fedora/defaults
+install -m 0644 %{SOURCE31} lookandfeel-fedora/fullscreenpreview.jpg
+install -m 0644 %{SOURCE32} lookandfeel-fedora/preview.png
 cat >> CMakeLists.txt <<EOL
 plasma_install_package(lookandfeel-fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
 EOL
@@ -422,7 +440,8 @@ EOL
 
 
 %build
-%{cmake_kf5}
+%{cmake_kf5} %{?with_wayland_default:-DPLASMA_WAYLAND_DEFAULT_SESSION:BOOL=ON}
+
 %cmake_build
 
 
@@ -437,9 +456,6 @@ ln -s startplasma-x11 %{buildroot}%{_kf5_bindir}/startkde
 %else
 # compat symlink
 ln -s startplasma-wayland %{buildroot}%{_kf5_bindir}/startkde
-# rename desktop files
-mv %{buildroot}%{_datadir}/wayland-sessions/plasmawayland.desktop %{buildroot}%{_datadir}/wayland-sessions/plasma.desktop
-mv %{buildroot}%{_datadir}/xsessions/plasma.desktop %{buildroot}%{_datadir}/xsessions/plasmaxorg.desktop
 %endif
 
 %if 0%{?fedora}
@@ -686,12 +702,12 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/wayland-sessions/plasma.desktop
 %endif
 
-%files xorg
+%files x11
 %{_kf5_bindir}/startplasma-x11
 %if ! %{with wayland_default}
 %{_datadir}/xsessions/plasma.desktop
 %else
-%{_datadir}/xsessions/plasmaxorg.desktop
+%{_datadir}/xsessions/plasmax11.desktop
 %endif
 
 %if 0%{?fedora}
@@ -701,6 +717,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Jan 22 2021 Neal Gompa <ngompa13@gmail.com> - 5.20.90-2
+- Switch to new Breeze Twilight-based theme (pagureio#fedora-kde/SIG#12)
+- Adapt Wayland by default to new upstream settings
+
 * Thu Jan 21 2021 Jan Grulich <jgrulich@redhat.com> - 5.20.90-1
 - 5.20.90 (beta)
 
