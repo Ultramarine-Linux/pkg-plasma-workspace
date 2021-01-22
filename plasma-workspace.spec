@@ -547,14 +547,12 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
 %{_kf5_datadir}/kio_desktop/
-%{_kf5_datadir}/kconf_update/krunnerplugins.upd
 %{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.pl
 %{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.upd
 %{_kf5_datadir}/kconf_update/icons_remove_effects.upd
 %{_kf5_datadir}/kconf_update/krdb_libpathwipe.upd
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.pl
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.upd
-%{_kf5_libdir}/kconf_update_bin/krunnerplugins
 %{_kf5_metainfodir}/*.xml
 %{_kf5_datadir}/applications/org.kde.klipper.desktop
 %{_kf5_datadir}/applications/org.kde.plasmashell.desktop
@@ -574,6 +572,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kpackage/kcms/kcm_lookandfeel/*
 %{_kf5_datadir}/kpackage/kcms/kcm_style/*
 %{_kf5_datadir}/polkit-1/actions/org.kde.fontinst.policy
+%{_userunitdir}/*.service
+%{_userunitdir}/*.target
+
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
@@ -622,6 +623,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_qt5_plugindir}/kcms/kcm_icons.so
 %{_qt5_plugindir}/kcms/kcm_lookandfeel.so
 %{_qt5_plugindir}/kcms/kcm_style.so
+%{_libdir}/kconf_update_bin/krunnerhistory
 %{_libdir}/kconf_update_bin/krunnerglobalshortcuts
 %{_libdir}/kconf_update_bin/krdb_clearlibrarypath
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_applauncher.so
@@ -632,6 +634,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libexecdir}/plasma-sourceenv.sh
 %{_libexecdir}/startplasma-waylandsession
 %{_datadir}/kconf_update/krunnerglobalshortcuts.upd
+%{_datadir}/kconf_update/krunnerhistory.upd
 %{_datadir}/kglobalaccel/krunner.desktop
 
 %files geolocation
