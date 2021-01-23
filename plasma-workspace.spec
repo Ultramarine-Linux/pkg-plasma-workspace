@@ -16,7 +16,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.90
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -430,9 +430,9 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %if 0%{?fedora}
 cp -a lookandfeel lookandfeel-fedora
 install -m 0644 %{SOURCE15} lookandfeel-fedora/metadata.desktop
-install -m 0644 %{SOURCE30} lookandfeel-fedora/defaults
-install -m 0644 %{SOURCE31} lookandfeel-fedora/fullscreenpreview.jpg
-install -m 0644 %{SOURCE32} lookandfeel-fedora/preview.png
+install -m 0644 %{SOURCE30} lookandfeel-fedora/contents/defaults
+install -m 0644 %{SOURCE31} lookandfeel-fedora/contents/previews/fullscreenpreview.jpg
+install -m 0644 %{SOURCE32} lookandfeel-fedora/contents/previews/preview.png
 cat >> CMakeLists.txt <<EOL
 plasma_install_package(lookandfeel-fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
 EOL
@@ -717,6 +717,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sat Jan 23 2021 Neal Gompa <ngompa13@gmail.com> - 5.20.90-3
+- Fix configuration of Fedora Breeze Twilight theme
+
 * Fri Jan 22 2021 Neal Gompa <ngompa13@gmail.com> - 5.20.90-2
 - Switch to new Breeze Twilight-based theme (pagureio#fedora-kde/SIG#12)
 - Adapt Wayland by default to new upstream settings
