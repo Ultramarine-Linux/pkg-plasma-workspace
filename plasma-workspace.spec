@@ -440,7 +440,8 @@ EOL
 
 
 %build
-%{cmake_kf5} %{?with_wayland_default:-DPLASMA_WAYLAND_DEFAULT_SESSION:BOOL=ON}
+%{cmake_kf5} \
+  %{?with_wayland_default:-DPLASMA_WAYLAND_DEFAULT_SESSION:BOOL=ON}
 
 %cmake_build
 
