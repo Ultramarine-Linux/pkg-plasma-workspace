@@ -719,7 +719,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 %changelog
 * Mon Jan 25 2021 Neal Gompa <ngompa13@gmail.com> - 5.20.90-4
-- Fix setup for default wollpaper in Fedora Breeze Twilight theme
+- Fix setup for default wallpaper in Fedora Breeze Twilight theme
 
 * Sat Jan 23 2021 Neal Gompa <ngompa13@gmail.com> - 5.20.90-3
 - Fix configuration of Fedora Breeze Twilight theme
