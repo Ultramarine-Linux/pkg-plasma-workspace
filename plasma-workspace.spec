@@ -487,7 +487,7 @@ sed -i -e 's|^Image=.*$|Image=Fedora|g' \
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
 # Make kdestart use systemd
-install -m644 -p D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
+install -m644 -p -D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
 
 
 %find_lang all --with-html --all-name
