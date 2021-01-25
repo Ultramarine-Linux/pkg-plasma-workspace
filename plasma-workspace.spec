@@ -16,7 +16,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.90
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -37,6 +37,7 @@ Source0: http://download.kde.org/%{stable}/plasma/%{version}/%{name}-%{version}.
 # This goes to PAM
 # TODO: this should arguably be in kde-settings with the other pam-related configs
 Source10:       kde
+Source11:       startkderc
 Source15:       fedora.desktop
 
 # breeze fedora sddm theme components
@@ -485,6 +486,10 @@ sed -i -e 's|^Image=.*$|Image=Fedora|g' \
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
+# Make kdestart use systemd
+install -m644 -p D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
+
+
 %find_lang all --with-html --all-name
 
 grep "%{_kf5_docdir}" all.lang > %{name}-doc.lang
@@ -541,6 +546,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
+%{_sysconfdir}/xdg/startkderc
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/icons/hicolor/*/*/*font*.png
 %{_datadir}/icons/hicolor/scalable/apps/preferences-desktop-font-installer.svgz
@@ -718,6 +724,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Jan 25 2021 Neal Gompa <ngompa13@gmail.com> - 5.20.90-5
+- Switch over to systemd user sessions
+
 * Mon Jan 25 2021 Neal Gompa <ngompa13@gmail.com> - 5.20.90-4
 - Fix setup for default wallpaper in Fedora Breeze Twilight theme
 
