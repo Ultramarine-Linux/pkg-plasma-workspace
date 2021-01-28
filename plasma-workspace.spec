@@ -16,7 +16,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.90
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -63,7 +63,8 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstreamable Patches
 
-## upstream Patches lookaside cache
+## upstream Patches
+Patch8: 0008-systemd-Move-kwin-to-wants.patch
 
 ## upstream Patches (master branch)
 
@@ -418,6 +419,7 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch8 -p1 -b .0008
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -724,6 +726,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Jan 28 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.90-7
+- pull in upstream wayland session fix (kde#432189)
+
 * Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.20.90-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
