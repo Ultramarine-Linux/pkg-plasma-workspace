@@ -16,7 +16,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.90
-Release: 8%{?dist}
+Release: 9%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -421,6 +421,7 @@ BuildArch: noarch
 
 ## upstream patches
 %patch8 -p1 -b .0008
+%patch9 -p1 -b .0009
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -726,7 +727,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %endif
 
 %changelog
-* Fri Jan 29 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.90-8
+* Fri Jan 29 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.90-9
 - pull in upstream fix for lockscreen detection (kde#432251)
 
 * Thu Jan 28 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.90-7
