@@ -16,7 +16,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.20.90
-Release: 7%{?dist}
+Release: 8%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -65,6 +65,7 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstream Patches
 Patch8: 0008-systemd-Move-kwin-to-wants.patch
+Patch9: 0009-Make-ksmserver-s-lock-screen-detection-automatic.patch
 
 ## upstream Patches (master branch)
 
@@ -724,8 +725,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/
 %endif
 
-
 %changelog
+* Fri Jan 29 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.90-8
+- pull in upstream fix for lockscreen detection (kde#432251)
+
 * Thu Jan 28 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.90-7
 - pull in upstream wayland session fix (kde#432189)
 
