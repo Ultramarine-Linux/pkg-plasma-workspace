@@ -15,8 +15,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.20.90
-Release: 9%{?dist}
+Version: 5.21.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -64,8 +64,6 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 ## upstreamable Patches
 
 ## upstream Patches
-Patch8: 0008-systemd-Move-kwin-to-wants.patch
-Patch9: 0009-Make-ksmserver-s-lock-screen-detection-automatic.patch
 
 ## upstream Patches (master branch)
 
@@ -420,8 +418,6 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-%patch8 -p1 -b .0008
-%patch9 -p1 -b .0009
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -727,6 +723,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %endif
 
 %changelog
+* Thu Feb 11 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.0-1
+- 5.21.0
+
 * Fri Jan 29 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.20.90-9
 - pull in upstream fix for lockscreen detection (kde#432251)
 
