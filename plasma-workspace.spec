@@ -1,5 +1,3 @@
-%undefine __cmake_in_source_build
-
 # Set (as 1) to enable bootstrap when building plasma-workspace on a new
 # repo or arch where there's no package that would provide plasmashell
 #global bootstrap 1
@@ -16,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -109,7 +107,7 @@ BuildRequires:  libqalculate-devel
 BuildRequires:  kf5-kholidays-devel
 BuildRequires:  kf5-prison-devel
 
-BuildRequires:  qt5-qtbase-devel >= 5.7.0
+BuildRequires:  qt5-qtbase-devel >= 5.15
 BuildRequires:  qt5-qtbase-private-devel
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 BuildRequires:  qt5-qtx11extras-devel
@@ -489,7 +487,6 @@ install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 # Make kdestart use systemd
 install -m644 -p -D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
 
-
 %find_lang all --with-html --all-name
 
 grep "%{_kf5_docdir}" all.lang > %{name}-doc.lang
@@ -504,9 +501,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %files common
-%license COPYING
-%license COPYING.DOC
-%license COPYING.LIB
+%license COPYING*
 
 %files -f %{name}.lang
 %{_kf5_bindir}/gmenudbusmenuproxy
@@ -595,8 +590,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kpackage/kcms/kcm_lookandfeel/*
 %{_kf5_datadir}/kpackage/kcms/kcm_style/*
 %{_kf5_datadir}/polkit-1/actions/org.kde.fontinst.policy
-%{_userunitdir}/*.service
-%{_userunitdir}/*.target
+%{_userunitdir}/*
 
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
@@ -723,6 +717,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %endif
 
 %changelog
+* Wed Feb 24 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.1-2
+- .spec cosmetics
+
 * Tue Feb 23 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.1-1
 - 5.21.1
 
