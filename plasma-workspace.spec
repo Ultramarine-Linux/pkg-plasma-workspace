@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -53,6 +53,8 @@ Source32:       breezetwilight-preview.png
 ## downstream Patches
 Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
+# add dependency on ssh-agent.service
+Patch102:       plasma-workspace-5.21-ssh-agent.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -424,6 +426,7 @@ BuildArch: noarch
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
+%patch102 -p1
 %patch105 -p1
 
 %if 0%{?fedora}
@@ -716,7 +719,11 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/
 %endif
 
+
 %changelog
+* Thu Feb 25 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.1-3
+- plasma-workspace@.target: Wants += ssh-agent.service (#1761817)
+
 * Wed Feb 24 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.1-2
 - .spec cosmetics
 
