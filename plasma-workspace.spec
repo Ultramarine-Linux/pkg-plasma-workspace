@@ -13,8 +13,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.21.1
-Release: 4%{?dist}
+Version: 5.21.2
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -721,6 +721,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Mar 02 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.2-1
+- 5.21.2
+
 * Mon Mar 01 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.1-4
 - plasma-core.target: +Before=ssh-agent.service
 
