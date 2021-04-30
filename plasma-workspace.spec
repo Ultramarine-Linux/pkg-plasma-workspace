@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -453,12 +453,10 @@ EOL
 
 chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 
-%if ! %{with wayland_default}
-# compat symlink
+# legacy/compat startkde symlink, drop in future releases (f35+)
+%if 0%{?fedora} < 35
+%global startkde 1
 ln -s startplasma-x11 %{buildroot}%{_kf5_bindir}/startkde
-%else
-# compat symlink
-ln -s startplasma-wayland %{buildroot}%{_kf5_bindir}/startkde
 %endif
 
 %if 0%{?fedora}
@@ -519,7 +517,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/plasma_session
 %{_kf5_bindir}/plasma-shutdown
 %{_kf5_bindir}/plasma_waitforname
-%{_kf5_bindir}/startkde
 %{_kf5_bindir}/systemmonitor
 %{_kf5_bindir}/xembedsniproxy
 %{_kf5_bindir}/kcolorschemeeditor
@@ -708,6 +705,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 %files x11
 %{_kf5_bindir}/startplasma-x11
+%if 0%{?startkde}
+%{_kf5_bindir}/startkde
+%endif
 %if ! %{with wayland_default}
 %{_datadir}/xsessions/plasma.desktop
 %else
@@ -721,6 +721,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Apr 30 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.4-2
+- startkde: make compat symlink unconditionally use startplasma-x11
+- startkde: drop compat symlink in future releases (f35+)
+
 * Tue Apr 06 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.4-1
 - 5.21.4
 
