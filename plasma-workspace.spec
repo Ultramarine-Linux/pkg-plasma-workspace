@@ -13,8 +13,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.21.4
-Release: 2%{?dist}
+Version: 5.21.5
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -721,6 +721,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue May 04 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.5-1
+- 5.21.5
+
 * Fri Apr 30 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.4-2
 - startkde: make compat symlink unconditionally use startplasma-x11
 - startkde: drop compat symlink in future releases (f35+)
