@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -396,6 +396,7 @@ Obsoletes:      %{name} < 5.19.5-2
 Requires:       %{name} = %{version}-%{release}
 Requires:       kwin-x11 >= %{majmin_ver}
 Requires:       xorg-x11-server-Xorg
+Requires:       xsetroot
 %description x11
 %{summary}.
 
@@ -721,6 +722,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed May 05 2021 Yaroslav Sidlovsky <zawertun@gmail.com> - 5.21.5-2
+- xsetroot added as required for plasma-workspace-x11
+
 * Tue May 04 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.5-1
 - 5.21.5
 
