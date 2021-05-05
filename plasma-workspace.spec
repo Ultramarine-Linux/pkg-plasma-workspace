@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -66,6 +66,7 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 ## upstream Patches
 
 ## upstream Patches (master branch)
+Patch0:  plasma-workspace-announce-buffer-types-available-on-thumbnails-elements.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -722,6 +723,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed May 05 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.5-3
+- Announce which buffer types are available on thumbnails elements
+
 * Wed May 05 2021 Yaroslav Sidlovsky <zawertun@gmail.com> - 5.21.5-2
 - xsetroot added as required for plasma-workspace-x11
 
