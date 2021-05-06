@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.5
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -67,6 +67,7 @@ Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
 
 ## upstream Patches (master branch)
 Patch0:  plasma-workspace-announce-buffer-types-available-on-thumbnails-elements.patch
+Patch279: 0279-startkde-Reset-systemd-failed-units-on-login.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -420,6 +421,8 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
+%patch0 -p1
+%patch279 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -723,6 +726,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu May 06 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.5-4
+- Reset systemd failed units on login (master/ branch backport)
+- actually apply buffer types patch from -3
+
 * Wed May 05 2021 Jan Grulich <jgrulich@redhat.com> - 5.21.5-3
 - Announce which buffer types are available on thumbnails elements
 
