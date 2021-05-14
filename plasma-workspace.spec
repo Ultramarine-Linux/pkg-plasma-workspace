@@ -162,7 +162,7 @@ BuildRequires:  layer-shell-qt-devel >= %{majmin_ver}
 #   The imported target "Qt5::XkbCommonSupport" references the file
 #     "/usr/lib64/libQt5XkbCommonSupport.a"
 #  but this file does not exist.
-BuildRequires:  qt5-qtbase-private-devel
+BuildRequires:  qt5-qtbase-static
 
 BuildRequires:  kuserfeedback-devel
 BuildRequires:  plasma-wayland-protocols-devel
