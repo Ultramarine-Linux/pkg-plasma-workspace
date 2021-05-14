@@ -51,6 +51,7 @@ Source31:       breezetwilight-fullscreenpreview.jpg
 Source32:       breezetwilight-preview.png
 
 ## downstream Patches
+## TODO/FIXME: rebase
 Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # add dependency on ssh-agent.service
@@ -59,7 +60,7 @@ Patch102:       plasma-workspace-5.21-ssh-agent.patch
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
 # https://github.com/notmart/artwork-lnf-netrunner-core/blob/master/usr/share/plasma/look-and-feel/org.kde.netrunner-core.desktop/contents/defaults
-Patch105:       plasma-workspace-5.7.3-folderview_layout.patch
+Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
 
 ## upstreamable Patches
 
@@ -420,7 +421,7 @@ BuildArch: noarch
 
 ## upstream patches
 
-%patch100 -p1 -b .konsole-in-contextmenu
+#patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
 %if 0%{?default_lookandfeel:1}
 %patch101 -p1 -b .set-fedora-default-look-and-feel
