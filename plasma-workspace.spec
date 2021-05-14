@@ -150,7 +150,6 @@ BuildRequires:  kf5-kded-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kirigami2-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kquickcharts-devel >= %{kf5_version_min}
 
-
 BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
 BuildRequires:  kf5-kwayland-devel >= %{kf5_version_min}
 BuildRequires:  wayland-devel >= 1.3.0
@@ -158,6 +157,12 @@ BuildRequires:  libkscreen-qt5-devel >= %{majmin_ver}
 BuildRequires:  kscreenlocker-devel >= %{majmin_ver}
 BuildRequires:  kwin-devel >= %{majmin_ver}
 BuildRequires:  layer-shell-qt-devel >= %{majmin_ver}
+
+# workaround for
+#   The imported target "Qt5::XkbCommonSupport" references the file
+#     "/usr/lib64/libQt5XkbCommonSupport.a"
+#  but this file does not exist.
+BuildRequires:  qt5-qtbase-private-devel
 
 BuildRequires:  kuserfeedback-devel
 BuildRequires:  plasma-wayland-protocols-devel
