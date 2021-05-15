@@ -564,8 +564,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/krunner/dbusplugins/plasma-runner-baloosearch.desktop
 %{_datadir}/kxmlgui5/kfontinst/kfontviewpart.rc
 %{_datadir}/kxmlgui5/kfontview/kfontviewui.rc
-%{_kf5_datadir}/kcontrol/pics/logo.png
-%{_kf5_datadir}/kcontrol/pics/mini-world.png
 %{_kf5_datadir}/kservices5/ServiceMenus/installfont.desktop
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservices5/*.protocol
@@ -576,7 +574,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.pl
 %{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.upd
 %{_kf5_datadir}/kconf_update/icons_remove_effects.upd
-%{_kf5_datadir}/kconf_update/krdb_libpathwipe.upd
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.pl
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.upd
 %{_kf5_metainfodir}/*.xml
