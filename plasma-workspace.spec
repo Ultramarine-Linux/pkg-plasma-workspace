@@ -647,7 +647,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_qt5_plugindir}/kcms/kcm_style.so
 %{_libdir}/kconf_update_bin/krunnerhistory
 %{_libdir}/kconf_update_bin/krunnerglobalshortcuts
-%{_libdir}/kconf_update_bin/krdb_clearlibrarypath
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_applauncher.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_contextmenu.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_paste.so
@@ -657,7 +656,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libexecdir}/startplasma-waylandsession
 %{_datadir}/kconf_update/krunnerglobalshortcuts.upd
 %{_datadir}/kconf_update/krunnerhistory.upd
-%{_datadir}/kglobalaccel/krunner.desktop
 
 %files geolocation
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
