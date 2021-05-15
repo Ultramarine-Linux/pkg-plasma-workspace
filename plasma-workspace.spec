@@ -158,6 +158,8 @@ BuildRequires:  kscreenlocker-devel >= %{majmin_ver}
 BuildRequires:  kwin-devel >= %{majmin_ver}
 BuildRequires:  layer-shell-qt-devel >= %{majmin_ver}
 
+BuildRequires:  PackageKit-Qt5-devel
+
 # workaround for
 #   The imported target "Qt5::XkbCommonSupport" references the file
 #     "/usr/lib64/libQt5XkbCommonSupport.a"
@@ -523,6 +525,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/plasmashell
 %{_kf5_bindir}/plasmawindowed
 %{_kf5_bindir}/plasma_session
+%{_kf5_bindir}/plasma-apply-*
 %{_kf5_bindir}/plasma-shutdown
 %{_kf5_bindir}/plasma_waitforname
 %{_kf5_bindir}/systemmonitor
@@ -585,15 +588,18 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/applications/org.kde.kfontview.desktop
 %{_kf5_datadir}/qlogging-categories5/*.categories
 %{_sysconfdir}/xdg/plasmanotifyrc
-%{_kf5_datadir}/kpackage/kcms/kcm_translations/*
-%{_kf5_datadir}/kpackage/kcms/kcm5_icons/*
-%{_kf5_datadir}/kpackage/kcms/kcm_colors/*
-%{_kf5_datadir}/kpackage/kcms/kcm_cursortheme/*
-%{_kf5_datadir}/kpackage/kcms/kcm_desktoptheme/*
-%{_kf5_datadir}/kpackage/kcms/kcm_feedback/*
-%{_kf5_datadir}/kpackage/kcms/kcm_fonts/*
-%{_kf5_datadir}/kpackage/kcms/kcm_lookandfeel/*
-%{_kf5_datadir}/kpackage/kcms/kcm_style/*
+%{_kf5_datadir}/kpackage/kcms/kcm_autostart/
+%{_kf5_datadir}/kpackage/kcms/kcm_translations/
+%{_kf5_datadir}/kpackage/kcms/kcm5_icons/
+%{_kf5_datadir}/kpackage/kcms/kcm_colors/
+%{_kf5_datadir}/kpackage/kcms/kcm_cursortheme/
+%{_kf5_datadir}/kpackage/kcms/kcm_desktoptheme/
+%{_kf5_datadir}/kpackage/kcms/kcm_feedback/
+%{_kf5_datadir}/kpackage/kcms/kcm_fonts/
+%{_kf5_datadir}/kpackage/kcms/kcm_lookandfeel/
+%{_kf5_datadir}/kpackage/kcms/kcm_nightcolor/
+%{_kf5_datadir}/kpackage/kcms/kcm_notifications/
+%{_kf5_datadir}/kpackage/kcms/kcm_style/
 %{_kf5_datadir}/polkit-1/actions/org.kde.fontinst.policy
 %{_userunitdir}/*
 
@@ -618,6 +624,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libdir}/libcolorcorrect.so.*
 %{_libdir}/libtaskmanager.so.*
 %{_libdir}/libweather_ion.so.*
+%{_libdir}/libkrdb.so
 %{_libdir}/libnotificationmanager.*
 %{_libdir}/libkfontinst*
 # multilib'able plugins
@@ -635,16 +642,8 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
 %{_kf5_plugindir}/kio/*.so
 %{_kf5_plugindir}/kded/*.so
-%{_kf5_plugindir}/krunner/krunner*
-%{_qt5_plugindir}/kcms/kcm_translations.so
-%{_qt5_plugindir}/kcms/kcm_colors.so
-%{_qt5_plugindir}/kcms/kcm_cursortheme.so
-%{_qt5_plugindir}/kcms/kcm_desktoptheme.so
-%{_qt5_plugindir}/kcms/kcm_feedback.so
-%{_qt5_plugindir}/kcms/kcm_fonts.so
-%{_qt5_plugindir}/kcms/kcm_icons.so
-%{_qt5_plugindir}/kcms/kcm_lookandfeel.so
-%{_qt5_plugindir}/kcms/kcm_style.so
+%{_kf5_plugindir}/krunner/*
+%{_qt5_plugindir}/kcms/kcm_*.so
 %{_libdir}/kconf_update_bin/krunnerhistory
 %{_libdir}/kconf_update_bin/krunnerglobalshortcuts
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_applauncher.so
@@ -654,8 +653,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchwindow.so
 %{_libexecdir}/plasma-sourceenv.sh
 %{_libexecdir}/startplasma-waylandsession
-%{_datadir}/kconf_update/krunnerglobalshortcuts.upd
-%{_datadir}/kconf_update/krunnerhistory.upd
+%{_kf5_datadir}/kconf_update/krunnerglobalshortcuts.upd
+%{_kf5_datadir}/kconf_update/krunnerhistory.upd
+%{_kf5_datadir}/kglobalaccel/org.kde.krunner.desktop
 
 %files geolocation
 %{_kf5_qtplugindir}/plasma-geolocation-gps.so
