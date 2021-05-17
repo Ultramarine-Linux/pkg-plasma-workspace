@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -205,9 +205,6 @@ Requires:       kf5-kxmlrpcclient >= %{kf5_version_min}
 Requires:       kf5-kquickcharts >= %{kf5_version_min}
 Requires:       qt5-qtquickcontrols
 Requires:       qt5-qtgraphicaleffects
-
-# systemmonitor dataengine
-Requires:       ksysguardd >= %{majmin_ver}
 
 # The new volume control for PulseAudio
 %if 0%{?fedora} || 0%{?rhel} > 7
@@ -724,6 +721,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sun May 16 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.90-2
+- drop Requires: ksysguardd (#1960934)
+
 * Fri May 14 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.90-1
 - 5.21.90
 
