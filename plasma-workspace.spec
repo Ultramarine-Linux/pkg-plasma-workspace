@@ -150,10 +150,10 @@ BuildRequires:  kf5-kded-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kirigami2-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kquickcharts-devel >= %{kf5_version_min}
 
-BuildRequires:  kf5-ksysguard-devel >= %{majmin_ver}
 BuildRequires:  kf5-kwayland-devel >= %{kf5_version_min}
 BuildRequires:  wayland-devel >= 1.3.0
 BuildRequires:  libkscreen-qt5-devel >= %{majmin_ver}
+BuildRequires:  libksysguard-devel >= %{majmin_ver}
 BuildRequires:  kscreenlocker-devel >= %{majmin_ver}
 BuildRequires:  kwin-devel >= %{majmin_ver}
 BuildRequires:  layer-shell-qt-devel >= %{majmin_ver}
@@ -723,6 +723,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %changelog
 * Sun May 16 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.90-2
 - drop Requires: ksysguardd (#1960934)
+- s/kf5-ksysguard/libksysguard/
 
 * Fri May 14 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.90-1
 - 5.21.90
