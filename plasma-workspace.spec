@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.21.90
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -195,8 +195,9 @@ Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
 
 # for libkdeinit5_*
 %{?kf5_kinit_requires}
-Requires:       kactivitymanagerd >= %{majmin_ver}
-Requires:       khotkeys >= %{majmin_ver}
+Requires:       kactivitymanagerd%{?_isa} >= %{majmin_ver}
+Requires:       khotkeys%{?_isa} >= %{majmin_ver}
+Requires:       ksystemstats%{?_isa} >= %{majmin_ver}
 Requires:       kf5-baloo >= %{kf5_version_min}
 Requires:       kf5-kded >= %{kf5_version_min}
 Requires:       kf5-kdoctools >= %{kf5_version_min}
@@ -721,6 +722,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue May 18 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.90-3
+- Requires: ksystemstats
+- make other plasma-related runtime deps arch'd
+
 * Sun May 16 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.21.90-2
 - drop Requires: ksysguardd (#1960934)
 - s/kf5-ksysguard/libksysguard/
