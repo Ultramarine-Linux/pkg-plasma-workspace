@@ -52,7 +52,7 @@ Source32:       breezetwilight-preview.png
 
 ## downstream Patches
 ## TODO/FIXME: rebase
-Patch100:       plasma-workspace-5.12.5-konsole-in-contextmenu.patch
+Patch100:       plasma-workspace-5.21.90-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # add dependency on ssh-agent.service
 Patch102:       plasma-workspace-5.21-ssh-agent.patch
