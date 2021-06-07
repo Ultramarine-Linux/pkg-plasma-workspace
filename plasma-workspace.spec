@@ -574,7 +574,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.pl
 %{_kf5_datadir}/kconf_update/delete_cursor_old_default_size.upd
 %{_kf5_datadir}/kconf_update/icons_remove_effects.upd
-%{_kf5_datadir}/kconf_update/krunnerglobalshortcuts.upd
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.pl
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.upd
 %{_kf5_metainfodir}/*.xml
@@ -651,8 +650,8 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchwindow.so
 %{_libexecdir}/plasma-sourceenv.sh
 %{_libexecdir}/startplasma-waylandsession
-%{_kf5_datadir}/kconf_update/krunnerglobalshortcuts.upd
 %{_kf5_datadir}/kconf_update/krunnerhistory.upd
+%{_kf5_datadir}/kconf_update/krunnerglobalshortcuts2.upd
 %{_kf5_datadir}/kglobalaccel/org.kde.krunner.desktop
 
 %files geolocation
