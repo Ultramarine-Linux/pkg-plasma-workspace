@@ -614,7 +614,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %dir %{_userunitdir}/plasma-core.target.d/
 %{_userunitdir}/plasma-core.target.d/ssh-agent.conf
 %{_userunitdir}/plasma-core.target.d/spice-vdagent.conf
-%{_userunitdir}/plasma-workspace.target
+%{_userunitdir}/plasma-workspace@.target
 %dir %{_userunitdir}/plasma-workspace@.target.d/
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
