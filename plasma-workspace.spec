@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -50,11 +50,15 @@ Source30:       breezetwilight-defaults
 Source31:       breezetwilight-fullscreenpreview.jpg
 Source32:       breezetwilight-preview.png
 
+## systemd user service dependencies
+## (debating whether these be owned here or somewhere better...
+## in the repective pkgs themselves? -- rdieter)
+Source40:       ssh-agent.conf
+Source41:       spice-vdagent.conf
+
 ## downstream Patches
 Patch100:       plasma-workspace-5.21.90-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
-# add dependency on ssh-agent.service
-Patch102:       plasma-workspace-5.21-ssh-agent.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -124,7 +128,6 @@ BuildRequires:  kf5-kactivities-stats-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcmutils-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcrash-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version_min}
-BuildRequires:  kf5-kdelibs4support-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdesu-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdoctools-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kglobalaccel-devel >= %{kf5_version_min}
@@ -429,7 +432,6 @@ BuildArch: noarch
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
-%patch102 -p1
 %patch105 -p1
 
 %if 0%{?fedora}
@@ -490,6 +492,13 @@ install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
 # Make kdestart use systemd
 install -m644 -p -D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
+
+# systemd user service deps
+mkdir -p %{buildroot}%{_userunitdir}/plasma-core.target.d/
+mkdir -p %{buildroot}%{_userunitdir}/plasma-workspace@.target.d/
+
+install -m644 -p -D %{SOURCE40} %{buildroot}%{_userunitdir}/plasma-core.target.d/ssh-agent.conf
+install -m644 -p -D %{SOURCE41} %{buildroot}%{_userunitdir}/plasma-core.target.d/spice-vdagent.conf
 
 %find_lang all --with-html --all-name
 
@@ -594,8 +603,13 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kpackage/kcms/kcm_notifications/
 %{_kf5_datadir}/kpackage/kcms/kcm_style/
 %{_kf5_datadir}/polkit-1/actions/org.kde.fontinst.policy
-%{_userunitdir}/*
-
+%{_userunitdir}/*.service
+%{_userunitdir}/plasma-core.target
+%dir %{_userunitdir}/plasma-core.target.d/
+%{_userunitdir}/plasma-core.target.d/ssh-agent.conf
+%{_userunitdir}/plasma-core.target.d/spice-vdagent.conf
+%{_userunitdir}/plasma-workspace.target
+%dir %{_userunitdir}/plasma-workspace@.target.d/
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
@@ -717,6 +731,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Jul 16 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.3-2
+- add (modularized) user service dependencies for ssh-agent, spice-vdagent
+- drop BR: kf5-kdelibs4support
+
 * Mon Jul 12 2021 Jan Grulich <jgrulich@redhat.com> - 5.22.3-1
 - 5.22.3
 
