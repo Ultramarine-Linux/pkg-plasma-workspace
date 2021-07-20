@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.2.1
-Release: 2%{?dist}
+Release: 2%{?dist}.1
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -498,8 +498,10 @@ sed -i -e 's|^Image=.*$|Image=Fedora|g' \
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
+%if 0%{?fedora} || 0%{?rhel} >= 9
 # Make kdestart use systemd
 install -m644 -p -D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
+%endif
 
 %find_lang all --with-html --all-name
 
@@ -555,7 +557,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
+%if 0%{?fedora} || 0%{?rhel} >= 9
 %{_sysconfdir}/xdg/startkderc
+%endif
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/icons/hicolor/*/*/*font*.png
 %{_datadir}/icons/hicolor/scalable/apps/preferences-desktop-font-installer.svgz
@@ -727,6 +731,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Jul 20 2021 Orion Poplawski <orion@nwra.com> - 5.22.2.1-2.1
+- Do not use systemd startup on EL8
+
 * Thu Jul 01 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.2.1-2
 - backport upstream fixes
 
