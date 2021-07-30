@@ -14,7 +14,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -68,6 +68,7 @@ Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
 ## upstreamable Patches
 
 ## upstream Patches (master branch)
+Patch180: 0180-Add-plasma-kwallet-pam.service-to-our-wanted-list.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -431,6 +432,9 @@ BuildArch: noarch
 %prep
 %setup -q -a 20
 
+## upstream patches
+%patch180 -p1
+
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
 %if 0%{?default_lookandfeel:1}
@@ -737,6 +741,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Jul 30 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-2
+- pull in upstream fix to add dependency on kwallet-pam user service
+
 * Tue Jul 27 2021 Jan Grulich <jgrulich@redhat.com> - 5.22.4-1
 - 5.22.4
 
