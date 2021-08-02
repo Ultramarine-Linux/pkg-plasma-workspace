@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -269,6 +269,9 @@ Requires:       oxygen-sound-theme >= %{majmin_ver}
 
 # PolicyKit authentication agent
 Requires:        polkit-kde >= %{majmin_ver}
+
+# onscreen keyboard
+Requires:        maliit-keyboard
 
 %if %{with systemdBoot}
 Requires:        (uresourced if systemd-oomd-defaults)
@@ -756,6 +759,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Aug 02 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-4
+- Requires: maliit-keyboard
+
 * Mon Aug 02 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-3
 - conditionalize systemdBoot support
 - Requires: uresourced (when systemdBoot is enabled)
