@@ -11,10 +11,17 @@
 %bcond_without wayland_default
 %endif
 
+# Control systemdBoot by default
+%if (0%{?fedora} && 0%{?fedora} < 33) || (0%{?rhel} && 0%{?rhel} < 9)
+%bconf_with systemdBoot
+%else
+%bcond_without systemdBoot
+%endif
+
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -263,6 +270,10 @@ Requires:       oxygen-sound-theme >= %{majmin_ver}
 # PolicyKit authentication agent
 Requires:        polkit-kde >= %{majmin_ver}
 
+%if %{with systemdBoot}
+Requires:        uresourced
+%endif
+
 # Require any plasmashell (plasma-desktop provides plasmashell(desktop))
 %if 0%{?bootstrap}
 Provides:       plasmashell = %{version}
@@ -500,8 +511,10 @@ sed -i -e 's|^Image=.*$|Image=Fedora|g' \
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
+%if %{with systemdBoot}
 # Make kdestart use systemd
 install -m644 -p -D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
+%endif
 
 # systemd user service deps
 mkdir -p %{buildroot}%{_userunitdir}/plasma-core.target.d/
@@ -564,7 +577,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
+%if %{with systemdBoot}
 %{_sysconfdir}/xdg/startkderc
+%endif
 %{_sysconfdir}/xdg/autostart/*.desktop
 %{_datadir}/icons/hicolor/*/*/*font*.png
 %{_datadir}/icons/hicolor/scalable/apps/preferences-desktop-font-installer.svgz
@@ -741,6 +756,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Aug 02 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-3
+- conditionalize systemdBoot support
+- Requires: uresourced (when systemdBoot is enabled)
+
 * Fri Jul 30 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-2
 - pull in upstream fix to add dependency on kwallet-pam user service
 
