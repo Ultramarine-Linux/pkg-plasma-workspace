@@ -271,7 +271,7 @@ Requires:       oxygen-sound-theme >= %{majmin_ver}
 Requires:        polkit-kde >= %{majmin_ver}
 
 %if %{with systemdBoot}
-Requires:        uresourced
+Requires:        (uresourced if systemd-oomd-defaults)
 %endif
 
 # Require any plasmashell (plasma-desktop provides plasmashell(desktop))
