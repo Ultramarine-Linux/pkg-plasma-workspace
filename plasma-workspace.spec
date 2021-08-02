@@ -12,8 +12,8 @@
 %endif
 
 # Control systemdBoot by default
-%if (0%{?fedora} && 0%{?fedora} < 33) || (0%{?rhel} && 0%{?rhel} < 9)
-%bconf_with systemdBoot
+%if 0%{?rhel} && 0%{?rhel} < 9
+%bcond_with systemdBoot
 %else
 %bcond_without systemdBoot
 %endif
