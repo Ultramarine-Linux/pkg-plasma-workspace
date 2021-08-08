@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.4
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -759,6 +759,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sun Aug 08 2021 Mukundan Ragavan <nonamedotc@gmail.com> - 5.22.4-5
+- rebuild for libqalculate
+
 * Mon Aug 02 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-4
 - Requires: maliit-keyboard
 
