@@ -13,7 +13,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.22.2.1
+Version: 5.22.4
 Release: 2%{?dist}.1
 
 License: GPLv2+
@@ -50,11 +50,15 @@ Source30:       breezetwilight-defaults
 Source31:       breezetwilight-fullscreenpreview.jpg
 Source32:       breezetwilight-preview.png
 
+## systemd user service dependencies
+## (debating whether these be owned here or somewhere better...
+## in the repective pkgs themselves? -- rdieter)
+Source40:       ssh-agent.conf
+Source41:       spice-vdagent.conf
+
 ## downstream Patches
 Patch100:       plasma-workspace-5.21.90-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
-# add dependency on ssh-agent.service
-Patch102:       plasma-workspace-5.21-ssh-agent.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -63,12 +67,8 @@ Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
 
 ## upstreamable Patches
 
-## upstream Patches
-Patch3: 0003-Assing-first-screen-if-screen-is-null.patch
-Patch5: 0005-xembed-sni-proxy-Add-Menu-property.patch
-Patch7: 0007-Guard-calls-into-layer-shell.patch
-
 ## upstream Patches (master branch)
+Patch180: 0180-Add-plasma-kwallet-pam.service-to-our-wanted-list.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -126,22 +126,27 @@ BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
 BuildRequires:  extra-cmake-modules
 BuildRequires:  kf5-baloo-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kactivities-stats-devel >= %{kf5_version_min}
+BuildRequires:  kf5-karchive-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcmutils-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kcrash-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kdbusaddons-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdeclarative-devel >= %{kf5_version_min}
-BuildRequires:  kf5-kdelibs4support-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdesu-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kdoctools-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kglobalaccel-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kguiaddons-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kidletime-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kinit-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kitemmodels-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kjsembed-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knewstuff-devel >= %{kf5_version_min}
+BuildRequires:  kf5-knotifications-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knotifyconfig-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kpeople-devel >= %{kf5_version_min}
 BuildRequires:  kf5-krunner-devel >= %{kf5_version_min}
 BuildRequires:  kf5-ktexteditor-devel >= %{kf5_version_min}
 BuildRequires:  kf5-ktextwidgets-devel >= %{kf5_version_min}
+BuildRequires:  kf5-kunitconversion-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kwallet-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kxmlrpcclient-devel >= %{kf5_version_min}
 BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version_min}
@@ -428,9 +433,7 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-%patch3 -p1 -b .0003
-%patch5 -p1 -b .0005
-%patch7 -p1 -b .0007
+%patch180 -p1
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -439,7 +442,6 @@ BuildArch: noarch
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
-%patch102 -p1
 %patch105 -p1
 
 %if 0%{?fedora}
@@ -502,6 +504,13 @@ install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 # Make kdestart use systemd
 install -m644 -p -D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
 %endif
+
+# systemd user service deps
+mkdir -p %{buildroot}%{_userunitdir}/plasma-core.target.d/
+mkdir -p %{buildroot}%{_userunitdir}/plasma-workspace@.target.d/
+
+install -m644 -p -D %{SOURCE40} %{buildroot}%{_userunitdir}/plasma-core.target.d/ssh-agent.conf
+install -m644 -p -D %{SOURCE41} %{buildroot}%{_userunitdir}/plasma-core.target.d/spice-vdagent.conf
 
 %find_lang all --with-html --all-name
 
@@ -608,8 +617,13 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kpackage/kcms/kcm_notifications/
 %{_kf5_datadir}/kpackage/kcms/kcm_style/
 %{_kf5_datadir}/polkit-1/actions/org.kde.fontinst.policy
-%{_userunitdir}/*
-
+%{_userunitdir}/*.service
+%{_userunitdir}/plasma-core.target
+%dir %{_userunitdir}/plasma-core.target.d/
+%{_userunitdir}/plasma-core.target.d/ssh-agent.conf
+%{_userunitdir}/plasma-core.target.d/spice-vdagent.conf
+%{_userunitdir}/plasma-workspace@.target
+%dir %{_userunitdir}/plasma-workspace@.target.d/
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
 %exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
@@ -731,8 +745,25 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Jul 30 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-2
+- pull in upstream fix to add dependency on kwallet-pam user service
+
+* Tue Jul 27 2021 Jan Grulich <jgrulich@redhat.com> - 5.22.4-1
+- 5.22.4
+
+* Tue Jul 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.22.3-3
+- Second attempt - Rebuilt for
+  https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Tue Jul 20 2021 Orion Poplawski <orion@nwra.com> - 5.22.2.1-2.1
 - Do not use systemd startup on EL8
+
+* Fri Jul 16 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.3-2
+- add (modularized) user service dependencies for ssh-agent, spice-vdagent
+- drop BR: kf5-kdelibs4support
+
+* Mon Jul 12 2021 Jan Grulich <jgrulich@redhat.com> - 5.22.3-1
+- 5.22.3
 
 * Thu Jul 01 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.2.1-2
 - backport upstream fixes
