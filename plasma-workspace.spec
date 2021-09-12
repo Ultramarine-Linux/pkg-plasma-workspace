@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -76,6 +76,8 @@ Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
 
 ## upstream Patches (master branch)
 Patch180: 0180-Add-plasma-kwallet-pam.service-to-our-wanted-list.patch
+# https://invent.kde.org/plasma/plasma-workspace/commit/61e2ea2323ae63c5805c87353701ba6fb722205a
+Patch181: plasma-workspace-5.22-devicenotifier.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -448,6 +450,7 @@ BuildArch: noarch
 
 ## upstream patches
 %patch180 -p1
+%patch181 -p1 -b .devicenotifier
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -759,6 +762,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sun Sep 12 2021 Alexey Kurov <nucleo@fedoraproject.org> - 5.22.5-2
+- fix removable devices list in devicenotifier (#1975017)
+
 * Tue Aug 31 2021 Jan Grulich <jgrulich@redhat.com> - 5.22.5-1
 - 5.22.5
 
