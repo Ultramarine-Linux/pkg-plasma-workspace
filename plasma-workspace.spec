@@ -11,10 +11,17 @@
 %bcond_without wayland_default
 %endif
 
+# Control systemdBoot by default
+%if 0%{?rhel} && 0%{?rhel} < 9
+%bcond_with systemdBoot
+%else
+%bcond_without systemdBoot
+%endif
+
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.22.4
-Release: 2%{?dist}.1
+Version: 5.22.5
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -69,6 +76,8 @@ Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
 
 ## upstream Patches (master branch)
 Patch180: 0180-Add-plasma-kwallet-pam.service-to-our-wanted-list.patch
+# https://invent.kde.org/plasma/plasma-workspace/commit/61e2ea2323ae63c5805c87353701ba6fb722205a
+Patch181: plasma-workspace-5.22-devicenotifier.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -263,6 +272,13 @@ Requires:       oxygen-sound-theme >= %{majmin_ver}
 # PolicyKit authentication agent
 Requires:        polkit-kde >= %{majmin_ver}
 
+# onscreen keyboard
+Requires:        maliit-keyboard
+
+%if %{with systemdBoot}
+Requires:        (uresourced if systemd-oomd-defaults)
+%endif
+
 # Require any plasmashell (plasma-desktop provides plasmashell(desktop))
 %if 0%{?bootstrap}
 Provides:       plasmashell = %{version}
@@ -434,6 +450,7 @@ BuildArch: noarch
 
 ## upstream patches
 %patch180 -p1
+%patch181 -p1 -b .devicenotifier
 
 %patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
@@ -500,7 +517,7 @@ sed -i -e 's|^Image=.*$|Image=Fedora|g' \
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
 
-%if 0%{?fedora} || 0%{?rhel} >= 9
+%if %{with systemdBoot}
 # Make kdestart use systemd
 install -m644 -p -D %{SOURCE11} %{buildroot}%{_sysconfdir}/xdg/startkderc
 %endif
@@ -566,7 +583,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
-%if 0%{?fedora} || 0%{?rhel} >= 9
+%if %{with systemdBoot}
 %{_sysconfdir}/xdg/startkderc
 %endif
 %{_sysconfdir}/xdg/autostart/*.desktop
@@ -745,6 +762,25 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sun Sep 12 2021 Alexey Kurov <nucleo@fedoraproject.org> - 5.22.5-2
+- fix removable devices list in devicenotifier (#1975017)
+
+* Tue Aug 31 2021 Jan Grulich <jgrulich@redhat.com> - 5.22.5-1
+- 5.22.5
+
+* Wed Aug 11 2021 Björn Esser <besser82@fedoraproject.org> - 5.22.4-6
+- Rebuild (gpsd)
+
+* Sun Aug 08 2021 Mukundan Ragavan <nonamedotc@gmail.com> - 5.22.4-5
+- rebuild for libqalculate
+
+* Mon Aug 02 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-4
+- Requires: maliit-keyboard
+
+* Mon Aug 02 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-3
+- conditionalize systemdBoot support
+- Requires: uresourced (when systemdBoot is enabled)
+
 * Fri Jul 30 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.4-2
 - pull in upstream fix to add dependency on kwallet-pam user service
 
