@@ -20,8 +20,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.22.5
-Release: 2%{?dist}
+Version: 5.22.90
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -762,6 +762,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Sep 17 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.22.90-1
+- 5.22.90
+
 * Sun Sep 12 2021 Alexey Kurov <nucleo@fedoraproject.org> - 5.22.5-2
 - fix removable devices list in devicenotifier (#1975017)
 
