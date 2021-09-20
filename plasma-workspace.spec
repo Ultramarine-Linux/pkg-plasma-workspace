@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.90
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -48,14 +48,6 @@ Source15:       fedora.desktop
 # breeze fedora sddm theme components
 # includes f25-based preview (better than breeze or nothing at least)
 Source20:       breeze-fedora-0.2.tar.gz
-
-# breeze fedora plasma theme components
-# includes breeze twilight settings and preview files
-# this will not be needed in 5.22 when breeze twilight replaces breeze
-# cf. https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/552
-Source30:       breezetwilight-defaults
-Source31:       breezetwilight-fullscreenpreview.jpg
-Source32:       breezetwilight-preview.png
 
 ## systemd user service dependencies
 ## (debating whether these be owned here or somewhere better...
@@ -459,13 +451,10 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch105 -p1
 
 %if 0%{?fedora}
-cp -a lookandfeel lookandfeel-fedora
-install -m 0644 %{SOURCE15} lookandfeel-fedora/metadata.desktop
-install -m 0644 %{SOURCE30} lookandfeel-fedora/contents/defaults
-install -m 0644 %{SOURCE31} lookandfeel-fedora/contents/previews/fullscreenpreview.jpg
-install -m 0644 %{SOURCE32} lookandfeel-fedora/contents/previews/preview.png
+cp -a lookandfeel.twilight lookandfeel.fedora
+install -m 0644 %{SOURCE15} lookandfeel.fedora/metadata.desktop
 cat >> CMakeLists.txt <<EOL
-plasma_install_package(lookandfeel-fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
+plasma_install_package(lookandfeel.fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
 EOL
 %endif
 
@@ -751,6 +740,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Sep 20 2021 Neal Gompa <ngompa@fedoraproject.org> - 5.22.90-3
+- Drop forked Breeze Twilight theme in favor of in-tree one
+
 * Mon Sep 20 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.22.90-2
 - Remove patch(180) already applied upstream
 - Remove patch(181) already applied upstream
