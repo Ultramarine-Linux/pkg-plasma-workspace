@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.22.90
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -451,7 +451,10 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
 %patch105 -p1
 
 %if 0%{?fedora}
-cp -a lookandfeel.twilight lookandfeel.fedora
+# Populate initial lookandfeel package
+cp -a lookandfeel lookandfeel.fedora
+# Overwrite settings to configure twilight mode
+cp -a lookandfeel.twilight/* lookandfeel.fedora
 install -m 0644 %{SOURCE15} lookandfeel.fedora/metadata.desktop
 cat >> CMakeLists.txt <<EOL
 plasma_install_package(lookandfeel.fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
@@ -740,6 +743,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Sep 22 2021 Neal Gompa <ngompa@fedoraproject.org> - 5.22.90-4
+- Fix setup of Fedora Breeze look and feel
+
 * Mon Sep 20 2021 Neal Gompa <ngompa@fedoraproject.org> - 5.22.90-3
 - Drop forked Breeze Twilight theme in favor of in-tree one
 
