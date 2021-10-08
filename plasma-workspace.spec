@@ -121,6 +121,7 @@ BuildRequires:  qt5-qtwayland-devel
 BuildRequires:  phonon-qt5-devel
 
 BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
+BuildRequires:  systemd-rpm-macros
 BuildRequires:  extra-cmake-modules
 BuildRequires:  kf5-baloo-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kactivities-stats-devel >= %{kf5_version_min}
@@ -745,6 +746,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %changelog
 * Fri Oct 08 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.23.0-1
 - 5.23.0
+- Add BuildRequires: systemd-rpm-macros
 
 * Wed Sep 22 2021 Neal Gompa <ngompa@fedoraproject.org> - 5.22.90-4
 - Fix setup of Fedora Breeze look and feel
