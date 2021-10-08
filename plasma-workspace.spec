@@ -20,8 +20,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.22.90
-Release: 4%{?dist}
+Version: 5.23.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -743,6 +743,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Oct 08 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.23.0-1
+- 5.23.0
+
 * Wed Sep 22 2021 Neal Gompa <ngompa@fedoraproject.org> - 5.22.90-4
 - Fix setup of Fedora Breeze look and feel
 
