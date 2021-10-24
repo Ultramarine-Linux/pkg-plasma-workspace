@@ -20,7 +20,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.23.0
+Version: 5.23.1
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -744,6 +744,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sat Oct 23 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.23.1-1
+- 5.23.1
+
 * Fri Oct 08 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.23.0-1
 - 5.23.0
 - Add BuildRequires: systemd-rpm-macros
