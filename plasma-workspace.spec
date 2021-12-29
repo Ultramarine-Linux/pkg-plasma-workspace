@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.23.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -402,6 +402,8 @@ Requires:       xorg-x11-server-Xwayland
 Requires:       qt5-qtwayland%{?_isa}
 # startplasmacompositor deps
 Requires:       qt5-qttools
+# start with soft dep -- rdieter
+Recommends:     xdg-desktop-portal-kde >= %{majmin_ver}
 %description wayland
 %{summary}.
 
@@ -744,6 +746,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Dec 29 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.23.4-2
+- -wayland: Recommends: xdg-desktop-portal-kde
+
 * Tue Dec 14 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.23.4-1
 - 5.23.4
 
