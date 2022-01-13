@@ -20,7 +20,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.23.5
+Version: 5.23.90
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -530,7 +530,6 @@ cat *.lang | sort | uniq -u > %{name}.lang
 
 
 %check
-desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/plasma-windowed.desktop
 desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,plasmashell,systemmonitor}.desktop
 
 
@@ -567,6 +566,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libexecdir}/plasma-changeicons
 %{_libexecdir}/plasma-dbus-run-session-if-needed
 %{_kf5_datadir}/ksplash/
+%{_kf5_datadir}/plasma/avatars/
 %{_kf5_datadir}/plasma/plasmoids/
 %{_kf5_datadir}/plasma/services/
 %{_kf5_datadir}/plasma/wallpapers/
@@ -590,9 +590,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/kfontinst/icons/hicolor/*/actions/*font*.png
 %{_datadir}/konqsidebartng/virtual_folders/services/fonts.desktop
 %{_datadir}/krunner/dbusplugins/plasma-runner-baloosearch.desktop
-%{_datadir}/kxmlgui5/kfontinst/kfontviewpart.rc
+%{_datadir}/kxmlgui5/kfontview/kfontviewpart.rc
 %{_datadir}/kxmlgui5/kfontview/kfontviewui.rc
 %{_kf5_datadir}/kservices5/ServiceMenus/installfont.desktop
+%{_kf5_datadir}/kservices5/ServiceMenus/setaswallpaper.desktop
 %{_kf5_datadir}/kservices5/*.desktop
 %{_kf5_datadir}/kservicetypes5/*.desktop
 %{_kf5_datadir}/knotifications5/*.notifyrc
@@ -604,17 +605,17 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.pl
 %{_kf5_datadir}/kconf_update/style_widgetstyle_default_breeze.upd
 %{_kf5_metainfodir}/*.xml
+%{_kf5_datadir}/applications/kcm_*
 %{_kf5_datadir}/applications/org.kde.klipper.desktop
 %{_kf5_datadir}/applications/org.kde.plasmashell.desktop
-%{_kf5_datadir}/applications/plasma-windowed.desktop
 %{_kf5_datadir}/applications/org.kde.systemmonitor.desktop
 %{_kf5_datadir}/applications/org.kde.kcolorschemeeditor.desktop
 %{_kf5_datadir}/applications/org.kde.kfontview.desktop
+%{_kf5_datadir}/applications/org.kde.plasmawindowed.desktop
 %{_kf5_datadir}/qlogging-categories5/*.categories
 %{_sysconfdir}/xdg/plasmanotifyrc
 %{_kf5_datadir}/kpackage/kcms/kcm_autostart/
 %{_kf5_datadir}/kpackage/kcms/kcm_translations/
-%{_kf5_datadir}/kpackage/kcms/kcm5_icons/
 %{_kf5_datadir}/kpackage/kcms/kcm_colors/
 %{_kf5_datadir}/kpackage/kcms/kcm_cursortheme/
 %{_kf5_datadir}/kpackage/kcms/kcm_desktoptheme/
@@ -624,6 +625,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kpackage/kcms/kcm_nightcolor/
 %{_kf5_datadir}/kpackage/kcms/kcm_notifications/
 %{_kf5_datadir}/kpackage/kcms/kcm_style/
+%{_kf5_datadir}/kpackage/kcms/kcm_users/
+%{_kf5_datadir}/kpackage/kcms/kcm_icons/
+%{_kf5_datadir}/kpackage/kcms/kcm_formats/
 %{_kf5_datadir}/polkit-1/actions/org.kde.fontinst.policy
 %{_userunitdir}/*.service
 %{_userunitdir}/plasma-core.target
@@ -668,7 +672,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_plugindir}/kio/*.so
 %{_kf5_plugindir}/kded/*.so
 %{_kf5_plugindir}/krunner/*
-%{_qt5_plugindir}/kcms/kcm_*.so
+%{_qt5_plugindir}/plasma/kcms/systemsettings/kcm_*.so
 %{_libdir}/kconf_update_bin/krunnerhistory
 %{_libdir}/kconf_update_bin/krunnerglobalshortcuts
 %{_kf5_qtplugindir}/kf5/parts/kfontviewpart.so
@@ -678,8 +682,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchdesktop.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchwindow.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchactivity.so
+%{_kf5_qtplugindir}/plasma/kcminit/kcm_fonts_init.so
+%{_kf5_qtplugindir}/plasma/kcminit/kcm_style_init.so
+%{_kf5_qtplugindir}/plasma/kcms/systemsettings_qwidgets/kcm_fontinst.so
 %{_libexecdir}/plasma-sourceenv.sh
-%{_libexecdir}/startplasma-waylandsession
 %{_kf5_datadir}/kconf_update/krunnerhistory.upd
 %{_kf5_datadir}/kconf_update/krunnerglobalshortcuts2.upd
 %{_kf5_datadir}/kglobalaccel/org.kde.krunner.desktop
@@ -746,6 +752,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Jan 13 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.23.90-1
+- 5.23.90
+
 * Tue Jan 04 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.23.5-1
 - 5.23.5
 
