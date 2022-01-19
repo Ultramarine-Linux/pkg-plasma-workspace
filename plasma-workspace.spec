@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.23.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -56,7 +56,7 @@ Source40:       ssh-agent.conf
 Source41:       spice-vdagent.conf
 
 ## downstream Patches
-#Patch100:       plasma-workspace-5.21.90-konsole-in-contextmenu.patch
+Patch100:       plasma-workspace-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
@@ -137,6 +137,8 @@ BuildRequires:  kf5-kguiaddons-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kidletime-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kinit-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kitemmodels-devel >= %{kf5_version_min}
+# konsole patch
+BuildRequires:  kf5-kio-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kjsembed-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knewstuff-devel >= %{kf5_version_min}
 BuildRequires:  kf5-knotifications-devel >= %{kf5_version_min}
@@ -441,10 +443,9 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-# FIXME/TODO: commented out in need of work: does not applyl cleanly and
-# potentially causes problems:
-# Since it appears plasma-workspace no longer uses kinit, the KToolInvocation::invokeTerminal call may not be 100% reliable
-#%patch100 -p1 -b .konsole-in-contextmenu
+
+## downstream patches
+%patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
 %if 0%{?default_lookandfeel:1}
 %patch101 -p1 -b .set-fedora-default-look-and-feel
@@ -752,6 +753,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Wed Jan 19 2022 Rex Dieter <rdieter@fedoraproject.org> - 5.23.90-2
+- rebase konsole-in-contextmenu.patch (#2026789)
+
 * Thu Jan 13 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.23.90-1
 - 5.23.90
 
