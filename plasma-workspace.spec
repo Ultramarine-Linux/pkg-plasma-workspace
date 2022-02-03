@@ -20,8 +20,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.23.90
-Release: 2%{?dist}
+Version: 5.24.0
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -753,6 +753,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Thu Feb 03 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.24.0-1
+- 5.24.0
+
 * Wed Jan 19 2022 Rex Dieter <rdieter@fedoraproject.org> - 5.23.90-2
 - rebase konsole-in-contextmenu.patch (#2026789)
 
