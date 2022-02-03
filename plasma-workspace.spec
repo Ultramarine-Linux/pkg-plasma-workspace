@@ -5,10 +5,17 @@
 %global kf5_version_min 5.82.0
 
 # Control wayland by default
-%if (0%{?fedora} && 0%{?fedora} < 34) || (0%{?rhel} && 0%{?rhel} < 9)
+%if (0%{?rhel} && 0%{?rhel} < 9)
 %bcond_with wayland_default
 %else
 %bcond_without wayland_default
+%endif
+
+# Control sddm wayland by default
+%if (0%{?fedora} && 0%{?fedora} < 36) || (0%{?rhel} && 0%{?rhel} < 9)
+%bcond_with sddm_wayland_default
+%else
+%bcond_without sddm_wayland_default
 %endif
 
 # Control systemdBoot by default
@@ -395,6 +402,21 @@ BuildArch: noarch
 %description -n sddm-breeze
 %{summary}.
 
+%package -n sddm-wayland-plasma
+Summary:        Plasma Wayland SDDM greeter configuration
+Provides:       sddm-greeter-displayserver
+Conflicts:      sddm-greeter-displayserver
+Requires:       kwin-wayland >= %{majmin_ver}
+Requires:       maliit-keyboard
+%if %{with sddm_wayland_default}
+Supplements:    (sddm and plasma-workspace-wayland)
+%endif
+BuildArch:      noarch
+
+%description -n sddm-wayland-plasma
+This package contains configuration and dependencies for SDDM
+to use KWin for the Wayland compositor for the greeter.
+
 %package wayland
 Summary:        Wayland support for Plasma
 Requires:       %{name} = %{version}-%{release}
@@ -468,6 +490,7 @@ EOL
 
 %build
 %{cmake_kf5} \
+  -DINSTALL_SDDM_WAYLAND_SESSION:BOOL=ON \
   %{?with_wayland_default:-DPLASMA_WAYLAND_DEFAULT_SESSION:BOOL=ON}
 
 %cmake_build
@@ -499,6 +522,10 @@ ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
 install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
+
+# move sddm configuration snippet to the right place
+mkdir -p %{buildroot}%{_prefix}/lib/sddm
+mv %{buildroot}%{_sysconfdir}/sddm.conf.d %{buildroot}%{_prefix}/lib/sddm
 
 %if 0%{?fedora} > 30
 ## customize plasma-lookandfeel-fedora defaults
@@ -727,6 +754,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/sddm/themes/01-breeze-fedora/
 #%config(noreplace) %{_datadir}/sddm/themes/01-breeze-fedora/theme.conf.user
 
+%files -n sddm-wayland-plasma
+%{_prefix}/lib/sddm/sddm.conf.d/plasma-wayland.conf
+
 %files wayland
 %{_kf5_bindir}/startplasma-wayland
 %if ! %{with wayland_default}
@@ -755,6 +785,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %changelog
 * Thu Feb 03 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.24.0-1
 - 5.24.0
+- Add sddm-wayland-plasma subpackage to ship Wayland greeter configuration
 
 * Wed Jan 19 2022 Rex Dieter <rdieter@fedoraproject.org> - 5.23.90-2
 - rebase konsole-in-contextmenu.patch (#2026789)
