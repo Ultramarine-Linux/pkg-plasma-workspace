@@ -28,7 +28,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.24.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -64,7 +64,7 @@ Source41:       spice-vdagent.conf
 
 ## downstream Patches
 Patch100:       plasma-workspace-konsole-in-contextmenu.patch
-Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
+Patch101:       plasma-workspace-5.24.0-set-fedora-default-look-and-feel.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -468,11 +468,11 @@ BuildArch: noarch
 
 ## downstream patches
 %patch100 -p1 -b .konsole-in-contextmenu
-# FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
+# XXX: This is horribly broken and needs fixes upstream -- ngompa
 %if 0%{?default_lookandfeel:1}
 %patch101 -p1 -b .set-fedora-default-look-and-feel
 sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
-  shell/packageplugins/lookandfeel/lookandfeel.cpp
+  shell/packageplugins/lookandfeel/lookandfeel.cpp startkde/startplasma.cpp
 %endif
 %patch105 -p1
 
@@ -785,6 +785,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Feb 28 2022 Neal Gompa <ngompa@fedoraproject.org> - 5.24.2-2
+- Refresh default look-and-feel patch to fix for Plasma 5.24
+
 * Tue Feb 22 2022 Rex Dieter <rdieter@fedoraproject.org> - 5.24.2-1
 - 5.24.2
 
