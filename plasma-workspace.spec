@@ -28,7 +28,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.24.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -52,6 +52,10 @@ Source10:       kde
 Source11:       startkderc
 Source15:       fedora.desktop
 
+# backported breeze sddm from plasma 5.24.80~pre
+# lets us apply patches to fix the sddm theme
+Source19:       sddm-theme-5.24.80~pre.tar.gz
+
 # breeze fedora sddm theme components
 # includes f25-based preview (better than breeze or nothing at least)
 Source20:       breeze-fedora-0.2.tar.gz
@@ -62,6 +66,14 @@ Source20:       breeze-fedora-0.2.tar.gz
 Source40:       ssh-agent.conf
 Source41:       spice-vdagent.conf
 
+## upstream Patches (master branch)
+
+## upstreamable Patches
+# From: https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/1508
+Patch50:        plasma-workspace-PR1508-sddm-theme-pc3.patch
+# From: https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/1510
+Patch51:        plasma-workspace-PR1510-sddm-theme-fix-weird-behavior.patch
+
 ## downstream Patches
 Patch100:       plasma-workspace-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.24.0-set-fedora-default-look-and-feel.patch
@@ -70,10 +82,6 @@ Patch101:       plasma-workspace-5.24.0-set-fedora-default-look-and-feel.patch
 # and example,
 # https://github.com/notmart/artwork-lnf-netrunner-core/blob/master/usr/share/plasma/look-and-feel/org.kde.netrunner-core.desktop/contents/defaults
 Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
-
-## upstreamable Patches
-
-## upstream Patches (master branch)
 
 # udev
 BuildRequires:  zlib-devel
@@ -462,9 +470,13 @@ BuildArch: noarch
 
 
 %prep
-%setup -q -a 20
+%setup -q -a 19 -a 20
 
 ## upstream patches
+
+## upstreamable patches
+%patch50 -p1
+%patch51 -p1
 
 ## downstream patches
 %patch100 -p1 -b .konsole-in-contextmenu
@@ -522,6 +534,11 @@ ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
 install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
+%if 0%{?fedora} >= 34
+# Set Fedora distro vendor logo
+sed -i -e 's|^showlogo=.*$|showlogo=shown|g' %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
+sed -i -e 's|^logo=.*$|logo=%{_datadir}/pixmaps/fedora_whitelogo.svg|g' %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
+%endif
 
 # move sddm configuration snippet to the right place
 mkdir -p %{buildroot}%{_prefix}/lib/sddm
@@ -785,6 +802,10 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Sun Mar 06 2022 Neal Gompa <ngompa@fedoraproject.org> - 5.24.2-3
+- Backport sddm theme improvements to fix visual bugs (#2054016, #2058468)
+- Correctly set distro logo for fedora breeze sddm theme
+
 * Mon Feb 28 2022 Neal Gompa <ngompa@fedoraproject.org> - 5.24.2-2
 - Refresh default look-and-feel patch to fix for Plasma 5.24
 

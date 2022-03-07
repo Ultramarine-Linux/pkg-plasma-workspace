@@ -1,0 +1,28 @@
+From b1b5877de0231f77f98475daabdb89a57351e4a2 Mon Sep 17 00:00:00 2001
+From: Aleix Pol <aleixpol@kde.org>
+Date: Sun, 6 Mar 2022 03:05:14 +0100
+Subject: [PATCH] sddm/lockscreen: Fix weird behaviour
+
+Only make space for the virtual keyboard when it's visible.
+
+Fixes https://bugzilla.redhat.com/show_bug.cgi?id=2058468
+---
+ lookandfeel/contents/components/VirtualKeyboard_wayland.qml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lookandfeel/contents/components/VirtualKeyboard_wayland.qml b/lookandfeel/contents/components/VirtualKeyboard_wayland.qml
+index 42895e2d9..b472fd529 100644
+--- a/lookandfeel/contents/components/VirtualKeyboard_wayland.qml
++++ b/lookandfeel/contents/components/VirtualKeyboard_wayland.qml
+@@ -10,7 +10,7 @@ import org.kde.plasma.workspace.keyboardlayout 1.0 as Keyboards
+ 
+ Item {
+     id: inputPanel
+-    readonly property bool active: Qt.inputMethod.visible
++    readonly property bool active: Keyboards.KWinVirtualKeyboard.visible
+     property bool activated: false
+     visible: Qt.inputMethod.visible
+ 
+-- 
+GitLab
+

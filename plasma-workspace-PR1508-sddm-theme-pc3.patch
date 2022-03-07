@@ -1,0 +1,173 @@
+From 119195493cf2492ddc35fbbc4d97266ceee16ad1 Mon Sep 17 00:00:00 2001
+From: Aleix Pol <aleixpol@kde.org>
+Date: Sat, 5 Mar 2022 19:48:56 +0100
+Subject: [PATCH] Port SDDM theme to PlasmaComponents 3.0
+
+Uses a combobox instead of a menu + button
+---
+ sddm-theme/BreezeMenuStyle.qml | 25 ------------------
+ sddm-theme/KeyboardButton.qml  | 47 ++++++++++++----------------------
+ sddm-theme/Main.qml            |  1 -
+ sddm-theme/SessionButton.qml   | 37 +++++++-------------------
+ 4 files changed, 26 insertions(+), 84 deletions(-)
+ delete mode 100644 sddm-theme/BreezeMenuStyle.qml
+
+diff --git a/sddm-theme/BreezeMenuStyle.qml b/sddm-theme/BreezeMenuStyle.qml
+deleted file mode 100644
+index e4a91d4d6..000000000
+--- a/sddm-theme/BreezeMenuStyle.qml
++++ /dev/null
+@@ -1,25 +0,0 @@
+-import QtQuick 2.15
+-// Don't bump them any further, these are the latest.
+-import QtQuick.Controls 1.6 as QQC
+-import QtQuick.Controls.Styles 1.4 as QQCS
+-
+-import org.kde.plasma.core 2.0 as PlasmaCore
+-
+-QQCS.MenuStyle {
+-    frame: Rectangle {
+-        color: PlasmaCore.ColorScope.backgroundColor
+-        border.color: Qt.tint(PlasmaCore.ColorScope.textColor, Qt.rgba(color.r, color.g, color.b, 0.7))
+-        border.width: 1
+-    }
+-    itemDelegate.label: QQC.Label {
+-        height: contentHeight * 1.2
+-        verticalAlignment: Text.AlignVCenter
+-        color: styleData.selected ? PlasmaCore.ColorScope.highlightedTextColor : PlasmaCore.ColorScope.textColor
+-        font.pointSize: config.fontSize
+-        text: styleData.text
+-    }
+-    itemDelegate.background: Rectangle {
+-        visible: styleData.selected
+-        color: PlasmaCore.ColorScope.highlightColor
+-    }
+-}
+diff --git a/sddm-theme/KeyboardButton.qml b/sddm-theme/KeyboardButton.qml
+index 6ebf0d5bb..a95884d04 100644
+--- a/sddm-theme/KeyboardButton.qml
++++ b/sddm-theme/KeyboardButton.qml
+@@ -1,38 +1,25 @@
+-import QtQuick 2.15
+-import QtQuick.Controls 1.6 as QQC // Don't bump it any further, this is the latest.
++/*
++    SPDX-FileCopyrightText: 2016 David Edmundson <davidedmundson@kde.org>
+ 
+-import org.kde.plasma.core 2.0 as PlasmaCore
+-import org.kde.plasma.components 2.0 as PlasmaComponents // Because PC3 ToolButton can't take a menu
++    SPDX-License-Identifier: LGPL-2.0-or-later
++*/
+ 
+-PlasmaComponents.ToolButton {
+-    id: keyboardButton
++import QtQuick 2.15
+ 
+-    property int currentIndex: -1
++import org.kde.plasma.core 2.0 as PlasmaCore
++import org.kde.plasma.components 3.0 as PlasmaComponents
+ 
+-    text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Keyboard Layout: %1", instantiator.objectAt(currentIndex).shortName)
+-    implicitWidth: minimumWidth
++PlasmaComponents.ComboBox {
++    id: root
+ 
+-    visible: menu.items.length > 1
++    PlasmaCore.ColorScope.colorGroup: PlasmaCore.Theme.NormalColorGroup
++    PlasmaCore.ColorScope.inherit: false
+ 
+-    Component.onCompleted: {
+-        currentIndex = Qt.binding(() => keyboard.currentLayout);
+-    }
++    currentIndex: keyboard.currentLayout
++    onCurrentIndexChanged: keyboard.currentLayout = currentIndex
+ 
+-    menu: QQC.Menu {
+-        id: keyboardMenu
+-        style: BreezeMenuStyle {}
+-        Instantiator {
+-            id: instantiator
+-            model: keyboard.layouts
+-            onObjectAdded: keyboardMenu.insertItem(index, object)
+-            onObjectRemoved: keyboardMenu.removeItem(object)
+-            delegate: QQC.MenuItem {
+-                text: modelData.longName
+-                property string shortName: modelData.shortName
+-                onTriggered: {
+-                    keyboard.currentLayout = model.index
+-                }
+-            }
+-        }
+-    }
++    visible: count > 1
++    textRole: "longName"
++    model: keyboard.layouts
++    displayText: currentText.length === 0 ? "" : i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Keyboard Layout: %1", currentText)
+ }
+diff --git a/sddm-theme/Main.qml b/sddm-theme/Main.qml
+index 0d6b66e77..690c132e3 100644
+--- a/sddm-theme/Main.qml
++++ b/sddm-theme/Main.qml
+@@ -6,7 +6,6 @@
+ 
+ import QtQuick 2.15
+ import QtQuick.Layouts 1.15
+-import QtQuick.Controls 1.6 // Don't bump it any further, this is the latest.
+ import QtQuick.Controls 2.15 as QQC2
+ import QtGraphicalEffects 1.15
+ 
+diff --git a/sddm-theme/SessionButton.qml b/sddm-theme/SessionButton.qml
+index 6934abda7..ed6ef96c2 100644
+--- a/sddm-theme/SessionButton.qml
++++ b/sddm-theme/SessionButton.qml
+@@ -5,39 +5,20 @@
+ */
+ 
+ import QtQuick 2.15
+-import QtQuick.Controls 1.6 as QQC // Don't bump it any further, this is the latest.
+ 
+ import org.kde.plasma.core 2.0 as PlasmaCore
+-import org.kde.plasma.components 2.0 as PlasmaComponents // Because PC3 ToolButton can't take a menu
++import org.kde.plasma.components 3.0 as PlasmaComponents
+ 
+-PlasmaComponents.ToolButton {
++PlasmaComponents.ComboBox {
+     id: root
+-    property int currentIndex: -1
+ 
+-    implicitWidth: minimumWidth
++    PlasmaCore.ColorScope.colorGroup: PlasmaCore.Theme.NormalColorGroup
++    PlasmaCore.ColorScope.inherit: false
+ 
+-    visible: menu.items.length > 1
++    currentIndex: sessionModel.lastIndex
+ 
+-    text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Desktop Session: %1", instantiator.objectAt(currentIndex).text || "")
+-
+-    Component.onCompleted: {
+-        currentIndex = sessionModel.lastIndex
+-    }
+-
+-    menu: QQC.Menu {
+-        id: menu
+-        style: BreezeMenuStyle {}
+-        Instantiator {
+-            id: instantiator
+-            model: sessionModel
+-            onObjectAdded: menu.insertItem(index, object)
+-            onObjectRemoved: menu.removeItem( object )
+-            delegate: QQC.MenuItem {
+-                text: model.name
+-                onTriggered: {
+-                    root.currentIndex = model.index
+-                }
+-            }
+-        }
+-    }
++    visible: count > 1
++    model: sessionModel
++    textRole: "name"
++    displayText: currentText.length === 0 ? "" : i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Desktop Session: %1", currentText)
+ }
+-- 
+GitLab
+
