@@ -28,7 +28,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.24.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -802,6 +802,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue Mar 08 2022 Jan Grulich <jgrulich@redhat.com> - 5.24.2-4
+- Rebuild (qt5)
+
 * Sun Mar 06 2022 Neal Gompa <ngompa@fedoraproject.org> - 5.24.2-3
 - Backport sddm theme improvements to fix visual bugs (#2054016, #2058468)
 - Correctly set distro logo for fedora breeze sddm theme
