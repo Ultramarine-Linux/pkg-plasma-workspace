@@ -110,7 +110,7 @@ BuildRequires:  xcb-util-devel
 BuildRequires:  glib2-devel
 BuildRequires:  fontconfig-devel
 BuildRequires:  boost-devel
-BuildRequires:  libusb-devel
+BuildRequires:  libusb-compat-0.1-devel
 BuildRequires:  libbsd-devel
 BuildRequires:  pam-devel
 BuildRequires:  lm_sensors-devel
