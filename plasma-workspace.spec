@@ -12,7 +12,7 @@
 %endif
 
 # Control sddm wayland by default
-%if (0%{?fedora} && 0%{?fedora} < 36) || (0%{?rhel} && 0%{?rhel} < 9)
+%if (0%{?fedora} && 0%{?fedora} < 37) || (0%{?rhel} && 0%{?rhel} < 9)
 %bcond_with sddm_wayland_default
 %else
 %bcond_without sddm_wayland_default
@@ -28,7 +28,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.24.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -802,6 +802,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon Mar 14 2022 Neal Gompa <ngompa@fedoraproject.org> - 5.24.3-2
+- Do not use the SDDM Wayland greeter by default for F36
+
 * Tue Mar 08 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.24.3-1
 - 5.24.3
 
