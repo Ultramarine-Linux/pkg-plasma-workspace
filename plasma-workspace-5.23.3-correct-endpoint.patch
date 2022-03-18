@@ -1,0 +1,26 @@
+diff --git a/components/shellprivate/wallpaperplugin.knsrc b/components/shellprivate/wallpaperplugin.knsrc
+index 1495b6e271421f8b4c10c9b3fe0d6c8c9b59f5ba..3ed59f75d53a844d166b116318b4f66f0ca4c2d8 100644
+--- a/components/shellprivate/wallpaperplugin.knsrc
++++ b/components/shellprivate/wallpaperplugin.knsrc
+@@ -42,7 +42,7 @@ Name[x-test]=xxWallpaper Pluginsxx
+ Name[zh_CN]=壁纸插件
+ Name[zh_TW]=桌布外掛程式
+ 
+-ProvidersUrl=https://download.kde.org/ocs/providers.xml
++ProvidersUrl=https://autoconfig.kde.org/ocs/providers.xml
+ Categories=Plasma Wallpaper Plugin
+ StandardResource=tmp
+ Uncompress=kpackage
+diff --git a/kcms/kfontinst/kcmfontinst/kfontinst.knsrc b/kcms/kfontinst/kcmfontinst/kfontinst.knsrc
+index 99c19542344ed0190a83452d7a1df16629433cf8..fd41b1f8963d97b691219088558ea1bfc1adec1d 100644
+--- a/kcms/kfontinst/kcmfontinst/kfontinst.knsrc
++++ b/kcms/kfontinst/kcmfontinst/kfontinst.knsrc
+@@ -42,7 +42,7 @@ Name[vi]=Phông chữ
+ Name[x-test]=xxFontsxx
+ Name[zh_CN]=字体
+ 
+-ProvidersUrl=https://distribute.kde.org/khotnewstuff/fonts-providers.xml
++ProvidersUrl=https://cdn.kde.org/khotnewstuff/v1/fonts-providers.xml
+ Categories=KDE-Look.org Fonts
+ TargetDir=kfontinst
+ Uncompress=archive
