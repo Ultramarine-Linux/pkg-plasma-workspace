@@ -211,6 +211,8 @@ Requires:       %{name}-geolocation = %{version}-%{release}
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
+# for selinux settings
+Requires:       policycoreutils
 
 # for libkdeinit5_*
 %{?kf5_kinit_requires}
@@ -571,6 +573,8 @@ cat *.lang | sort | uniq -u > %{name}.lang
 %check
 desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,plasmashell,systemmonitor}.desktop
 
+%post
+setsebool -P selinuxuser_execmod 1
 
 %files common
 %license LICENSES
