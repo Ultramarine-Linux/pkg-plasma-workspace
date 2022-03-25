@@ -202,6 +202,8 @@ Requires:       %{name}-geolocation = %{version}-%{release}
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
+# for selinux settings
+Requires:       policycoreutils
 
 # for libkdeinit5_*
 %{?kf5_kinit_requires}
@@ -538,6 +540,8 @@ cat *.lang | sort | uniq -u > %{name}.lang
 desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/plasma-windowed.desktop
 desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,plasmashell,systemmonitor}.desktop
 
+%post
+setsebool -P selinuxuser_execmod 1
 
 %files common
 %license LICENSES
@@ -753,6 +757,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %changelog
 * Fri Mar 25 2022 Troy Dawson <tdawson@redhat.com> - 5.23.5-2
 - Correct download enpoints (#2068568)
+- Enable selinuxuser_execmod (#2058657)
 
 * Tue Jan 04 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.23.5-1
 - 5.23.5
