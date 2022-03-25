@@ -21,7 +21,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.23.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -67,6 +67,10 @@ Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
 ## upstreamable Patches
 
 ## upstream Patches (master branch)
+
+## Backported patches
+# https://bugzilla.redhat.com/show_bug.cgi?id=2065761
+Patch300: plasma-workspace-5.23.3-correct-endpoint.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -452,6 +456,7 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch105 -p1
+%patch300 -p1
 
 %if 0%{?fedora}
 # Populate initial lookandfeel package
@@ -746,6 +751,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Mar 25 2022 Troy Dawson <tdawson@redhat.com> - 5.23.5-2
+- Correct download enpoints (#2068568)
+
 * Tue Jan 04 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.23.5-1
 - 5.23.5
 
