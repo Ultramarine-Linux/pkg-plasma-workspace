@@ -69,10 +69,6 @@ Source41:       spice-vdagent.conf
 ## upstream Patches (master branch)
 
 ## upstreamable Patches
-# From: https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/1508
-Patch50:        plasma-workspace-PR1508-sddm-theme-pc3.patch
-# From: https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/1510
-Patch51:        plasma-workspace-PR1510-sddm-theme-fix-weird-behavior.patch
 
 ## downstream Patches
 Patch100:       plasma-workspace-konsole-in-contextmenu.patch
