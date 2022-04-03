@@ -471,8 +471,6 @@ BuildArch: noarch
 ## upstream patches
 
 ## upstreamable patches
-%patch50 -p1
-%patch51 -p1
 
 ## downstream patches
 %patch100 -p1 -b .konsole-in-contextmenu
