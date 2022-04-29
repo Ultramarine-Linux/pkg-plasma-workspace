@@ -20,7 +20,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.22.5
+Version: 5.23.3
 Release: 2%{?dist}
 
 License: GPLv2+
@@ -49,14 +49,6 @@ Source15:       fedora.desktop
 # includes f25-based preview (better than breeze or nothing at least)
 Source20:       breeze-fedora-0.2.tar.gz
 
-# breeze fedora plasma theme components
-# includes breeze twilight settings and preview files
-# this will not be needed in 5.22 when breeze twilight replaces breeze
-# cf. https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/552
-Source30:       breezetwilight-defaults
-Source31:       breezetwilight-fullscreenpreview.jpg
-Source32:       breezetwilight-preview.png
-
 ## systemd user service dependencies
 ## (debating whether these be owned here or somewhere better...
 ## in the repective pkgs themselves? -- rdieter)
@@ -64,7 +56,7 @@ Source40:       ssh-agent.conf
 Source41:       spice-vdagent.conf
 
 ## downstream Patches
-Patch100:       plasma-workspace-5.21.90-konsole-in-contextmenu.patch
+#Patch100:       plasma-workspace-5.21.90-konsole-in-contextmenu.patch
 Patch101:       plasma-workspace-5.3.0-set-fedora-default-look-and-feel.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
@@ -75,9 +67,10 @@ Patch105:       plasma-workspace-5.21.90-folderview_layout.patch
 ## upstreamable Patches
 
 ## upstream Patches (master branch)
-Patch180: 0180-Add-plasma-kwallet-pam.service-to-our-wanted-list.patch
-# https://invent.kde.org/plasma/plasma-workspace/commit/61e2ea2323ae63c5805c87353701ba6fb722205a
-Patch181: plasma-workspace-5.22-devicenotifier.patch
+
+## Backported patches
+# https://bugzilla.redhat.com/show_bug.cgi?id=2065761
+Patch300: plasma-workspace-5.23.3-correct-endpoint.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -132,6 +125,7 @@ BuildRequires:  qt5-qtwayland-devel
 BuildRequires:  phonon-qt5-devel
 
 BuildRequires:  kf5-rpm-macros >= %{kf5_version_min}
+BuildRequires:  systemd-rpm-macros
 BuildRequires:  extra-cmake-modules
 BuildRequires:  kf5-baloo-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kactivities-stats-devel >= %{kf5_version_min}
@@ -392,7 +386,7 @@ Recommends:     qt5-qtvirtualkeyboard
 # org.kde.plasma.workspace.keyboardlayout
 Requires:       %{name} = %{version}-%{release}
 # /usr/share/backgrounds/default.png
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires:  desktop-backgrounds-compat
 Requires:       desktop-backgrounds-compat
 %endif
@@ -449,10 +443,10 @@ BuildArch: noarch
 %setup -q -a 20
 
 ## upstream patches
-%patch180 -p1
-%patch181 -p1 -b .devicenotifier
-
-%patch100 -p1 -b .konsole-in-contextmenu
+# FIXME/TODO: commented out in need of work: does not applyl cleanly and
+# potentially causes problems:
+# Since it appears plasma-workspace no longer uses kinit, the KToolInvocation::invokeTerminal call may not be 100% reliable
+#%patch100 -p1 -b .konsole-in-contextmenu
 # FIXME/TODO:  it is unclear whether this is needed or even a good idea anymore -- rex
 %if 0%{?default_lookandfeel:1}
 %patch101 -p1 -b .set-fedora-default-look-and-feel
@@ -460,15 +454,16 @@ sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfee
   shell/packageplugins/lookandfeel/lookandfeel.cpp
 %endif
 %patch105 -p1
+%patch300 -p1
 
 %if 0%{?fedora}
-cp -a lookandfeel lookandfeel-fedora
-install -m 0644 %{SOURCE15} lookandfeel-fedora/metadata.desktop
-install -m 0644 %{SOURCE30} lookandfeel-fedora/contents/defaults
-install -m 0644 %{SOURCE31} lookandfeel-fedora/contents/previews/fullscreenpreview.jpg
-install -m 0644 %{SOURCE32} lookandfeel-fedora/contents/previews/preview.png
+# Populate initial lookandfeel package
+cp -a lookandfeel lookandfeel.fedora
+# Overwrite settings to configure twilight mode
+cp -a lookandfeel.twilight/* lookandfeel.fedora
+install -m 0644 %{SOURCE15} lookandfeel.fedora/metadata.desktop
 cat >> CMakeLists.txt <<EOL
-plasma_install_package(lookandfeel-fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
+plasma_install_package(lookandfeel.fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
 EOL
 %endif
 
@@ -543,7 +538,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %files common
-%license COPYING*
+%license LICENSES
 
 %files -f %{name}.lang
 %{_kf5_bindir}/gmenudbusmenuproxy
@@ -557,6 +552,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/plasmawindowed
 %{_kf5_bindir}/plasma_session
 %{_kf5_bindir}/plasma-apply-*
+%{_kf5_bindir}/plasma-interactiveconsole
 %{_kf5_bindir}/plasma-shutdown
 %{_kf5_bindir}/plasma_waitforname
 %{_kf5_bindir}/systemmonitor
@@ -565,9 +561,7 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_bindir}/kde-systemd-start-condition
 %{_kf5_bindir}/kfontinst
 %{_kf5_bindir}/kfontview
-%{_kf5_bindir}/krdb
 %{_kf5_bindir}/lookandfeeltool
-%{_kf5_libdir}/libkdeinit5_*.so
 %{_kf5_qmldir}/org/kde/*
 %{_libexecdir}/baloorunner
 %{_libexecdir}/ksmserver-logout-greeter
@@ -581,6 +575,8 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/plasma/wallpapers/
 %dir %{_kf5_datadir}/plasma/look-and-feel/
 %{_kf5_datadir}/plasma/look-and-feel/org.kde.breeze.desktop/
+%{_kf5_datadir}/plasma/look-and-feel/org.kde.breezedark.desktop/
+%{_kf5_datadir}/plasma/look-and-feel/org.kde.breezetwilight.desktop/
 %{_kf5_datadir}/solid/
 %{_kf5_datadir}/kstyle/
 %if %{with systemdBoot}
@@ -594,7 +590,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/dbus-1/system-services/org.kde.fontinst.service
 %{_datadir}/dbus-1/system.d/org.kde.fontinst.conf
 %{_datadir}/knsrcfiles/*.knsrc
-%{_datadir}/kdisplay/app-defaults/*
 %{_datadir}/kfontinst/icons/hicolor/*/actions/*font*.png
 %{_datadir}/konqsidebartng/virtual_folders/services/fonts.desktop
 %{_datadir}/krunner/dbusplugins/plasma-runner-baloosearch.desktop
@@ -602,7 +597,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_datadir}/kxmlgui5/kfontview/kfontviewui.rc
 %{_kf5_datadir}/kservices5/ServiceMenus/installfont.desktop
 %{_kf5_datadir}/kservices5/*.desktop
-%{_kf5_datadir}/kservices5/*.protocol
 %{_kf5_datadir}/kservicetypes5/*.desktop
 %{_kf5_datadir}/knotifications5/*.notifyrc
 %{_kf5_datadir}/config.kcfg/*
@@ -643,10 +637,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %dir %{_userunitdir}/plasma-workspace@.target.d/
 # PAM
 %config(noreplace) %{_sysconfdir}/pam.d/kde
-%exclude %{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
-%exclude %{_kf5_datadir}/kservices5/plasma-geolocation-gps.desktop
-%exclude %{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
-%exclude %{_kf5_datadir}/kservicetypes5/plasma-geolocationprovider.desktop
 
 %files doc -f %{name}-doc.lang
 
@@ -672,9 +662,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_qtplugindir}/plasmacalendarplugins/
 %endif
 %{_kf5_qtplugindir}/*.so
-%exclude %{_kf5_qtplugindir}/plasma-geolocation-gps.so
-%exclude %{_kf5_qtplugindir}/plasma-geolocation-ip.so
 %exclude %{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
+%exclude %{_kf5_qtplugindir}/plasma/geolocationprovider/plasma-geolocation-gps.so
+%exclude %{_kf5_qtplugindir}/plasma/geolocationprovider/plasma-geolocation-ip.so
 %dir %{_kf5_qtplugindir}/phonon_platform/
 %{_kf5_qtplugindir}/phonon_platform/kde.so
 %{_kf5_qtplugindir}/kpackage/packagestructure/*.so
@@ -684,11 +674,13 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_qt5_plugindir}/kcms/kcm_*.so
 %{_libdir}/kconf_update_bin/krunnerhistory
 %{_libdir}/kconf_update_bin/krunnerglobalshortcuts
+%{_kf5_qtplugindir}/kf5/parts/kfontviewpart.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_applauncher.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_contextmenu.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_paste.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchdesktop.so
 %{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchwindow.so
+%{_kf5_qtplugindir}/plasma/containmentactions/plasma_containmentactions_switchactivity.so
 %{_libexecdir}/plasma-sourceenv.sh
 %{_libexecdir}/startplasma-waylandsession
 %{_kf5_datadir}/kconf_update/krunnerhistory.upd
@@ -696,13 +688,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_kf5_datadir}/kglobalaccel/org.kde.krunner.desktop
 
 %files geolocation
-%{_kf5_qtplugindir}/plasma-geolocation-gps.so
-%{_kf5_qtplugindir}/plasma-geolocation-ip.so
 %{_kf5_qtplugindir}/plasma/dataengine/plasma_engine_geolocation.so
-%{_kf5_datadir}/kservices5/plasma-dataengine-geolocation.desktop
-%{_kf5_datadir}/kservices5/plasma-geolocation-gps.desktop
-%{_kf5_datadir}/kservices5/plasma-geolocation-ip.desktop
-%{_kf5_datadir}/kservicetypes5/plasma-geolocationprovider.desktop
+%{_kf5_qtplugindir}/plasma/geolocationprovider/plasma-geolocation-gps.so
+%{_kf5_qtplugindir}/plasma/geolocationprovider/plasma-geolocation-ip.so
 
 %ldconfig_scriptlets geolocation-libs
 
@@ -729,7 +717,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 %{_libdir}/cmake/LibTaskManager/
 %{_libdir}/cmake/LibNotificationManager/
 %{_datadir}/dbus-1/interfaces/*.xml
-%{_datadir}/kdevappwizard/templates/ion-dataengine.tar.bz2
 
 %files -n sddm-breeze
 %{_datadir}/sddm/themes/breeze/
@@ -762,6 +749,37 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Fri Mar 18 2022 Troy Dawson <tdawson@redhat.com> - 5.23.3-2
+- Correct download enpoints (#2065761)
+
+* Wed Nov 10 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.23.3-1
+- 5.23.3
+
+* Tue Oct 26 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.23.2-1
+- 5.23.2
+
+* Sat Oct 23 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.23.1-1
+- 5.23.1
+
+* Fri Oct 08 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.23.0-1
+- 5.23.0
+- Add BuildRequires: systemd-rpm-macros
+
+* Wed Sep 22 2021 Neal Gompa <ngompa@fedoraproject.org> - 5.22.90-4
+- Fix setup of Fedora Breeze look and feel
+
+* Mon Sep 20 2021 Neal Gompa <ngompa@fedoraproject.org> - 5.22.90-3
+- Drop forked Breeze Twilight theme in favor of in-tree one
+
+* Mon Sep 20 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.22.90-2
+- Remove patch(180) already applied upstream
+- Remove patch(181) already applied upstream
+- Comment out patch(100) as it does not apply cleanly
+- Adjust files sections
+
+* Fri Sep 17 2021 Marc Deop <marcdeop@fedoraproject.org> - 5.22.90-1
+- 5.22.90
+
 * Sun Sep 12 2021 Alexey Kurov <nucleo@fedoraproject.org> - 5.22.5-2
 - fix removable devices list in devicenotifier (#1975017)
 
@@ -790,9 +808,6 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 * Tue Jul 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.22.3-3
 - Second attempt - Rebuilt for
   https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Tue Jul 20 2021 Orion Poplawski <orion@nwra.com> - 5.22.2.1-2.1
-- Do not use systemd startup on EL8
 
 * Fri Jul 16 2021 Rex Dieter <rdieter@fedoraproject.org> - 5.22.3-2
 - add (modularized) user service dependencies for ssh-agent, spice-vdagent
