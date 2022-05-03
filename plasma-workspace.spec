@@ -27,7 +27,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.24.4
+Version: 5.24.5
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -796,6 +796,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Tue May 03 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.24.5-1
+- 5.24.5
+
 * Thu Mar 31 2022 Justin Zobel <justin@1707.io> - 5.24.4-1
 - Update to 5.24.4
 
