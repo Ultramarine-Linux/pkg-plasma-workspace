@@ -27,7 +27,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.24.4
+Version: 5.24.5
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -796,8 +796,11 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
-* Tue Mar 22 2022 Jan Grulich <jgrulich@redhat.com> - 5.24.3-3
-- Rebuild (qt5)
+* Tue May 03 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.24.5-1
+- 5.24.5
+
+* Thu Mar 31 2022 Justin Zobel <justin@1707.io> - 5.24.4-1
+- Update to 5.24.4
 
 * Mon Mar 14 2022 Neal Gompa <ngompa@fedoraproject.org> - 5.24.3-2
 - Do not use the SDDM Wayland greeter by default for F36
