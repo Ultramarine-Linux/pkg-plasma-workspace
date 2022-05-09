@@ -28,7 +28,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.24.4
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -211,6 +211,8 @@ Requires:       %{name}-geolocation = %{version}-%{release}
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       libkworkspace5%{?_isa} = %{version}-%{release}
+# for selinux settings
+Requires:       (policycoreutils if selinux-policy)
 
 # for libkdeinit5_*
 %{?kf5_kinit_requires}
@@ -571,6 +573,10 @@ cat *.lang | sort | uniq -u > %{name}.lang
 %check
 desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,plasmashell,systemmonitor}.desktop
 
+%post
+if [ -s /usr/sbin/setsebool ] ; then
+  setsebool -P selinuxuser_execmod 1 ||:
+fi
 
 %files common
 %license LICENSES
@@ -796,6 +802,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.{klipper,
 
 
 %changelog
+* Mon May 09 2022 Troy Dawson <tdawson@redhat.com> - 5.24.3-3.1
+- Enable selinuxuser_execmod (#2058657)
+
 * Tue Mar 22 2022 Jan Grulich <jgrulich@redhat.com> - 5.24.3-3
 - Rebuild (qt5)
 
