@@ -28,7 +28,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.24.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -802,6 +802,9 @@ fi
 
 
 %changelog
+* Tue May 17 2022 Jan Grulich <jgrulich@redhat.com> - 5.24.5-3
+- Rebuild (qt5)
+
 * Fri May 06 2022 Mamoru TASAKA <mtasaka@fedoraproject.org> - 5.24.5-2
 - Rebuild for new gpsd
 
