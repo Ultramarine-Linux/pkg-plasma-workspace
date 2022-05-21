@@ -1,7 +1,6 @@
-diff --git a/shell/packageplugins/lookandfeel/lookandfeel.cpp b/shell/packageplugins/lookandfeel/lookandfeel.cpp
-index d50b3e96f..556877af6 100644
---- a/shell/packageplugins/lookandfeel/lookandfeel.cpp
-+++ b/shell/packageplugins/lookandfeel/lookandfeel.cpp
+diff -Nurr plasma-workspace-5.24.90/shell/packageplugins/lookandfeel/lookandfeel.cpp plasma-workspace-5.24.90-new/shell/packageplugins/lookandfeel/lookandfeel.cpp
+--- plasma-workspace-5.24.90/shell/packageplugins/lookandfeel/lookandfeel.cpp	2022-05-19 12:38:19.000000000 +0200
++++ plasma-workspace-5.24.90-new/shell/packageplugins/lookandfeel/lookandfeel.cpp	2022-05-21 17:44:56.201054375 +0200
 @@ -10,7 +10,7 @@
  #include <KLocalizedString>
  #include <KPackage/PackageLoader>
@@ -11,16 +10,15 @@ index d50b3e96f..556877af6 100644
  
  void LookAndFeelPackage::initPackage(KPackage::Package *package)
  {
-diff --git a/startkde/startplasma.cpp b/startkde/startplasma.cpp
-index bd848dda0..43978a712 100644
---- a/startkde/startplasma.cpp
-+++ b/startkde/startplasma.cpp
-@@ -365,7 +365,7 @@ void setupPlasmaEnvironment()
-     qputenv("XDG_CONFIG_DIRS", extraConfigDir + ":" + currentConfigDirs);
+diff -Nurr plasma-workspace-5.24.90/startkde/startplasma.cpp plasma-workspace-5.24.90-new/startkde/startplasma.cpp
+--- plasma-workspace-5.24.90/startkde/startplasma.cpp	2022-05-19 12:38:19.000000000 +0200
++++ plasma-workspace-5.24.90-new/startkde/startplasma.cpp	2022-05-21 17:44:53.033054894 +0200
+@@ -350,7 +350,7 @@
+     qputenv("XDG_CONFIG_DIRS", QFile::encodeName(extraConfigDir) + ':' + currentConfigDirs);
  
      const KConfig globals;
 -    const QString currentLnf = KConfigGroup(&globals, QStringLiteral("KDE")).readEntry("LookAndFeelPackage", QStringLiteral("org.kde.breeze.desktop"));
 +    const QString currentLnf = KConfigGroup(&globals, QStringLiteral("KDE")).readEntry("LookAndFeelPackage", QStringLiteral("@DEFAULT_LOOKANDFEEL@"));
-     QFile activeLnf(QString::fromUtf8(extraConfigDir + "/package"));
+     QFile activeLnf(extraConfigDir + QLatin1String("/package"));
      activeLnf.open(QIODevice::ReadOnly);
      if (activeLnf.readLine() != currentLnf.toUtf8()) {

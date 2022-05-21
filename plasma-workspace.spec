@@ -2,7 +2,7 @@
 # repo or arch where there's no package that would provide plasmashell
 #global bootstrap 1
 
-%global kf5_version_min 5.82.0
+%global kf5_version_min 5.91.0
 
 # Control wayland by default
 %if (0%{?rhel} && 0%{?rhel} < 9)
@@ -27,8 +27,8 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.24.5
-Release: 3%{?dist}
+Version: 5.24.90
+Release: 1%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -163,7 +163,7 @@ BuildRequires:  kf5-kwallet-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kxmlrpcclient-devel >= %{kf5_version_min}
 BuildRequires:  kf5-networkmanager-qt-devel >= %{kf5_version_min}
 BuildRequires:  kf5-plasma-devel >= %{kf5_version_min}
-Requires:       kf5-plasma%{?_isa} >= %{_kf5_version}
+Requires:       kf5-plasma%{?_isa} >= %{kf5_version_min}
 BuildRequires:  kf5-threadweaver-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kded-devel >= %{kf5_version_min}
 BuildRequires:  kf5-kirigami2-devel >= %{kf5_version_min}
@@ -387,7 +387,7 @@ Requires: %{name}-geolocation = %{version}-%{release}
 Summary:        SDDM breeze theme
 # upgrade path, when sddm-breeze was split out
 Obsoletes: plasma-workspace < 5.3.2-8
-Requires:       kf5-plasma >= %{_kf5_version}
+Requires:       kf5-plasma >= %{kf5_version_min}
 # Background.qml:import QtQuick
 Requires:       qt5-qtquickcontrols
 # on-screen keyboard
@@ -802,6 +802,9 @@ fi
 
 
 %changelog
+* Fri May 20 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.24.90-1
+- 5.24.90
+
 * Tue May 17 2022 Jan Grulich <jgrulich@redhat.com> - 5.24.5-3
 - Rebuild (qt5)
 
