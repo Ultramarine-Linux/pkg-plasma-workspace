@@ -27,7 +27,7 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 5.24.90
+Version: 5.25.0
 Release: 1%{?dist}
 
 License: GPLv2+
@@ -272,7 +272,7 @@ Requires:       desktop-backgrounds-compat
 Requires:       systemd
 
 # Oxygen
-Requires:       oxygen-sound-theme >= %{majmin_ver}
+Requires:       oxygen-sounds >= %{majmin_ver}
 
 # PolicyKit authentication agent
 Requires:        polkit-kde >= %{majmin_ver}
@@ -802,6 +802,9 @@ fi
 
 
 %changelog
+* Thu Jun 09 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.25.0-1
+- 5.25.0
+
 * Fri May 20 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.24.90-1
 - 5.24.90
 
