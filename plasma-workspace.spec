@@ -28,7 +28,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 5.25.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv2+
 URL:     https://invent.kde.org/plasma/%{name}
@@ -52,10 +52,6 @@ Source10:       kde
 Source11:       startkderc
 Source15:       fedora.desktop
 
-# backported breeze sddm from plasma 5.24.80~pre
-# lets us apply patches to fix the sddm theme
-Source19:       sddm-theme-5.24.80~pre.tar.gz
-
 # breeze fedora sddm theme components
 # includes f25-based preview (better than breeze or nothing at least)
 Source20:       breeze-fedora-0.2.tar.gz
@@ -72,7 +68,6 @@ Source41:       spice-vdagent.conf
 
 ## downstream Patches
 Patch100:       plasma-workspace-konsole-in-contextmenu.patch
-Patch101:       plasma-workspace-5.24.0-set-fedora-default-look-and-feel.patch
 # default to folderview (instead of desktop) containment, see also
 # https://mail.kde.org/pipermail/distributions/2016-July/000133.html
 # and example,
@@ -261,13 +256,7 @@ Requires:       iceauth xrdb xprop
 Requires:       kde-settings-plasma
 
 # Default look-and-feel theme
-%if 0%{?fedora}
-%global default_lookandfeel org.fedoraproject.fedora.desktop
 Requires:       plasma-lookandfeel-fedora = %{version}-%{release}
-%endif
-%if ! 0%{?default_lookandfeel:1}
-Requires:       desktop-backgrounds-compat
-%endif
 
 Requires:       systemd
 
@@ -468,23 +457,8 @@ BuildArch: noarch
 
 
 %prep
-%setup -q -a 19 -a 20
+%autosetup -a 20 -p1
 
-## upstream patches
-
-## upstreamable patches
-
-## downstream patches
-%patch100 -p1 -b .konsole-in-contextmenu
-# XXX: This is horribly broken and needs fixes upstream -- ngompa
-%if 0%{?default_lookandfeel:1}
-%patch101 -p1 -b .set-fedora-default-look-and-feel
-sed -i -e "s|@DEFAULT_LOOKANDFEEL@|%{?default_lookandfeel}%{!?default_lookandfeel:org.kde.breeze.desktop}|g" \
-  shell/packageplugins/lookandfeel/lookandfeel.cpp startkde/startplasma.cpp
-%endif
-%patch105 -p1
-
-%if 0%{?fedora}
 # Populate initial lookandfeel package
 cp -a lookandfeel lookandfeel.fedora
 # Overwrite settings to configure twilight mode
@@ -493,7 +467,6 @@ install -m 0644 %{SOURCE15} lookandfeel.fedora/metadata.desktop
 cat >> CMakeLists.txt <<EOL
 plasma_install_package(lookandfeel.fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
 EOL
-%endif
 
 
 %build
@@ -515,12 +488,10 @@ chrpath --delete %{buildroot}%{_kf5_qtplugindir}/phonon_platform/kde.so
 ln -s startplasma-x11 %{buildroot}%{_kf5_bindir}/startkde
 %endif
 
-%if 0%{?fedora}
 # remove/replace items to be customized
 ln -sf \
   %{_datadir}/backgrounds/default.png \
   %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/components/artwork/background.png
-%endif
 
 # make fedora-breeze sddm theme variant.
 cp -alf %{buildroot}%{_datadir}/sddm/themes/breeze/ \
@@ -530,22 +501,18 @@ ln -sf  %{_datadir}/backgrounds/default.png \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/components/artwork/background.png
 install -m644 -p breeze-fedora/* \
         %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/
-%if 0%{?fedora} >= 34
 # Set Fedora distro vendor logo
 sed -i -e 's|^showlogo=.*$|showlogo=shown|g' %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
 sed -i -e 's|^logo=.*$|logo=%{_datadir}/pixmaps/fedora_whitelogo.svg|g' %{buildroot}%{_datadir}/sddm/themes/01-breeze-fedora/theme.conf
-%endif
 
 # move sddm configuration snippet to the right place
 mkdir -p %{buildroot}%{_prefix}/lib/sddm
 mv %{buildroot}%{_sysconfdir}/sddm.conf.d %{buildroot}%{_prefix}/lib/sddm
 
-%if 0%{?fedora} > 30
 ## customize plasma-lookandfeel-fedora defaults
 # from [Wallpaper] Image=Next to Image=Fedora
 sed -i -e 's|^Image=.*$|Image=Fedora|g' \
   %{buildroot}%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/contents/defaults
-%endif
 
 # Make kcheckpass work
 install -m644 -p -D %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/kde
@@ -795,13 +762,16 @@ fi
 %{_datadir}/xsessions/plasmax11.desktop
 %endif
 
-%if 0%{?fedora}
 %files -n plasma-lookandfeel-fedora
 %{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/
-%endif
 
 
 %changelog
+* Tue Jun 14 2022 Neal Gompa <ngompa@fedoraproject.org> - 5.25.0-2
+- Remove broken mechanism for setting default look and feel
+- Always ship Fedora look and feel theme
+- Drop unneeded sddm theme snapshot and patches
+
 * Thu Jun 09 2022 Marc Deop <marcdeop@fedoraproject.org> - 5.25.0-1
 - 5.25.0
 
