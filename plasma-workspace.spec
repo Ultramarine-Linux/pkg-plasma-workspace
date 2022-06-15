@@ -256,7 +256,7 @@ Requires:       iceauth xrdb xprop
 Requires:       kde-settings-plasma
 
 # Default look-and-feel theme
-Requires:       plasma-lookandfeel-fedora = %{version}-%{release}
+Requires:       plasma-lookandfeel-ultramarine = %{version}-%{release}
 
 Requires:       systemd
 
@@ -441,7 +441,7 @@ Requires:       xsetroot
 %description x11
 %{summary}.
 
-%package -n plasma-lookandfeel-fedora
+%package -n plasma-lookandfeel-ultramarine
 Summary:  Fedora look-and-feel for Plasma
 Requires: %{name} = %{version}-%{release}
 # when switched to noarch
@@ -452,7 +452,7 @@ Obsoletes: f23-kde-theme < 23.1
 Obsoletes: f24-kde-theme < 24.6
 Obsoletes: f24-kde-theme-core < 5.10.5-2
 BuildArch: noarch
-%description -n plasma-lookandfeel-fedora
+%description -n plasma-lookandfeel-ultramarine
 %{summary}.
 
 
@@ -460,12 +460,12 @@ BuildArch: noarch
 %autosetup -a 20 -p1
 
 # Populate initial lookandfeel package
-cp -a lookandfeel lookandfeel.fedora
+cp -a lookandfeel lookandfeel.ultramarine
 # Overwrite settings to configure twilight mode
-cp -a lookandfeel.twilight/* lookandfeel.fedora
+cp -a lookandfeel.twilight/* lookandfeel.ultramarine
 install -m 0644 %{SOURCE15} lookandfeel.fedora/metadata.desktop
 cat >> CMakeLists.txt <<EOL
-plasma_install_package(lookandfeel.fedora org.fedoraproject.fedora.desktop look-and-feel lookandfeel)
+plasma_install_package(lookandfeel.ultramarine org.ultramarinelinux.ultramarine.desktop look-and-feel lookandfeel)
 EOL
 
 
@@ -763,7 +763,7 @@ fi
 %endif
 
 %files -n plasma-lookandfeel-fedora
-%{_kf5_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.desktop/
+%{_kf5_datadir}/plasma/look-and-feel/org.ultramarinelinux.ultramarine.desktop/
 
 
 %changelog
